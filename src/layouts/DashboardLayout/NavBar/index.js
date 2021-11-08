@@ -50,9 +50,9 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import StarBorder from "@material-ui/icons/StarBorder";
 import "../../../css/Content.css";
-import firebase from '../../../firebase';
+// import firebase from '../../../firebase';
 import NavItem from "./NavItem";
-import useAuthentication from "../../../hooks/useAuthentication";
+// import useAuthentication from "../../../hooks/useAuthentication";
 
 
 
@@ -184,9 +184,9 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   const [openMaintenance, setOpenMaintenance] = React.useState(false);
   const [open201Files, setOpen201Files] = React.useState(false);
   const [openAttendance, setOpenAttendance] = React.useState(false);
-  const { getUser } = useAuthentication();
+  // const { getUser } = useAuthentication();
   // const credentials = getUser();
-  const credentials = firebase.auth().currentUser;
+  // const credentials = firebase.auth().currentUser;
 
 
   const handleClick201Files = () => {
@@ -244,10 +244,10 @@ const NavBar = ({ onMobileClose, openMobile }) => {
                 color="textPrimary"
                 variant="h6"
               >
-                {`${credentials?.displayName}`}
+                {/* {`${credentials?.displayName}`} */}
               </Typography>
               <Typography color="textSecondary" variant="body2">
-                {credentials?.credential?.roles}
+                {/* {credentials?.credential?.roles} */}
               </Typography>
             </div>
           </Box>
