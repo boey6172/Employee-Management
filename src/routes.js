@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 // import DashboardLayout from '../src/layouts/DashboardLayout';
-// import MainLayout from '../src/layouts/MainLayout';
+import MainLayout from '../src/layouts/MainLayout';
 // import LoginView from '../src/views/auth/LoginView';
 import NotFoundView from '../src/views/errors/NotFoundView';
 import Test from '../src/views/test/test';
@@ -97,7 +97,7 @@ const routes = [
   // },
   {
     path: '/',
-    // element: <MainLayout />,
+    element: <MainLayout />,
     children: [
       // { path: 'login', element: <LoginView /> },
       { path: 'test', element: <Test /> },
