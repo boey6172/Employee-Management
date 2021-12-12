@@ -9,6 +9,8 @@ import Reg from '../src/views/registration';
 import DocumentType from '../src/views/maintenances/documentType';
 import Rank from '../src/views/maintenances/rank';
 import RegionAssignment from '../src/views/maintenances/regionAssignment';
+import Religion from '../src/views/maintenances/religion';
+
 
 
 
@@ -113,6 +115,7 @@ const routes = [
       { path: 'documenttype', element: <DocumentType /> },
       { path: 'rank', element: <Rank /> },
       { path: 'regionAssignment', element: <RegionAssignment /> },
+      { path: 'religion', element: <Religion /> },
       { path: 'registration', element: <Reg /> },
       { path: '/', element: <Navigate to="/test" /> },
       { path: '*', element: <Navigate to="/404" /> }
