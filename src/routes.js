@@ -6,6 +6,12 @@ import MainLayout from '../src/layouts/MainLayout';
 import NotFoundView from '../src/views/errors/NotFoundView';
 import Test from '../src/views/test/test';
 import Reg from '../src/views/registration';
+import DocumentType from '../src/views/maintenances/documentType';
+import Rank from '../src/views/maintenances/rank';
+import RegionAssignment from '../src/views/maintenances/regionAssignment';
+
+
+
 
 
 import PrivateAdminRoute from "./middleware/PrivateAdminRoute";
@@ -104,6 +110,9 @@ const routes = [
       // { path: 'login', element: <LoginView /> },
       { path: 'test', element: <Test /> },
       { path: '404', element: <NotFoundView /> },
+      { path: 'documenttype', element: <DocumentType /> },
+      { path: 'rank', element: <Rank /> },
+      { path: 'regionAssignment', element: <RegionAssignment /> },
       { path: 'registration', element: <Reg /> },
       { path: '/', element: <Navigate to="/test" /> },
       { path: '*', element: <Navigate to="/404" /> }
