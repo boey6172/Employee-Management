@@ -12,6 +12,9 @@ import {
   TextField,
   makeStyles,
 } from '@material-ui/core';
+import {useFormik} from "formik";
+import axios from 'axios';
+import * as Yup from 'yup'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,8 +32,39 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const validationSchema = Yup.object({
+  religion: Yup
+    .string('Enter Religion')
+    .min(2, 'Religion should be of minimum 2 characters length')
+    .required('Religion Required'),
+  // password: yup
+  //   .string('Enter your password')
+  //   .min(8, 'Password should be of minimum 8 characters length')
+  //   .required('Password is required'),
+});
+
 const Index = () => {
   const classes = useStyles();
+
+  const formik = useFormik({
+    initialValues: {
+      religion: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values, {resetForm}) => {
+      // alert(JSON.stringify(values, null, 2));
+      onSubmit(values)
+      resetForm();
+      
+    },
+  });
+
+  const onSubmit = (data) => {
+    // axios.post("http://localhost:3001/ranks", data).then((response)=>{
+    //     console.log(response.data)
+    //   })
+    alert("success")
+  }
   
   return (
     <Page
@@ -38,6 +72,7 @@ const Index = () => {
       title="Registration "
     >      
       <Container maxWidth="lg">
+      <form onSubmit={formik.handleSubmit}>
       <Grid
         container
         spacing={1}
@@ -50,7 +85,7 @@ const Index = () => {
         >
           <Card>
             <CardHeader
-              subheader="Input your Religion"
+              subheader="Please Input your Religion"
               title="Religion"
             />
             <Divider />
@@ -59,9 +94,17 @@ const Index = () => {
                 container
                 spacing={1}
               >
-                <form noValidate autoComplete="off">
-                  <TextField id="outlined-basic" label="Religion" variant="outlined" />
-                </form>
+                <TextField
+                  // fullWidth
+                  id="outlined-basic"
+                  name="religion"
+                  label="Religion"
+                  variant="outlined"
+                  value={formik.values.religion}
+                  onChange={formik.handleChange}
+                  error={formik.touched.religion && Boolean(formik.errors.religion)}
+                  helperText={formik.touched.religion && formik.errors.religion}
+                />
               </Grid>
             </CardContent>
             <Divider />
@@ -73,6 +116,7 @@ const Index = () => {
               <Button
                 color="primary"
                 variant="contained"
+                type="submit"
                 // onClick={handlePost}
               >
                 Save
@@ -81,7 +125,7 @@ const Index = () => {
           </Card>
         </Grid>
       </Grid>
-      
+      </form>
     </Container>
  
     </Page>

@@ -58,9 +58,10 @@ const Index = () => {
   });
 
   const onSubmit = (data) => {
-    axios.post("http://localhost:3001/ranks", data).then((response)=>{
-        console.log(response.data)
-      })
+    // axios.post("http://localhost:3001/ranks", data).then((response)=>{
+    //     console.log(response.data)
+    //   })
+    alert("sucess")
   }
 
 
