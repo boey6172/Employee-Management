@@ -10,6 +10,8 @@ import DocumentType from '../src/views/maintenances/documentType';
 import Rank from '../src/views/maintenances/rank';
 import RegionAssignment from '../src/views/maintenances/regionAssignment';
 import Religion from '../src/views/maintenances/religion';
+import Signup from '../src/views/signup';
+
 
 
 
@@ -17,6 +19,7 @@ import Religion from '../src/views/maintenances/religion';
 
 
 import PrivateAdminRoute from "./middleware/PrivateAdminRoute";
+import Index from '../src/views/registration';
 // import Home from "./views/home";
 // import Account from "./views/account";
 // import Expenses from "./views/expenses";
@@ -117,6 +120,7 @@ const routes = [
       { path: 'regionAssignment', element: <RegionAssignment /> },
       { path: 'religion', element: <Religion /> },
       { path: 'registration', element: <Reg /> },
+      { path: 'signup', element: <Signup /> },
       { path: '/', element: <Navigate to="/test" /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
