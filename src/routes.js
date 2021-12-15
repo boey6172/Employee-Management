@@ -7,13 +7,14 @@ import NotFoundView from '../src/views/errors/NotFoundView';
 import Test from '../src/views/test/test';
 import Reg from '../src/views/registration';
 import DocumentType from '../src/views/maintenances/documentType';
-import Rank from '../src/views/maintenances/rank';
+
 import RegionAssignment from '../src/views/maintenances/regionAssignment';
 import Religion from '../src/views/maintenances/religion';
 import Signup from '../src/views/signup';
 
-
-
+//ranks
+import CreateRank from '../src/views/maintenances/rank/create';
+import Rank from '../src/views/maintenances/rank';
 
 
 
@@ -116,6 +117,7 @@ const routes = [
       { path: 'test', element: <Test /> },
       { path: '404', element: <NotFoundView /> },
       { path: 'documenttype', element: <DocumentType /> },
+      { path: 'createrank', element: <CreateRank /> },
       { path: 'rank', element: <Rank /> },
       { path: 'regionAssignment', element: <RegionAssignment /> },
       { path: 'religion', element: <Religion /> },
