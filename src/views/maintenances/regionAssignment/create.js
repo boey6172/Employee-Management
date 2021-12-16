@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const validationSchema = Yup.object({
-  rank: Yup
-    .string('Enter a Rank')
-    .min(2, 'Rank should be of minimum 2 characters length')
-    .required('Enter a Rank'),
+  regionAssignment: Yup
+    .string('Enter Region Assignment')
+    .min(2, 'Region Assignment should be of minimum 2 characters length')
+    .required('Region Assignment Required'),
   // password: yup
   //   .string('Enter your password')
   //   .min(8, 'Password should be of minimum 8 characters length')
@@ -48,7 +48,7 @@ const Index = () => {
 
   const formik = useFormik({
     initialValues: {
-      rank: '',
+      regionAssignment: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values, {resetForm}) => {
@@ -63,12 +63,12 @@ const Index = () => {
     // axios.post("http://localhost:3001/ranks", data).then((response)=>{
     //     console.log(response.data)
     //   })
-    instance.post("./ranks", data).then((response) => {
+    instance.post("./regionAssignments", data).then((response) => {
       console.log(response)
       alert('done')
     }) 
   }
-
+  
   return (
     <Page
       className={classes.root}
@@ -88,8 +88,8 @@ const Index = () => {
         >
           <Card>
             <CardHeader
-              subheader="Please Input your Rank"
-              title="Rank"
+              subheader="Please Input your Region Assignment"
+              title="Region Assignment"
             />
             <Divider />
             <CardContent>
@@ -100,13 +100,13 @@ const Index = () => {
                 <TextField
                   // fullWidth
                   id="outlined-basic"
-                  name="rank"
-                  label="Rank"
+                  name="regionAssignment"
+                  label="Region Assignment"
                   variant="outlined"
-                  value={formik.values.rank}
+                  value={formik.values.regionAssignment}
                   onChange={formik.handleChange}
-                  error={formik.touched.rank && Boolean(formik.errors.rank)}
-                  helperText={formik.touched.rank && formik.errors.rank}
+                  error={formik.touched.regionAssignment && Boolean(formik.errors.regionAssignment)}
+                  helperText={formik.touched.regionAssignment && formik.errors.regionAssignment}
                 />
               </Grid>
             </CardContent>

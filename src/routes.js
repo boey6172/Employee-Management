@@ -6,10 +6,20 @@ import MainLayout from '../src/layouts/MainLayout';
 import NotFoundView from '../src/views/errors/NotFoundView';
 import Test from '../src/views/test/test';
 import Reg from '../src/views/registration';
-import DocumentType from '../src/views/maintenances/documentType';
 
+//document type
+import DocumentType from '../src/views/maintenances/documentType';
+import CreateDocumentType from '../src/views/maintenances/documentType/create';
+
+//region assignment
 import RegionAssignment from '../src/views/maintenances/regionAssignment';
+import CreateRegionAssignment from '../src/views/maintenances/regionAssignment/create';
+
+//Religion
+import CreateReligion from '../src/views/maintenances/religion/create';
 import Religion from '../src/views/maintenances/religion';
+
+
 import Signup from '../src/views/signup';
 
 //ranks
@@ -116,10 +126,13 @@ const routes = [
       // { path: 'login', element: <LoginView /> },
       { path: 'test', element: <Test /> },
       { path: '404', element: <NotFoundView /> },
+      { path: 'createdocumenttype', element: <CreateDocumentType /> },
       { path: 'documenttype', element: <DocumentType /> },
       { path: 'createrank', element: <CreateRank /> },
       { path: 'rank', element: <Rank /> },
+      { path: 'createregionAssignment', element: <CreateRegionAssignment /> },
       { path: 'regionAssignment', element: <RegionAssignment /> },
+      { path: 'createreligion', element: <CreateReligion /> },
       { path: 'religion', element: <Religion /> },
       { path: 'registration', element: <Reg /> },
       { path: 'signup', element: <Signup /> },

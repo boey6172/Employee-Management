@@ -17,6 +17,8 @@ import axios from 'axios';
 import * as Yup from 'yup'
 import instance from '../../../instance/instance';
 
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -33,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const validationSchema = Yup.object({
-  rank: Yup
-    .string('Enter a Rank')
-    .min(2, 'Rank should be of minimum 2 characters length')
-    .required('Enter a Rank'),
+  religion: Yup
+    .string('Enter Religion')
+    .min(2, 'Religion should be of minimum 2 characters length')
+    .required('Religion Required'),
   // password: yup
   //   .string('Enter your password')
   //   .min(8, 'Password should be of minimum 8 characters length')
@@ -48,7 +50,7 @@ const Index = () => {
 
   const formik = useFormik({
     initialValues: {
-      rank: '',
+      religion: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values, {resetForm}) => {
@@ -60,15 +62,15 @@ const Index = () => {
   });
 
   const onSubmit = (data) => {
-    // axios.post("http://localhost:3001/ranks", data).then((response)=>{
+     // axios.post("http://localhost:3001/ranks", data).then((response)=>{
     //     console.log(response.data)
     //   })
-    instance.post("./ranks", data).then((response) => {
+    instance.post("./religions", data).then((response) => {
       console.log(response)
       alert('done')
     }) 
   }
-
+  
   return (
     <Page
       className={classes.root}
@@ -88,8 +90,8 @@ const Index = () => {
         >
           <Card>
             <CardHeader
-              subheader="Please Input your Rank"
-              title="Rank"
+              subheader="Please Input your Religion"
+              title="Religion"
             />
             <Divider />
             <CardContent>
@@ -100,13 +102,13 @@ const Index = () => {
                 <TextField
                   // fullWidth
                   id="outlined-basic"
-                  name="rank"
-                  label="Rank"
+                  name="religion"
+                  label="Religion"
                   variant="outlined"
-                  value={formik.values.rank}
+                  value={formik.values.religion}
                   onChange={formik.handleChange}
-                  error={formik.touched.rank && Boolean(formik.errors.rank)}
-                  helperText={formik.touched.rank && formik.errors.rank}
+                  error={formik.touched.religion && Boolean(formik.errors.religion)}
+                  helperText={formik.touched.religion && formik.errors.religion}
                 />
               </Grid>
             </CardContent>

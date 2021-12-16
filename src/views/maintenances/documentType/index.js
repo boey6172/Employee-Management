@@ -1,139 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import Page from '../../../components/Page';
+import React,{useState,useEffect} from 'react';
 import {
-  Container,
-  Grid,
   Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  TextField,
-  makeStyles,
+  Container,
+  makeStyles
 } from '@material-ui/core';
-import {useFormik} from "formik";
-import axios from 'axios';
-import * as Yup from 'yup'
-import instance from '../../../instance/instance'
+import Page from '../../../components/Page';
+import Result from './Result';
+import Toolbar from './Toolbar';
+import instance from '../../../instance/instance';
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
-    height: '100%',
+    minHeight: '100%',
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
-  },
-  image: {
-    marginTop: 50,
-    display: 'inline-block',
-    maxWidth: '100%',
-    width: 560
   }
 }));
 
-const validationSchema = Yup.object({
-  documentType: Yup
-    .string('Enter Document Type')
-    .min(2, 'Document Type should be of minimum 2 characters length')
-    .required('Document Type Required'),
-  // password: yup
-  //   .string('Enter your password')
-  //   .min(8, 'Password should be of minimum 8 characters length')
-  //   .required('Password is required'),
-});
-
 const Index = () => {
+
+  const [documentTypes, setdocumentType] = useState(null);
+  const [values,setValues ] =  useState(null);
+
+
+  useEffect(()=> {
+    instance.get("./documenttype").then((response) => {
+      setValues(response.data)
+      setdocumentType(response.data)
+    }) 
+  },[])
+
+  const searchdocumentTypes=(e)=>{
+    var  { name,value }= e.target
+
+    const filtered = documentTypes.filter(data => {
+      return data.documentType.toLowerCase().includes(value.toLowerCase());
+    })
+
+    console.log(filtered)
+    setdocumentType(filtered)
+    if( value === ""){
+      setdocumentType(values)
+    }
+    console.log(value)
+
+  }
+
   const classes = useStyles();
 
-  const formik = useFormik({
-    initialValues: {
-      documentType: '',
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values, {resetForm}) => {
-      // alert(JSON.stringify(values, null, 2));
-      onSubmit(values)
-      resetForm();
-      
-    },
-  });
-
-  const onSubmit = (data) => {
-    // axios.post("http://localhost:3001/ranks", data).then((response)=>{
-    //     console.log(response.data)
-    //   })
-    instance.post("/documenttype", data).then((response) => {
-      console.log(response)
-      alert('done')
-    }) 
-  }
-  
   return (
     <Page
       className={classes.root}
-      title="Registration "
-    >      
-      <Container maxWidth="lg">
-      <form onSubmit={formik.handleSubmit}>
-      <Grid
-        container
-        spacing={1}
-      >
-        <Grid
-          item
-          lg={12}
-          md={12}
-          xs={12}
-        >
-          <Card>
-            <CardHeader
-              subheader="Please Input Document Type"
-              title="Document Type"
-            />
-            <Divider />
-            <CardContent>
-              <Grid
-                container
-                spacing={1}
-              >
-                <TextField
-                  // fullWidth
-                  id="outlined-basic"
-                  name="documentType"
-                  label="Document Type"
-                  variant="outlined"
-                  value={formik.values.documentType}
-                  onChange={formik.handleChange}
-                  error={formik.touched.documentType && Boolean(formik.errors.documentType)}
-                  helperText={formik.touched.documentType && formik.errors.documentType}
-                />
-              </Grid>
-            </CardContent>
-            <Divider />
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              p={2}
-            >
-              <Button
-                color="primary"
-                variant="contained"
-                type="submit"
-                // onClick={handlePost}
-              >
-                Save
-              </Button>
-            </Box>
-          </Card>
-        </Grid>
-      </Grid>
-      </form>
-    </Container>
- 
+      title="Document Type"
+    >
+      <Container maxWidth={false}>
+        <Toolbar  search= {searchdocumentTypes}/> 
+        <Box mt={3}>
+          <Result documentTypes={documentTypes}/>
+        </Box>
+      </Container>
     </Page>
-  )
-}
+  );
+};
 
 export default Index;

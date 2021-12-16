@@ -1,135 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import Page from '../../../components/Page';
+import React,{useState,useEffect} from 'react';
 import {
-  Container,
-  Grid,
   Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  TextField,
-  makeStyles,
+  Container,
+  makeStyles
 } from '@material-ui/core';
-import {useFormik} from "formik";
-import axios from 'axios';
-import * as Yup from 'yup'
+import Page from '../../../components/Page';
+import Result from './Result';
+import Toolbar from './Toolbar';
+import instance from '../../../instance/instance';
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
-    height: '100%',
+    minHeight: '100%',
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
-  },
-  image: {
-    marginTop: 50,
-    display: 'inline-block',
-    maxWidth: '100%',
-    width: 560
   }
 }));
 
-const validationSchema = Yup.object({
-  religion: Yup
-    .string('Enter Religion')
-    .min(2, 'Religion should be of minimum 2 characters length')
-    .required('Religion Required'),
-  // password: yup
-  //   .string('Enter your password')
-  //   .min(8, 'Password should be of minimum 8 characters length')
-  //   .required('Password is required'),
-});
-
 const Index = () => {
+
+  const [religions, setReligions] = useState(null);
+  const [values,setValues ] =  useState(null);
+
+
+  useEffect(()=> {
+    instance.get("./religions").then((response) => {
+      setValues(response.data)
+      setReligions(response.data)
+    }) 
+  },[])
+
+  const searchReligions=(e)=>{
+    var  { name,value }= e.target
+
+    const filtered = religions.filter(data => {
+      return data.religion.toLowerCase().includes(value.toLowerCase());
+    })
+
+    console.log(filtered)
+    setReligions(filtered)
+    if( value === ""){
+      setReligions(values)
+    }
+    console.log(value)
+
+  }
+
   const classes = useStyles();
 
-  const formik = useFormik({
-    initialValues: {
-      religion: '',
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values, {resetForm}) => {
-      // alert(JSON.stringify(values, null, 2));
-      onSubmit(values)
-      resetForm();
-      
-    },
-  });
-
-  const onSubmit = (data) => {
-    // axios.post("http://localhost:3001/ranks", data).then((response)=>{
-    //     console.log(response.data)
-    //   })
-    alert("success")
-  }
-  
   return (
     <Page
       className={classes.root}
-      title="Registration "
-    >      
-      <Container maxWidth="lg">
-      <form onSubmit={formik.handleSubmit}>
-      <Grid
-        container
-        spacing={1}
-      >
-        <Grid
-          item
-          lg={12}
-          md={12}
-          xs={12}
-        >
-          <Card>
-            <CardHeader
-              subheader="Please Input your Religion"
-              title="Religion"
-            />
-            <Divider />
-            <CardContent>
-              <Grid
-                container
-                spacing={1}
-              >
-                <TextField
-                  // fullWidth
-                  id="outlined-basic"
-                  name="religion"
-                  label="Religion"
-                  variant="outlined"
-                  value={formik.values.religion}
-                  onChange={formik.handleChange}
-                  error={formik.touched.religion && Boolean(formik.errors.religion)}
-                  helperText={formik.touched.religion && formik.errors.religion}
-                />
-              </Grid>
-            </CardContent>
-            <Divider />
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              p={2}
-            >
-              <Button
-                color="primary"
-                variant="contained"
-                type="submit"
-                // onClick={handlePost}
-              >
-                Save
-              </Button>
-            </Box>
-          </Card>
-        </Grid>
-      </Grid>
-      </form>
-    </Container>
- 
+      title="Religion"
+    >
+      <Container maxWidth={false}>
+        <Toolbar  search= {searchReligions}/> 
+        <Box mt={3}>
+          <Result  religions={religions}/>
+        </Box>
+      </Container>
     </Page>
-  )
-}
+  );
+};
 
 export default Index;
