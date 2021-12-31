@@ -25,6 +25,8 @@ import Signup from '../src/views/signup';
 //ranks
 import CreateRank from '../src/views/maintenances/rank/create';
 import Rank from '../src/views/maintenances/rank';
+import Login from '../src/views/auth/Login';
+
 
 
 
@@ -137,7 +139,10 @@ const routes = [
       { path: 'registration', element: <Reg /> },
       { path: 'signup', element: <Signup /> },
       { path: '/', element: <Navigate to="/test" /> },
-      { path: '*', element: <Navigate to="/404" /> }
+      { path: '*', element: <Navigate to="/404" /> },
+      { path: 'login', element: <Login /> },
+
+      
     ]
   }
 ];

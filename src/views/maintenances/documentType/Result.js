@@ -41,6 +41,7 @@ const Results = ({ className, documentTypes, ...rest }) => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
+    console.log(documentTypes)
 
   const handleRemove = (id) => {   
     // if(window.confirm('Are you Sure on deleting this item'))
@@ -88,7 +89,7 @@ if(documentTypes){
                         color="textPrimary"
                         variant="body1"
                       >
-                        {documentType.documentTypes}
+                        {documentType.documentType}
                       </Typography>
                     </Box>
                   </TableCell>
