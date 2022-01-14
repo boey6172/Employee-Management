@@ -13,6 +13,10 @@ const userRouter = require("./routes/Users");
 const rankRouter = require("./routes/Ranks");
 const documentTypeRouter = require("./routes/DocumentType");
 const religionRouter = require("./routes/Religion");
+const regionRouter = require("./routes/RegionAssignment");
+const employeeRouter = require("./routes/Employee");
+
+
 
 
 
@@ -20,6 +24,9 @@ app.use("/auth", userRouter);
 app.use("/ranks", rankRouter);
 app.use("/documenttype", documentTypeRouter);
 app.use("/religion", religionRouter);
+app.use("/region", regionRouter);
+app.use("/employee", employeeRouter);
+
 
 
 

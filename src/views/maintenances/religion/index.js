@@ -26,7 +26,7 @@ const Index = () => {
 
 
   useEffect(()=> {
-    instance.get("./religions").then((response) => {
+    instance.get("./religion").then((response) => {
       setValues(response.data)
       setReligions(response.data)
     }) 

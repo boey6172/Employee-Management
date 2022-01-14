@@ -39,6 +39,18 @@ router.post("/", async(req,res) =>{
     res.json(rank);
 });
 
+router.post("/update", async(req,res) =>{
+    const {id, rank} = req.body
+    await Ranks.update({rank:rank},{
+        where:{
+            id:id
+        }
+    });
+    res.json(rank);
+});
+
+
+
 
 
 
