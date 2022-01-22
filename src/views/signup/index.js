@@ -25,8 +25,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     height: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
+    paddingBottom: theme.spacing(1),
+    paddingTop: theme.spacing(1)
+
+  },
+  container:{
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(3),
+    padding: theme.spacing(2),
   },
   image: {
     marginTop: 50,
@@ -47,10 +53,25 @@ const validationSchema = Yup.object({
     .string('Enter a Rank')
     .min(2, 'Rank should be of minimum 2 characters length')
     .required('Enter a Rank'),
-  // password: yup
-  //   .string('Enter your password')
-  //   .min(8, 'Password should be of minimum 8 characters length')
-  //   .required('Password is required'),
+  username: Yup
+    .string('Enter your Username')
+    .min(8, 'username should be of minimum 8 characters length')
+    .required('Username is required'),
+  password: Yup
+    .string('Enter your password')
+    .min(8, 'Password should be of minimum 8 characters length')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    )
+    .required('Password is required'),
+  confirmPassowrd:Yup
+    .string('Enter your password')
+    .oneOf([Yup.ref('password'),null], 'Password Must match'),
+  gender: Yup
+    .string('Select a Gender')
+    // .min(2, 'Rank should be of minimum 2 characters length')
+    .required('Select a Gender'),
 });
 
 const Index = () => {
@@ -59,6 +80,7 @@ const Index = () => {
   const formik = useFormik({
     initialValues: {
       rank: '',
+      gender:'',
     },
     validationSchema: validationSchema,
     onSubmit: (values, {resetForm}) => {
@@ -83,22 +105,36 @@ const Index = () => {
       className={classes.root}
       title="Signup "
     >      
-      <Container maxWidth="lg">
+      <Container  
+        maxWidth="lg"
+        textAlign="center"
+      >
+        
         <form onSubmit={formik.handleSubmit}>
           <Typography variant="h3" gutterBottom>
             Create a new Account.
           </Typography>
           <Grid
             container
-            spacing={1}
+            spacing={2}
+            align="center"
           >
             <Grid
               item
-              lg={12}
-              md={12}
-              xs={12}
+              lg={2}
+              md={2}
+              xs={2}
+            > 
+
+            </Grid>
+            <Grid
+              item
+              lg={8}
+              md={8}
+              xs={8}
+              
             >
-              <Card>
+              <Card >
                 <CardHeader
                   title="Account Info"
                 />
@@ -116,13 +152,13 @@ const Index = () => {
                       <TextField
                         fullWidth
                         id="outlined-basic"
-                        name="uname"
-                        label="User Name"
+                        name="username"
+                        label="Username"
                         variant="outlined"
-                        value={formik.values.rank}
+                        value={formik.values.username}
                         onChange={formik.handleChange}
-                        error={formik.touched.rank && Boolean(formik.errors.rank)}
-                        helperText={formik.touched.rank && formik.errors.rank}
+                        error={formik.touched.username && Boolean(formik.errors.username)}
+                        helperText={formik.touched.username && formik.errors.username}
                       />
                     </Grid>
                     <Grid
@@ -133,13 +169,14 @@ const Index = () => {
                       <TextField
                         fullWidth
                         id="outlined-basic"
-                        name="pword"
+                        name="password"
                         label="Password"
+                        type="password"
                         variant="outlined"
-                        value={formik.values.rank}
+                        value={formik.values.password}
                         onChange={formik.handleChange}
-                        error={formik.touched.rank && Boolean(formik.errors.rank)}
-                        helperText={formik.touched.rank && formik.errors.rank}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
                       />
                     </Grid>
                     <Grid
@@ -150,26 +187,22 @@ const Index = () => {
                       <TextField
                         fullWidth
                         id="outlined-basic"
-                        name="pword2"
+                        name="confirmPassowrd"
                         label="Confirm Password"
+                        type="password"
                         variant="outlined"
-                        value={formik.values.rank}
+                        value={formik.values.confirmPassowrd}
                         onChange={formik.handleChange}
-                        error={formik.touched.rank && Boolean(formik.errors.rank)}
-                        helperText={formik.touched.rank && formik.errors.rank}
+                        error={formik.touched.confirmPassowrd && Boolean(formik.errors.confirmPassowrd)}
+                        helperText={formik.touched.confirmPassowrd && formik.errors.confirmPassowrd}
                       />
                     </Grid>
                   </Grid>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid 
-              item
-              lg={12}
-              md={12}
-              xs={12}
-            >
-              <Card>
+
+            <br/>
+              <Card >
                 <CardHeader
                   title="Personal Info"
                 />
@@ -252,20 +285,23 @@ const Index = () => {
                       md={6}
                       xs={12}
                     >  
-                      <FormControl className={classes.formControl}>
+                      <FormControl  variant="outlined" className={classes.formControl} fullWidth>
                         <InputLabel id="demo-simple-select-label">Gender</InputLabel>
                         <Select
                           id="outlined-basic"
                           name="gender"
                           label="Gender"
-                          variant="outlined"
-                          value={formik.values.rank}
+                          labelId="demo-simple-select-label"
+                          value={formik.values.gender}
                           onChange={formik.handleChange}
-                          error={formik.touched.rank && Boolean(formik.errors.rank)}
-                          helperText={formik.touched.rank && formik.errors.rank}  
+                          error={formik.touched.gender && Boolean(formik.errors.gender)}
+                          helperText={formik.touched.gender && formik.errors.gender}  
                         >
-                          <MenuItem>Male</MenuItem>
-                          <MenuItem>Female</MenuItem>
+                        <MenuItem value="">
+                            <em>None</em>
+                          </MenuItem>
+                          <MenuItem value={"Male"}>Male</MenuItem>
+                          <MenuItem value={"Female"}>Twenty</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
@@ -274,8 +310,9 @@ const Index = () => {
                       md={6}
                       xs={12}
                     >
-                      <form className={classes.container} noValidate>
+                      
                         <TextField
+                          fullWidth
                           id="date"
                           label="Birthday"
                           type="date"
@@ -283,8 +320,12 @@ const Index = () => {
                           InputLabelProps={{
                             shrink: true,
                           }}
+                          value={formik.values.rank}
+                          onChange={formik.handleChange}
+                          error={formik.touched.rank && Boolean(formik.errors.rank)}
+                          helperText={formik.touched.rank && formik.errors.rank}
                         />
-                      </form>
+                      
                     </Grid>
                       <TextField
                         fullWidth
@@ -300,13 +341,7 @@ const Index = () => {
                   </Grid>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid 
-              item
-              lg={12}
-              md={12}
-              xs={12}
-            >
+              <br/>
               <Card>
                 <CardHeader
                   title="Employee Details"
@@ -322,8 +357,8 @@ const Index = () => {
                       md={4}
                       xs={12}
                     >
-                      <form className={classes.container} noValidate>
                         <TextField
+                          fullWidth
                           id="date2"
                           label="Date of Employment"
                           type="date"
@@ -331,8 +366,12 @@ const Index = () => {
                           InputLabelProps={{
                             shrink: true,
                           }}
+                          value={formik.values.rank}
+                          onChange={formik.handleChange}
+                          error={formik.touched.rank && Boolean(formik.errors.rank)}
+                          helperText={formik.touched.rank && formik.errors.rank}
                         />
-                      </form>
+
                     </Grid>
                     <Grid
                       item
@@ -407,22 +446,24 @@ const Index = () => {
                       md={4}
                       xs={12}
                     >
-                      <FormControl className={classes.formControl}>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
                         <InputLabel id="demo-simple-select-label">Witholding Tax Status</InputLabel>
                         <Select
-                          fullWidth
                           id="outlined-basic"
-                          name="wtaxStat"
-                          label="Witholding Tax Stat."
-                          variant="outlined"
+                          name="rank"
+                          label="Witholding Tax Status"
+                          labelId="demo-simple-select-label"
+                          // variant="outlined"
                           value={formik.values.rank}
                           onChange={formik.handleChange}
                           error={formik.touched.rank && Boolean(formik.errors.rank)}
                           helperText={formik.touched.rank && formik.errors.rank}  
                         >
-                          <MenuItem>Single</MenuItem>
-                          <MenuItem>Married</MenuItem>
-                          <MenuItem>Widowed</MenuItem>
+                          <MenuItem value="">
+                            <em>None</em>
+                          </MenuItem>
+                          <MenuItem value={"Single"}>Single</MenuItem>
+                          <MenuItem value={"Married"}>Married</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>

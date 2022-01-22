@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "1%",
     // marginTop: "30px",
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
+    paddingTop: theme.spacing(1),
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -131,10 +131,10 @@ const LoginView = () => {
             >
               <div style={{ marginLeft: "60px", marginTop: "30px" }}>
                 <img
-                  src="/static/images/redcatlogos.7e640b17.png"
+                  src="/static/images/office1.png"
                   alt=""
                   width="200"
-                  height="80"
+                  height="200"
                 />
               </div>
               <Box m={2}>
@@ -222,7 +222,7 @@ const LoginView = () => {
                     Don&apos;t have an account?{" "}
                     <Link
                       component={RouterLink}
-                      to="/register"
+                      to="/signup"
                       variant="h6"
                       style={{ color: "#1e88e5" }}
                     >
@@ -237,7 +237,7 @@ const LoginView = () => {
               xs={12}
               item
               style={{
-                backgroundImage: "url(" + "/static/images/office2.jpg" + ")",
+                backgroundImage: "url(" + "/static/images/office2.png" + ")",
                 backgroundPosition: "center",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",

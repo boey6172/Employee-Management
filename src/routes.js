@@ -138,7 +138,7 @@ const routes = [
       { path: 'religion', element: <Religion /> },
       { path: 'registration', element: <Reg /> },
       { path: 'signup', element: <Signup /> },
-      { path: '/', element: <Navigate to="/test" /> },
+      { path: '/', element: <Navigate to="/login" /> },
       { path: '*', element: <Navigate to="/404" /> },
       { path: 'login', element: <Login /> },
 

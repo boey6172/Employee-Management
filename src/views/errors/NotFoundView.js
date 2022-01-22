@@ -3,9 +3,12 @@ import {
   Box,
   Container,
   Typography,
+  Link,
   makeStyles
 } from '@material-ui/core';
 import Page from '../../components/Page';
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,14 +63,22 @@ const NotFoundView = () => {
             />
           </Box>
           <Box textAlign="center">
-            <a
+            {/* <a
               className="App-link"
               href=""
               target="_blank"
               rel="noopener noreferrer"
             >
               Go back Home 
-            </a>
+            </a> */}
+            <Link
+                      component={RouterLink}
+                      to="/"
+                      variant="h6"
+                      style={{ color: "#1e88e5" }}
+                    >
+                      Go Back Home
+                    </Link>
           </Box>
         </Container>
       </Box>

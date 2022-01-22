@@ -4,7 +4,7 @@ const Logo = (props) => {
   return (
     <img
       alt="Logo"
-      src="/static/logo.png"
+      src="/static/images/office1.png"
       {...props}
       height="50"
     />
