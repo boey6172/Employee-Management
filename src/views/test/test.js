@@ -1,127 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import Page from '../../components/Page';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import {
-  Container,
-  Grid,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  TextField,
-  makeStyles,
-  Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  FormHelperText,
-} from '@material-ui/core';
+  Grid
+} from '@material-ui/core/';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
+import Personal from './personal'
+import Auth from './auth'
 import {useFormik} from "formik";
-import axios from 'axios';
-import validationSchema from '../../helper/validation';
-import PhilippineMap from '../../maps/data.json'
+import auth from '../../helper/validation/auth';
+import personalValidation from '../../helper/validation/personal';
+
+
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.dark,
-    height: '100%',
-    paddingBottom: theme.spacing(1),
-    paddingTop: theme.spacing(1)
-
+    width: '100%',
   },
-  container:{
+  backButton: {
+    marginRight: theme.spacing(1),
+  },
+  instructions: {
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-  },
-  image: {
-    marginTop: 50,
-    display: 'inline-block',
-    maxWidth: '100%',
-    width: 560
-  },
-  formControl: {
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
 }));
 
-const Index = () => {
+const Index = () =>{
   const classes = useStyles();
-  const states = {
-    present_address: {
-      location: "",
-      region: "",
-      city: "",
-      province: "",
-      barangay: "",
-      postal_code: "",
-    },
-  };
-
-  const [province, setProvince] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState([]);
-  const [municipality, setMunicipality] = useState([]);
-  const [selectedMunicipality, setSelectedMunicipality] = useState([]);
-  const [barangay, setBarangay] = useState([]);
-  const [state, setState] = useState(states);
-
-
-  const onChangeRegion = (e) => {
-    const data = e.target.value;
-    state.present_address.region = data;
-
-    const [filterMap] = PhilippineMap?.filter((map) => {
-      return map.region.region_name === data;
-    });
-
-    const province = filterMap.region.province_list;
-
-    setProvince(Object.keys(province));
-    setSelectedProvince(province);
-  };
-
-  const onChangeProvince = (e) => {
-    const data = [e.target.value];
-    state.present_address.province = data;
-
-    const filterProvince = Object.keys(selectedProvince)
-      .filter((key) => data.includes(key))
-      .reduce((obj, key) => {
-        obj["municipality"] = selectedProvince[key].municipality_list;
-        return obj;
-      }, {});
-    setMunicipality(Object.keys(filterProvince.municipality));
-    setSelectedMunicipality(filterProvince);
-    // console.log(province);
-  };
-
-  const onChangeMunicipality = (e) => {
-    const data = [e.target.value];
-    state.present_address.municipality = data;
-
-    const filterMunicipality = Object.keys(selectedMunicipality.municipality)
-      .filter((key) => data.includes(key))
-      .reduce((obj, key) => {
-        obj = selectedMunicipality.municipality[key];
-        return obj;
-      }, {});
-
-    setBarangay(filterMunicipality.barangay_list);
-  };
+  const [activeStep, setActiveStep] = React.useState(0);
+  
+  const getSteps = () => {
+    return ['Enter your Login Credentials', 'Personal Information', 'Employment Details'];
+  }
 
   const formik = useFormik({
     initialValues: {
-      rank: '',
-      gender:'',
       username:'',
       password:'',
       confirmPassword:'',
+    },
+    validationSchema: auth,
+    onSubmit: (values, {resetForm}) => {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    },
+  });
+
+  const personal = useFormik({
+    initialValues: {
       firstname:'',
       middlename:'',
       lastname:'',
@@ -132,123 +63,123 @@ const Index = () => {
       province:'',
       munincipality:'',
       barangay:'',
-      empDate:'',
-      philNumber:'',
-      gsisNumber:'',
-      nhmcNumber:'',
-      tinNumber:'',
-      taxstat:'',
-      salaryGrade:'',
+      gender:'',
     },
-    validationSchema: validationSchema,
+    validationSchema: personalValidation,
     onSubmit: (values, {resetForm}) => {
-      // alert(JSON.stringify(values, null, 2));
-      onSubmit(values)
-      resetForm();
-      
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     },
   });
 
-  const onSubmit = (data) => {
-    // axios.post("http://localhost:3001/ranks", data).then((response)=>{
-    //     console.log(response.data)
-    //   })
-    alert("success")
+  const steps = getSteps();
+
+  const handleNext = stepIndex => {
+    // alert(activeStep)
+    switch (stepIndex) {
+      case 0:
+         formik.handleSubmit()
+      case 1:
+          personal.handleSubmit()
+      case 2:
+        return 'This is the bit I really care about!';
+      default:
+        return 'Unknown stepIndex';
+    }
+    
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
+
+
+const getStepContent = (stepIndex) => {
+  switch (stepIndex) {
+    case 0:
+      return <Auth  formik={formik}/>
+    case 1:
+      return <Personal formik={personal}/>;
+    case 2:
+      return 'This is the bit I really care about!';
+    default:
+      return 'Unknown stepIndex';
   }
+}
 
 
-  
+const onSubmit = (data) => {
+  // axios.post("http://localhost:3001/ranks", data).then((response)=>{
+  //     console.log(response.data)
+  //   })
+  alert("success")
+}
+
+
   return (
-    <Page
-      className={classes.root}
-      title="Signup "
-    >      
-      <Container  
-        maxWidth="lg"
-        textAlign="center"
-      >
+    
+    <Grid
+      container
+      spacing={2}
+      align="center"
+    >
+    <Grid
+      item
+      lg={12}
+      md={2}
+      xs={2}
+    > 
+    </Grid>
+      <Grid
+        item
+        lg={8}
+        md={8}
+        xs={8}
         
-        <form onSubmit={formik.handleSubmit}>
-          <Typography variant="h3" gutterBottom>
-            Create a new Account.
-          </Typography>
-          <Grid
-            container
-            spacing={2}
-            align="center"
-          >
-            <Grid
-              item
-              lg={2}
-              md={2}
-              xs={2}
-            > 
-
-            </Grid>
-            <Grid
-              item
-              lg={8}
-              md={8}
-              xs={8}
-              
-            >
-              <Card >
-                <CardHeader
-                  title="Account Info"
-                />
-                <Divider/>
-                <CardContent>
-                  <Grid
-                    container
-                    spacing={1}
-                  >                
-                    
-                  </Grid>
-                </CardContent>
-              </Card>
-
-            <br/>
-              <Card >
-                <CardHeader
-                  title="Personal Info"
-                />
-                <Divider/>
-                <CardContent>
-       
-                </CardContent>
-              </Card>
-              <br/>
-              <Card>
-                <CardHeader
-                  title="Employee Details"
-                />
-                <Divider/>
-                <CardContent>
-              
-                </CardContent>
-                <Divider/>
-                <Box
-                  display="flex"
-                  justifyContent="flex-end"
-                  p={1}
-                >
+      >
+        <div className={classes.root}>
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <div>
+            {activeStep === steps.length ? (
+              <div>
+                <Typography className={classes.instructions}>All steps completed</Typography>
+                <Button onClick={handleReset}>Reset</Button>
+              </div>
+            ) : (
+              <div>
+                <Typography className={classes.instructions}>
+                  {getStepContent(activeStep)}
+                </Typography>
+                <div>
                   <Button
-                    color="primary"
-                    variant="contained"
-                    type="submit"
-                    // onClick={handlePost}  
-                    fullWidth   
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.backButton}
                   >
-                    Save
+                    Back
                   </Button>
-                </Box>
-              </Card>
-            </Grid>
-          </Grid>
-        </form>
-      </Container> 
-    </Page>
-  )
+                  <Button variant="contained" color="primary" onClick={handleNext}>
+                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </Grid>
+  </Grid>
+  
+  );
 }
 
 export default Index;
