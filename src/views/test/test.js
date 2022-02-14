@@ -11,9 +11,12 @@ import Typography from '@material-ui/core/Typography';
 
 import Personal from './personal'
 import Auth from './auth'
+import Emp from './emp_details'
 import {useFormik} from "formik";
 import auth from '../../helper/validation/auth';
 import personalValidation from '../../helper/validation/personal';
+import empValidation from '../../helper/validation/empDetails';
+
 
 
 
@@ -61,7 +64,7 @@ const Index = () =>{
       contactNumber:'',
       region:'',
       province:'',
-      munincipality:'',
+      municipality:'',
       barangay:'',
       gender:'',
     },
@@ -71,29 +74,52 @@ const Index = () =>{
     },
   });
 
+  const empDetails = useFormik({
+    initialValues: {
+      empDate:'',
+      philNumber:'',
+      gsisNumber:'',
+      nhmcNumber:'',
+      tinNumber:'',
+      taxstat:'',
+      salaryGrade:'',
+    },
+    validationSchema: empValidation,
+    onSubmit: (values, {resetForm}) => {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    },
+  });
+
   const steps = getSteps();
 
-  const handleNext = stepIndex => {
+  const handleNext = () => {
     // alert(activeStep)
-    switch (stepIndex) {
+    const step = getStepIndex();
+    switch (step) {
       case 0:
          formik.handleSubmit()
       case 1:
           personal.handleSubmit()
       case 2:
-        return 'This is the bit I really care about!';
+          empDetails.handleSubmit()
       default:
         return 'Unknown stepIndex';
     }
     
   };
+  const getStepIndex = () => {
+    return activeStep;
+  }
 
   const handleBack = () => {
+    getStepIndex()
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleReset = () => {
+    getStepIndex()
     setActiveStep(0);
+    
   };
 
 
@@ -105,7 +131,7 @@ const getStepContent = (stepIndex) => {
     case 1:
       return <Personal formik={personal}/>;
     case 2:
-      return 'This is the bit I really care about!';
+      return <Emp formik={empDetails}/>;
     default:
       return 'Unknown stepIndex';
   }

@@ -31,9 +31,9 @@ const personalValidation = Yup.object({
       // .min(8, 'username should be of minimum 8 characters length')
       .required('Contact Number  is required'),
     region: Yup
-      .string('Enter your  ')
+      .string('Enter your Region ')
       // .min(8, 'username should be of minimum 8 characters length')
-      .required('First Name  is required'),
+      .required('region is required'),
     region: Yup
       .string('Enter your  ')
       // .min(8, 'username should be of minimum 8 characters length')
@@ -42,7 +42,7 @@ const personalValidation = Yup.object({
       .string('Enter your  Province')
       // .min(8, 'username should be of minimum 8 characters length')
       .required('Proivince  is required'),
-    munincipality: Yup
+    municipality: Yup
       .string('Enter your Munincipality ')
       // .min(8, 'username should be of minimum 8 characters length')
       .required('munincipality  is required'),
