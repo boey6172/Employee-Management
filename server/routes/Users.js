@@ -53,8 +53,17 @@ router.post("/login",async(req,res) => {
         const accessToken = sign({username:user.username,id:user.id},
             "pbpbrns12301234"
         )
-
-        res.json(accessToken);
+    const data = {
+        token:'',
+        user:{
+            role:'employee',
+            employee:''
+        }
+        
+    }
+        data.token = accessToken
+        data.user.employee = user.employee
+        res.json(data);
     })
 })
 

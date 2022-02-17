@@ -9,13 +9,13 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING,
             allowNull: false,
         },
-        // username:{
-        //     type:DataTypes.STRING,
-        //     allowNull: false,
-        // }
+        employee:{
+            type:DataTypes.STRING,
+            allowNull: false,
+        }
     })
     // Users.associate = (models) => {
-    //     Users.hasMany(models.Posts,{
+    //     Users.hasMany(models.Employee,{
     //         ondelete: "cascade",
     //     })
     // }

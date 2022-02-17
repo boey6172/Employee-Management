@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router(); 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const {Employees} = require ("../models");
+const {Employees, Users} = require ("../models");
+const bcrypt = require("bcrypt")
 
  
 router.get("/", async(req,res) =>{
@@ -40,8 +41,31 @@ router.post("/searchemployee", async(req,res) =>{
 
 router.post("/", async(req,res) =>{
     const employee = req.body
-    await Employees.create(employee);
-    res.json(employee);
+    const data = await Employees.create(employee);
+    // res.json(employee);
+
+    const {username,password} = req.body
+    try {
+        const user = await Users.findOne({
+            where: {username:username}
+        })
+        if (user) res.json({error:"Account username already exist"})
+
+        bcrypt.hash(password, 10).then((hash) =>{
+            Users.create({
+                username:username,
+                password:hash,
+                employee:data.id
+            })
+        })
+        res.json("User Created");
+        
+        
+    } catch (error) {
+        console.log(error)
+    }
+
+
 });
 
 router.post("/update", async(req,res) =>{
