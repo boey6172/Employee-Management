@@ -13,7 +13,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import {useFormik} from "formik";
-import axios from 'axios';
 import * as Yup from 'yup'
 import instance from '../../../instance/instance';
 
@@ -62,19 +61,18 @@ const Index = () => {
   });
 
   const onSubmit = (data) => {
-     // axios.post("http://localhost:3001/ranks", data).then((response)=>{
-    //     console.log(response.data)
-    //   })
-    instance.post("./religions", data).then((response) => {
+    
+    instance.post("religion", data).then((response) => {
       console.log(response)
       alert('done')
     }) 
+
   }
   
   return (
     <Page
       className={classes.root}
-      title="Registration "
+      title="Religion "
     >      
       <Container maxWidth="lg">
       <form onSubmit={formik.handleSubmit}>

@@ -30,7 +30,7 @@ const Toolbar = ({ className,search,...rest }) => {
   
 
   const handleCreate=()=>{
-    navigate("/createrank");
+    navigate("/admin/maintenance/createrank");
   }
 
   return (

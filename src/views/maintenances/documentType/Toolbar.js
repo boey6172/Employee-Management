@@ -30,7 +30,7 @@ const Toolbar = ({ className,search,...rest }) => {
   
 
   const handleCreate=()=>{
-    navigate("/createdocumentType");
+    navigate("/admin/maintenance/createdocumentType");
   }
 
   return (

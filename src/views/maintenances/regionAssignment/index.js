@@ -26,7 +26,7 @@ const Index = () => {
 
 
   useEffect(()=> {
-    instance.get("./regionassignments").then((response) => {
+    instance.get("region").then((response) => {
       setValues(response.data)
       setregionAssignments(response.data)
     }) 
@@ -56,9 +56,9 @@ const Index = () => {
       title="Region Assignment"
     >
       <Container maxWidth={false}>
-        {/* <Toolbar  search= {searchregionAssignments}/>  */}
+        <Toolbar  search= {searchregionAssignments}/> 
         <Box mt={3}>
-          {/* <Result  regionAssignments={regionAssignments}/> */}
+          <Result  regionAssignments={regionAssignments}/>
         </Box>
       </Container>
     </Page>

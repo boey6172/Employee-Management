@@ -30,7 +30,7 @@ const Toolbar = ({ className,search,...rest }) => {
   
 
   const handleCreate=()=>{
-    navigate("/createregionAssignment");
+    navigate("/admin/maintenance/createregionAssignment");
   }
 
   return (
