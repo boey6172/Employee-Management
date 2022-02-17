@@ -8,14 +8,13 @@ export default ({ component: Component, ...rest }) => {
 
   const isAuthenticated = () => {
     if (user.authenticated) {
-      if (user.credential.roles.includes("passenger")) {
-        return <Component />;
+      if (user.role.includes("employee")) {
+        return <Navigate to="/employee" />;
       } else {
-        return <Navigate to="dashboard" />;
+        return <Navigate to="/" />;
       }
     } else {
-      //TODO change to "/admin/login"
-      return <Navigate to="/login" />;
+      return <Component/>;
     }
   };
 

@@ -20,7 +20,9 @@ const useAuthentication = () => {
   };
 
   const setUser = (user) => {
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user)  );
+    
+
   };
 
   const unsetAuth = () => {
