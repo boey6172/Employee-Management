@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Page from '../../../components/Page';
+import Page from '../../../../components/Page';
 import {
   Container,
   Grid,
@@ -15,7 +15,7 @@ import {
 import {useFormik} from "formik";
 import axios from 'axios';
 import * as Yup from 'yup'
-import instance from '../../../instance/instance';
+import instance from '../../../../instance/instance'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const validationSchema = Yup.object({
-  rank: Yup
-    .string('Enter a Rank')
-    .min(2, 'Rank should be of minimum 2 characters length')
-    .required('Enter a Rank'),
+  documentType: Yup
+    .string('Enter Document Type')
+    .min(2, 'Document Type should be of minimum 2 characters length')
+    .required('Document Type Required'),
   // password: yup
   //   .string('Enter your password')
   //   .min(8, 'Password should be of minimum 8 characters length')
@@ -48,7 +48,7 @@ const Index = () => {
 
   const formik = useFormik({
     initialValues: {
-      rank: '',
+      documentType: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values, {resetForm}) => {
@@ -60,15 +60,15 @@ const Index = () => {
   });
 
   const onSubmit = (data) => {
-    // axios.post("http://localhost:3001/ranks", data).then((response)=>{
+    // axios.post("http://localhost:3001/documenttype", data).then((response)=>{
     //     console.log(response.data)
     //   })
-    instance.post("./ranks", data).then((response) => {
+    instance.post("/documenttype", data).then((response) => {
       console.log(response)
       alert('done')
     }) 
   }
-
+  
   return (
     <Page
       className={classes.root}
@@ -88,8 +88,8 @@ const Index = () => {
         >
           <Card>
             <CardHeader
-              subheader="Please Input your Rank"
-              title="Rank"
+              subheader="Please Input Document Type"
+              title="Document Type"
             />
             <Divider />
             <CardContent>
@@ -100,13 +100,13 @@ const Index = () => {
                 <TextField
                   // fullWidth
                   id="outlined-basic"
-                  name="rank"
-                  label="Rank"
+                  name="documentType"
+                  label="Document Type"
                   variant="outlined"
-                  value={formik.values.rank}
+                  value={formik.values.documentType}
                   onChange={formik.handleChange}
-                  error={formik.touched.rank && Boolean(formik.errors.rank)}
-                  helperText={formik.touched.rank && formik.errors.rank}
+                  error={formik.touched.documentType && Boolean(formik.errors.documentType)}
+                  helperText={formik.touched.documentType && formik.errors.documentType}
                 />
               </Grid>
             </CardContent>

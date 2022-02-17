@@ -4,10 +4,10 @@ import {
   Container,
   makeStyles
 } from '@material-ui/core';
-import Page from '../../../components/Page';
+import Page from '../../../../components/Page';
 import Result from './Result';
 import Toolbar from './Toolbar';
-import instance from '../../../instance/instance';
+import instance from '../../../../instance/instance';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,28 +21,28 @@ const useStyles = makeStyles((theme) => ({
 
 const Index = () => {
 
-  const [documentTypes, setdocumentType] = useState(null);
+  const [religions, setReligions] = useState(null);
   const [values,setValues ] =  useState(null);
 
 
   useEffect(()=> {
-    instance.get("./documenttype").then((response) => {
+    instance.get("./religion").then((response) => {
       setValues(response.data)
-      setdocumentType(response.data)
+      setReligions(response.data)
     }) 
   },[])
 
-  const searchdocumentTypes=(e)=>{
+  const searchReligions=(e)=>{
     var  { name,value }= e.target
 
-    const filtered = documentTypes.filter(data => {
-      return data.documentType.toLowerCase().includes(value.toLowerCase());
+    const filtered = religions.filter(data => {
+      return data.religion.toLowerCase().includes(value.toLowerCase());
     })
 
     console.log(filtered)
-    setdocumentType(filtered)
+    setReligions(filtered)
     if( value === ""){
-      setdocumentType(values)
+      setReligions(values)
     }
     console.log(value)
 
@@ -53,12 +53,12 @@ const Index = () => {
   return (
     <Page
       className={classes.root}
-      title="Document Type"
+      title="Religion"
     >
       <Container maxWidth={false}>
-        <Toolbar  search= {searchdocumentTypes}/> 
+        <Toolbar  search= {searchReligions}/> 
         <Box mt={3}>
-          <Result documentTypes={documentTypes}/>
+          <Result  religions={religions}/>
         </Box>
       </Container>
     </Page>

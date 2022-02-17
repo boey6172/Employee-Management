@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Page from '../../../components/Page';
+import Page from '../../../../components/Page';
 import {
   Container,
   Grid,
@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import {useFormik} from "formik";
 import * as Yup from 'yup'
-import instance from '../../../instance/instance';
+import instance from '../../../../instance/instance';
 
 
 

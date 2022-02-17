@@ -18,10 +18,10 @@ import {
   makeStyles,
   Button,
 } from '@material-ui/core';
-import Loading from '../../../widgets/loading'
+import Loading from '../../../../widgets/loading'
 import DeleteIcon from '@material-ui/icons/Delete';
 // import Dialog from './updateDialog';
-import Classes from '../../../widgets/classes'
+import Classes from '../../../../widgets/classes'
 
 
 
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, documentTypes, ...rest }) => {
+const Results = ({ className, religions, ...rest }) => {
   const classes = useStyles();
   const ClassesStyle = Classes();
 
@@ -41,7 +41,6 @@ const Results = ({ className, documentTypes, ...rest }) => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
-    console.log(documentTypes)
 
   const handleRemove = (id) => {   
     // if(window.confirm('Are you Sure on deleting this item'))
@@ -51,7 +50,7 @@ const Results = ({ className, documentTypes, ...rest }) => {
   }
   
   
-if(documentTypes){
+if(religions){
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -63,7 +62,7 @@ if(documentTypes){
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Document Type
+                  Religion
                 </TableCell>
                 <TableCell>
                   Actions
@@ -71,7 +70,7 @@ if(documentTypes){
               </TableRow>
             </TableHead>
             <TableBody>
-              {documentTypes.map((documentType) => (
+              {religions.map((religion) => (
                 <TableRow>
                   <TableCell>
                     <Box
@@ -89,7 +88,7 @@ if(documentTypes){
                         color="textPrimary"
                         variant="body1"
                       >
-                        {documentType.documentType}
+                        {religion.religion}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -97,7 +96,7 @@ if(documentTypes){
                   {/* <Dialog  payment = {payment}/> */}
                     &nbsp;
                   <Button 
-                    onClick={() => handleRemove(documentType.id)}
+                    onClick={() => handleRemove(religion.id)}
                     variant="contained"
                     className={ClassesStyle.buttonDelete}
                   >
@@ -122,7 +121,7 @@ else{
 
 Results.propTypes = {
   className: PropTypes.string,
-  documentTypes: PropTypes.array.isRequired
+  religions: PropTypes.array.isRequired
 };
 
 export default Results;

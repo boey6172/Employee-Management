@@ -4,10 +4,10 @@ import {
   Container,
   makeStyles
 } from '@material-ui/core';
-import Page from '../../../components/Page';
+import Page from '../../../../components/Page';
 import Result from './Result';
 import Toolbar from './Toolbar';
-import instance from '../../../instance/instance';
+import instance from '../../../../instance/instance';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,28 +21,28 @@ const useStyles = makeStyles((theme) => ({
 
 const Index = () => {
 
-  const [religions, setReligions] = useState(null);
+  const [regionAssignments, setregionAssignments] = useState(null);
   const [values,setValues ] =  useState(null);
 
 
   useEffect(()=> {
-    instance.get("./religion").then((response) => {
+    instance.get("region").then((response) => {
       setValues(response.data)
-      setReligions(response.data)
+      setregionAssignments(response.data)
     }) 
   },[])
 
-  const searchReligions=(e)=>{
+  const searchregionAssignments=(e)=>{
     var  { name,value }= e.target
 
-    const filtered = religions.filter(data => {
-      return data.religion.toLowerCase().includes(value.toLowerCase());
+    const filtered = regionAssignments.filter(data => {
+      return data.regionAssignment.toLowerCase().includes(value.toLowerCase());
     })
 
     console.log(filtered)
-    setReligions(filtered)
+    setregionAssignments(filtered)
     if( value === ""){
-      setReligions(values)
+      setregionAssignments(values)
     }
     console.log(value)
 
@@ -53,12 +53,12 @@ const Index = () => {
   return (
     <Page
       className={classes.root}
-      title="Religion"
+      title="Region Assignment"
     >
       <Container maxWidth={false}>
-        <Toolbar  search= {searchReligions}/> 
+        <Toolbar  search= {searchregionAssignments}/> 
         <Box mt={3}>
-          <Result  religions={religions}/>
+          <Result  regionAssignments={regionAssignments}/>
         </Box>
       </Container>
     </Page>

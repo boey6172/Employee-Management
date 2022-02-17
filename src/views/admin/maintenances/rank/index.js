@@ -5,10 +5,10 @@ import {
   Button,
   makeStyles
 } from '@material-ui/core';
-import Page from '../../../components/Page';
+import Page from '../../../../components/Page';
 import Result from './Result';
 import Toolbar from './Toolbar';
-import instance from '../../../instance/instance';
+import instance from '../../../../instance/instance';
 
 
 const useStyles = makeStyles((theme) => ({

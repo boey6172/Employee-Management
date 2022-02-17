@@ -18,10 +18,10 @@ import {
   makeStyles,
   Button,
 } from '@material-ui/core';
-import Loading from '../../../widgets/loading'
+import Loading from '../../../../widgets/loading'
 import DeleteIcon from '@material-ui/icons/Delete';
 // import Dialog from './updateDialog';
-import Classes from '../../../widgets/classes'
+import Classes from '../../../../widgets/classes'
 
 
 
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, regionAssignments, ...rest }) => {
+const Results = ({ className, documentTypes, ...rest }) => {
   const classes = useStyles();
   const ClassesStyle = Classes();
 
@@ -41,6 +41,7 @@ const Results = ({ className, regionAssignments, ...rest }) => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
+    console.log(documentTypes)
 
   const handleRemove = (id) => {   
     // if(window.confirm('Are you Sure on deleting this item'))
@@ -50,7 +51,7 @@ const Results = ({ className, regionAssignments, ...rest }) => {
   }
   
   
-if(regionAssignments){
+if(documentTypes){
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -62,7 +63,7 @@ if(regionAssignments){
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Region Assignment
+                  Document Type
                 </TableCell>
                 <TableCell>
                   Actions
@@ -70,7 +71,7 @@ if(regionAssignments){
               </TableRow>
             </TableHead>
             <TableBody>
-              {regionAssignments.map((regionAssignment) => (
+              {documentTypes.map((documentType) => (
                 <TableRow>
                   <TableCell>
                     <Box
@@ -88,7 +89,7 @@ if(regionAssignments){
                         color="textPrimary"
                         variant="body1"
                       >
-                        {regionAssignment.regionAssignment}
+                        {documentType.documentType}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -96,7 +97,7 @@ if(regionAssignments){
                   {/* <Dialog  payment = {payment}/> */}
                     &nbsp;
                   <Button 
-                    onClick={() => handleRemove(regionAssignment.id)}
+                    onClick={() => handleRemove(documentType.id)}
                     variant="contained"
                     className={ClassesStyle.buttonDelete}
                   >
@@ -121,7 +122,7 @@ else{
 
 Results.propTypes = {
   className: PropTypes.string,
-  regionAssignments: PropTypes.array.isRequired
+  documentTypes: PropTypes.array.isRequired
 };
 
 export default Results;

@@ -18,10 +18,10 @@ import {
   makeStyles,
   Button,
 } from '@material-ui/core';
-import Loading from '../../../widgets/loading'
+import Loading from '../../../../widgets/loading'
 import DeleteIcon from '@material-ui/icons/Delete';
 // import Dialog from './updateDialog';
-import Classes from '../../../widgets/classes'
+import Classes from '../../../../widgets/classes'
 
 
 

@@ -4,10 +4,10 @@ import {
   Container,
   makeStyles
 } from '@material-ui/core';
-import Page from '../../../components/Page';
+import Page from '../../../../components/Page';
 import Result from './Result';
 import Toolbar from './Toolbar';
-import instance from '../../../instance/instance';
+import instance from '../../../../instance/instance';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,28 +21,28 @@ const useStyles = makeStyles((theme) => ({
 
 const Index = () => {
 
-  const [regionAssignments, setregionAssignments] = useState(null);
+  const [documentTypes, setdocumentType] = useState(null);
   const [values,setValues ] =  useState(null);
 
 
   useEffect(()=> {
-    instance.get("region").then((response) => {
+    instance.get("./documenttype").then((response) => {
       setValues(response.data)
-      setregionAssignments(response.data)
+      setdocumentType(response.data)
     }) 
   },[])
 
-  const searchregionAssignments=(e)=>{
+  const searchdocumentTypes=(e)=>{
     var  { name,value }= e.target
 
-    const filtered = regionAssignments.filter(data => {
-      return data.regionAssignment.toLowerCase().includes(value.toLowerCase());
+    const filtered = documentTypes.filter(data => {
+      return data.documentType.toLowerCase().includes(value.toLowerCase());
     })
 
     console.log(filtered)
-    setregionAssignments(filtered)
+    setdocumentType(filtered)
     if( value === ""){
-      setregionAssignments(values)
+      setdocumentType(values)
     }
     console.log(value)
 
@@ -53,12 +53,12 @@ const Index = () => {
   return (
     <Page
       className={classes.root}
-      title="Region Assignment"
+      title="Document Type"
     >
       <Container maxWidth={false}>
-        <Toolbar  search= {searchregionAssignments}/> 
+        <Toolbar  search= {searchdocumentTypes}/> 
         <Box mt={3}>
-          <Result  regionAssignments={regionAssignments}/>
+          <Result documentTypes={documentTypes}/>
         </Box>
       </Container>
     </Page>

@@ -18,10 +18,10 @@ import {
   makeStyles,
   Button,
 } from '@material-ui/core';
-import Loading from '../../../widgets/loading'
+import Loading from '../../../../widgets/loading'
 import DeleteIcon from '@material-ui/icons/Delete';
 // import Dialog from './updateDialog';
-import Classes from '../../../widgets/classes'
+import Classes from '../../../../widgets/classes'
 
 
 
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, religions, ...rest }) => {
+const Results = ({ className, regionAssignments, ...rest }) => {
   const classes = useStyles();
   const ClassesStyle = Classes();
 
@@ -50,7 +50,7 @@ const Results = ({ className, religions, ...rest }) => {
   }
   
   
-if(religions){
+if(regionAssignments){
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -62,7 +62,7 @@ if(religions){
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Religion
+                  Region Assignment
                 </TableCell>
                 <TableCell>
                   Actions
@@ -70,7 +70,7 @@ if(religions){
               </TableRow>
             </TableHead>
             <TableBody>
-              {religions.map((religion) => (
+              {regionAssignments.map((regionAssignment) => (
                 <TableRow>
                   <TableCell>
                     <Box
@@ -88,7 +88,7 @@ if(religions){
                         color="textPrimary"
                         variant="body1"
                       >
-                        {religion.religion}
+                        {regionAssignment.regionAssignment}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -96,7 +96,7 @@ if(religions){
                   {/* <Dialog  payment = {payment}/> */}
                     &nbsp;
                   <Button 
-                    onClick={() => handleRemove(religion.id)}
+                    onClick={() => handleRemove(regionAssignment.id)}
                     variant="contained"
                     className={ClassesStyle.buttonDelete}
                   >
@@ -121,7 +121,7 @@ else{
 
 Results.propTypes = {
   className: PropTypes.string,
-  religions: PropTypes.array.isRequired
+  regionAssignments: PropTypes.array.isRequired
 };
 
 export default Results;

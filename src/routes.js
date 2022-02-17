@@ -12,23 +12,23 @@ import Stepper from '../src/views/registration';
 
 
 //document type
-import DocumentType from '../src/views/maintenances/documentType';
-import CreateDocumentType from '../src/views/maintenances/documentType/create';
+import DocumentType from '../src/views/admin/maintenances/documentType';
+import CreateDocumentType from '../src/views/admin/maintenances/documentType/create';
 
 //region assignment
-import RegionAssignment from '../src/views/maintenances/regionAssignment';
-import CreateRegionAssignment from '../src/views/maintenances/regionAssignment/create';
+import RegionAssignment from '../src/views/admin/maintenances/regionAssignment';
+import CreateRegionAssignment from '../src/views/admin/maintenances/regionAssignment/create';
 
 //Religion
-import CreateReligion from '../src/views/maintenances/religion/create';
-import Religion from '../src/views/maintenances/religion';
+import CreateReligion from '../src/views/admin/maintenances/religion/create';
+import Religion from '../src/views/admin/maintenances/religion';
 
 
 import Signup from '../src/views/signup';
 
 //ranks
-import CreateRank from '../src/views/maintenances/rank/create';
-import Rank from '../src/views/maintenances/rank';
+import CreateRank from '../src/views/admin/maintenances/rank/create';
+import Rank from '../src/views/admin/maintenances/rank';
 import Login from '../src/views/auth/Login';
 
 
