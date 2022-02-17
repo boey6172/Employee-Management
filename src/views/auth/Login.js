@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useEffect, useState} from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 // import { useMutation, useQuery, gql } from "@apollo/client";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -17,7 +17,13 @@ import {
   Icon,
   Paper,
 } from "@material-ui/core";
-import Lock from "@material-ui/icons/Lock";
+import Alert from '@material-ui/lab/Alert';
+
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+
+import CloseIcon from '@material-ui/icons/Close';
+
 import Page from "../../components/Page";
 import ErrorDialog from "../../widgets/ErrorDialog";
 import BackDrop from "../../widgets/BackDrop";
@@ -80,6 +86,9 @@ const useStyles = makeStyles((theme) => ({
 const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState('');
+
   const { register, handleSubmit, watch, errors, control } = useForm({
     // defaultValues: {
     //   username: "sample",
@@ -87,20 +96,36 @@ const LoginView = () => {
     // },
   });
 
-  const { setToken, setUser } = useAuthentication();
+  const { setToken, setUser, getToken, getUser, } = useAuthentication();
 
   const loginUser = (data) =>{
-    // const data = {username:variables.username, password:variables.password}
-    // console.log(data)
     instance.post("auth/login", data).then((response) => {
-      // console.log(response)
-      // alert('done')
-      setToken(response.data.token)
-      setUser(response.data.user)
-      navigate("/employee/dashboard", { replace: true });
+      if (!response.data.error){
+        setToken(response.data.token)
+        setUser(response.data.user)
+        if(response.data.user.role === "admin")
+          navigate("/admin/dashboard", { replace: true });
+        else
+          navigate("/employee/dashboard", { replace: true });
+        
+      }
+      else{
+        setError(response.data.error);
+        setOpen(true);
+      }
+
     })
-    
   }
+
+  useEffect(() => {
+    if(getToken()){
+      if (getUser().role === "admin")
+        navigate("/admin/dashboard", { replace: true });
+      else
+        navigate("/employee/dashboard", { replace: true });
+    }
+  }, [])
+
 
 
   const onSubmit = (data) => {
@@ -155,6 +180,27 @@ const LoginView = () => {
                     >
                       Sign in on the internal platform
                     </Typography>
+                  </Box>
+                  <Box>
+                  <Collapse in={open}>
+                  <Alert
+                  severity="error"
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpen(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                  >
+                    {error}
+                  </Alert>
+                  </ Collapse>
                   </Box>
 
                   <Controller

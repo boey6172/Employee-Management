@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import DashboardLayout from '../src/layouts/DashboardLayout';
-import EmployeeDashboardLayout from '../src/layouts/DashboardLayout';
+import AdminLayout from '../src/layouts/AdminLayout';
+import EmployeeLayout from '../src/layouts/EmployeeLayout';
 
 import MainLayout from '../src/layouts/MainLayout';
 // import LoginView from '../src/views/auth/LoginView';
@@ -37,7 +37,8 @@ import Login from '../src/views/auth/Login';
 
 import PrivateAdminRoute from "./middleware/PrivateAdminRoute";
 import PrivateEmployeeRoute from "./middleware/PrivateEmployeeRoute";
-import PublicEmployeeRoute from "./middleware/PublicEmployeeRoute";
+
+
 
 
 
@@ -49,12 +50,12 @@ import PublicEmployeeRoute from "./middleware/PublicEmployeeRoute";
 const routes = [
   {
     path: 'admin',
-    element: <DashboardLayout />,
+    element: <AdminLayout />,
     children: [
 
       {
-        //  path: 'dashboard', 
-        //  element: <PrivateAdminRoute component= {Reg} />
+         path: 'dashboard', 
+         element: <PrivateAdminRoute component= {Religion} />
       },
       // {
       //   path: 'myprofile', 
@@ -72,51 +73,46 @@ const routes = [
       //   path: 'createExpense', 
       //   element: <PrivateAdminRoute component= {CreateExpense} />
       // },
-      // {
-      //   path: 'maintenance/category', 
-      //   element: <PrivateAdminRoute component= {MaintenanceCategory} />
-      // },
-      // {
-      //   path: 'maintenance/createcategory', 
-      //   element: <PrivateAdminRoute component= {CreateCategory} />
-      // },
-      // {
-      //   path: 'maintenance/payment', 
-      //   element: <PrivateAdminRoute component= {MaintenancePayment} />
-      // },
-      // {
-      //   path: 'maintenance/createpayment', 
-      //   element: <PrivateAdminRoute component= {CreatePayment} />
-      // },
-      // {
-      //   path: 'maintenance/supplier', 
-      //   element: <PrivateAdminRoute component= {MaintenanceSupplier} />
-      // },
-      // {
-      //   path: 'maintenance/createsupplier', 
-      //   element: <PrivateAdminRoute component= {CreateSupplier} />
-      // },
-      // {
-      //   path: 'expenses/view', 
-      //   element: <PrivateAdminRoute component= {ViewExpenses} />
-      // },
-      // {
-      //   path: 'report/expenses', 
-      //   element: <PrivateAdminRoute component= {ExpensesReport} />
-      // },
-      // {
-      //   path: 'employees', 
-      //   element: <PrivateAdminRoute component= {Employees} />
-      // },
+      {
+        path: 'maintenance/createrank', 
+        element: <PrivateAdminRoute component= {CreateRank} />
+      },
+      {
+        path: 'maintenance/rank', 
+        element: <PrivateAdminRoute component= {Rank} />
+      },
+      {
+        path: 'maintenance/createdocumenttype', 
+        element: <PrivateAdminRoute component= {CreateDocumentType} />
+      },
+      {
+        path: 'maintenance/documenttype', 
+        element: <PrivateAdminRoute component= {DocumentType} />
+      },
+      {
+        path: 'maintenance/createregionAssignment', 
+        element: <PrivateAdminRoute component= {CreateRegionAssignment} />
+      },
+      {
+        path: 'maintenance/regionAssignment', 
+        element: <PrivateAdminRoute component= {RegionAssignment} />
+      },
+      {
+        path: 'maintenance/createreligion', 
+        element: <PrivateAdminRoute component= {CreateReligion} />
+      },
+      {
+        path: 'maintenance/religion', 
+        element: <PrivateAdminRoute component= {Religion} />
+      },
       { path: '404', element: <PrivateAdminRoute component ={NotFoundView} /> },
-      { path: '*', element: <Navigate to="/app/404" /> }
+      { path: '*', element: <Navigate to="/admin/404" /> }
     ]
   },
   {
     path: 'employee',
-    element: <EmployeeDashboardLayout />,
+    element: <EmployeeLayout />,
     children: [
-
       {
          path: 'dashboard', 
          element: <PrivateEmployeeRoute component= {Rank} />
@@ -181,28 +177,15 @@ const routes = [
     path: '/',
     element: <MainLayout />,
     children: [
-      // { path: 'login', element: <LoginView /> },
-      // { path: 'test', element: <Test /> },
-      { path: '404', element: <NotFoundView /> },
-      { path: 'createdocumenttype', element: <CreateDocumentType /> },
-      { path: 'documenttype', element: <DocumentType /> },
-      { path: 'createrank', element: <CreateRank /> },
-      { path: 'rank', element: <Rank /> },
-      { path: 'createregionAssignment', element: <CreateRegionAssignment /> },
-      { path: 'regionAssignment', element: <RegionAssignment /> },
-      { path: 'createreligion', element: <CreateReligion /> },
-      { path: 'religion', element: <Religion /> },
-      // { path: 'registration', element: <Reg /> },
+
       { path: 'register', element: <Stepper /> },
       { path: '/', element: <Navigate to="/login" /> },
       { path: '*', element: <Navigate to="/404" /> },
-      // { path: 'login', element: <Login /> },
       { 
         path: "login", 
-        element: <PublicEmployeeRoute component={Login} /> 
+        // element: <PublicEmployeeRoute component={Login} /> 
+        element: <Login />
       },
-
-      
     ]
   }
 ];
