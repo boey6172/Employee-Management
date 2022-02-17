@@ -21,6 +21,8 @@ import Lock from "@material-ui/icons/Lock";
 import Page from "../../components/Page";
 import ErrorDialog from "../../widgets/ErrorDialog";
 import BackDrop from "../../widgets/BackDrop";
+import instance from '../../instance/instance';
+
 
 
 
@@ -87,19 +89,22 @@ const LoginView = () => {
 
   const { setToken, setUser } = useAuthentication();
 
-  // const [loginUser, { loading, error }] = useMutation(LOGIN_USER, {
-  //   onCompleted(data) {
-  //     if (data) {
-  //       setUser(data.loginUser.user);
-  //       setToken(data.loginUser.token);
-  //       navigate("/employee/dashboard", { replace: true });
-  //     }
-  //   },
-  //   errorPolicy: "all",
-  // });
+  const loginUser = (data) =>{
+    // const data = {username:variables.username, password:variables.password}
+    // console.log(data)
+    instance.post("auth/login", data).then((response) => {
+      // console.log(response)
+      // alert('done')
+      setToken(response.data.token)
+      setUser(response.data.user)
+      navigate("/employee/dashboard", { replace: true });
+    })
+    
+  }
+
 
   const onSubmit = (data) => {
-    // loginUser({ variables: { input: data } });
+    loginUser(  data  );
   };
 
   const usernameHasError = (error) => {
@@ -222,7 +227,7 @@ const LoginView = () => {
                     Don&apos;t have an account?{" "}
                     <Link
                       component={RouterLink}
-                      to="/signup"
+                      to="/register"
                       variant="h6"
                       style={{ color: "#1e88e5" }}
                     >

@@ -1,266 +1,218 @@
-import React, { useState, useEffect } from 'react';
-import Page from '../../components/Page';
+import {React, useState} from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import {
-  Container,
-  Grid,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  TextField,
-  makeStyles,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Input,
-  Select,
-  MenuItem,
-  InputLabel,
-} from '@material-ui/core';
-import PhilippineMap from "../../maps/data.json";
+  Grid
+} from '@material-ui/core/';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
+import Personal from './personal'
+import Auth from './auth'
+import Emp from './emp_details'
+import {useFormik} from "formik";
+import auth from '../../helper/validation/auth';
+import personalValidation from '../../helper/validation/personal';
+import empValidation from '../../helper/validation/empDetails';
+
+
+
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.dark,
-    height: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
+    width: '100%',
   },
-  image: {
-    marginTop: 50,
-    display: 'inline-block',
-    maxWidth: '100%',
-    width: 560
-  }
+  backButton: {
+    marginRight: theme.spacing(1),
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
 }));
 
-const Index = () => {
+const Index = () =>{
   const classes = useStyles();
+  const [activeStep, setActiveStep] = useState(0);
+  const [holder, setHolder] = useState({});
   
-  const states = {
-    present_address: {
-      location: "",
-      region: "",
-      city: "",
-      province: "",
-      barangay: "",
-      postal_code: "",
+  const getSteps = () => {
+    return ['Enter your Login Credentials', 'Personal Information', 'Employment Details'];
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      username:'',
+      password:'',
+      confirmPassword:'',
     },
+    validationSchema: auth,
+    onSubmit: (values, {resetForm}) => {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+      setHolder({credentials:values})
+      },
+  });
+
+  const personal = useFormik({
+    initialValues: {
+      firstname:'',
+      middlename:'',
+      lastname:'',
+      suffix:'',
+      birthday:'',
+      contactNumber:'',
+      region:'',
+      province:'',
+      municipality:'',
+      barangay:'',
+      gender:'',
+    },
+    validationSchema: personalValidation,
+    onSubmit: (values, {resetForm}) => {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setHolder({...holder, values})
+
+    },
+  });
+
+  const empDetails = useFormik({
+    initialValues: {
+      empDate:'',
+      philNumber:'',
+      gsisNumber:'',
+      nhmcNumber:'',
+      tinNumber:'',
+      taxstat:'',
+      salaryGrade:'',
+    },
+    validationSchema: empValidation,
+    onSubmit: (emp, {resetForm}) => {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setHolder({...holder, emp})
+    },
+  });
+
+  const steps = getSteps();
+
+  const handleNext = () => {
+    // alert(activeStep)
+    console.log(holder)
+    const step = getStepIndex();
+    switch (step) {
+      case 0:
+         formik.handleSubmit()
+      case 1:
+          personal.handleSubmit()
+      case 2:
+          empDetails.handleSubmit()
+      default:
+        return 'Unknown stepIndex';
+    }
+
+  };
+  const getStepIndex = () => {
+    return activeStep;
+  }
+
+  const handleBack = () => {
+    getStepIndex()
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const [province, setProvince] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState([]);
-  const [municipality, setMunicipality] = useState([]);
-  const [selectedMunicipality, setSelectedMunicipality] = useState([]);
-  const [barangay, setBarangay] = useState([]);
-  const [state, setState] = useState(states);
-
-
-  const onChangeRegion = (e) => {
-    const data = e.target.value;
-    state.present_address.region = data;
-
-    const [filterMap] = PhilippineMap?.filter((map) => {
-      return map.region.region_name === data;
-    });
-
-    const province = filterMap.region.province_list;
-
-    setProvince(Object.keys(province));
-    setSelectedProvince(province);
+  const handleReset = () => {
+    getStepIndex()
+    setActiveStep(0);
+    
   };
 
-  const onChangeProvince = (e) => {
-    const data = [e.target.value];
-    state.present_address.province = data;
 
-    const filterProvince = Object.keys(selectedProvince)
-      .filter((key) => data.includes(key))
-      .reduce((obj, key) => {
-        obj["municipality"] = selectedProvince[key].municipality_list;
-        return obj;
-      }, {});
-    setMunicipality(Object.keys(filterProvince.municipality));
-    setSelectedMunicipality(filterProvince);
-    // console.log(province);
-  };
 
-  const onChangeMunicipality = (e) => {
-    const data = [e.target.value];
-    state.present_address.municipality = data;
+const getStepContent = (stepIndex) => {
+  switch (stepIndex) {
+    case 0:
+      return <Auth  formik={formik}/>
+    case 1:
+      return <Personal formik={personal}/>;
+    case 2:
+      return <Emp formik={empDetails}/>;
+    default:
+      return 'Unknown stepIndex';
+  }
+}
 
-    const filterMunicipality = Object.keys(selectedMunicipality.municipality)
-      .filter((key) => data.includes(key))
-      .reduce((obj, key) => {
-        obj = selectedMunicipality.municipality[key];
-        return obj;
-      }, {});
 
-    setBarangay(filterMunicipality.barangay_list);
-  };
+const onSubmit = (data) => {
+  // axios.post("http://localhost:3001/ranks", data).then((response)=>{
+  //     console.log(response.data)
+  //   })
+  alert("success")
+}
+
 
   return (
-    <Page
-      className={classes.root}
-      title="Registration "
-    >      
-      <Container maxWidth="lg">
+    
+    <Grid
+      container
+      spacing={2}
+      align="center"
+    >
+    <Grid
+      item
+      lg={12}
+      md={2}
+      xs={2}
+    > 
+    </Grid>
       <Grid
-        container
-        spacing={1}
+        item
+        lg={8}
+        md={8}
+        xs={8}
+        
       >
-        <Grid
-          item
-          lg={12}
-          md={12}
-          xs={12}
-        >
-          <Card>
-            <CardHeader
-              subheader="Address"
-              title="Address"
-            />
-            <Divider />
-            <CardContent>
-              <Grid
-                container
-                spacing={3}
-              >
-                <Grid
-                  item
-                  md={3}
-                  xs={12}
-                >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Region
-                  </InputLabel>
-                  <Select
-                    fullWidth
-                    onChange={(e) => {
-                      onChangeRegion(e);
-                      // onChange(e);
-                    }}
-                    // onBlur={onBlur}
-                    defaultValue={state.present_address.region}
-                    label="Region"
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
+        <div className={classes.root}>
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <div>
+            {activeStep === steps.length ? (
+              <div>
+                <Typography className={classes.instructions}>All steps completed</Typography>
+                <Button onClick={handleReset}>Reset</Button>
+              </div>
+            ) : (
+              <div>
+                <Typography className={classes.instructions}>
+                  {getStepContent(activeStep)}
+                </Typography>
+                <div>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.backButton}
                   >
-                    {PhilippineMap?.map((data, index) => (
-                      <MenuItem value={data?.region?.region_name} key={index}>
-                        {data?.region?.region_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
-                <Grid
-                  item
-                  md={3}
-                  xs={12}
-                >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Province
-                  </InputLabel>
-                  <Select
-                    fullWidth
-                    onChange={(e) => {
-                      onChangeProvince(e);
-                      // onChange(e);
-                    }}
-                    // onBlur={onBlur}
-                    defaultValue={state.present_address.province}
-                    label="Province"
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                  >
-                    {province?.map((province, index) => (
-                      <MenuItem value={province} key={index}>
-                        {province}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
-                <Grid
-                  item
-                  md={3}
-                  xs={12}
-                >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Municipality
-                  </InputLabel>
-                  <Select
-                    fullWidth
-                    onChange={(e) => {
-                      onChangeMunicipality(e);
-                      // onChange(e);
-                    }}
-                    // onBlur={onBlur}
-                    defaultValue={state.present_address.municipality}
-                    label="Municipality"
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                  >
-                    {municipality?.map((municipality, index) => (
-                      <MenuItem value={municipality} key={index}>
-                        {municipality}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
-                <Grid
-                  item
-                  md={3}
-                  xs={12}
-                >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Barangay
-                  </InputLabel>
-                  <Select
-                    fullWidth 
-                    // onChange={onChange}
-                    // onBlur={onBlur}
-                    defaultValue={state.present_address.barangay}
-                    label="Barangay"
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                  >
-                    {barangay?.map((barangay, index) => (
-                      <MenuItem value={barangay} key={index}>
-                        {barangay}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
-              </Grid>
-            </CardContent>
-            <Divider />
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              p={2}
-            >
-              <Button
-                color="primary"
-                variant="contained"
-                // onClick={handlePost}
-              >
-                Save
-              </Button>
-            </Box>
-          </Card>
-        </Grid>
+                    Back
+                  </Button>
+                  <Button variant="contained" color="primary" onClick={handleNext}>
+                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </Grid>
-      
-    </Container>
- 
-    </Page>
-  )
+  </Grid>
+  
+  );
 }
 
 export default Index;
