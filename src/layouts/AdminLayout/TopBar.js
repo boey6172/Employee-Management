@@ -27,8 +27,9 @@ import InputIcon from "@material-ui/icons/Input";
 
 const useStyles = makeStyles(() => ({
   root: {
-    height: "60px",
-    backgroundColor: "rgba(255,255,255,0.7)",
+    height: "70px",
+    // backgroundColor: "rgba(255,255,255,0.7)",
+    backgroundColor: "#4682b4",
     backdropFilter: "blur(2px)",
   },
   avatar: {

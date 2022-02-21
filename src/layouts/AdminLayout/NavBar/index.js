@@ -92,7 +92,7 @@ const attendanceNav = [
     title: " • Employees",
   },
   {
-    href: "/admin/employees",
+    href: "/admin/users",
     icon: "",
     title: " • Users",
   },

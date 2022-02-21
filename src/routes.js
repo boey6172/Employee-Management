@@ -105,7 +105,7 @@ const routes = [
         path: 'maintenance/religion', 
         element: <PrivateAdminRoute component= {Religion} />
       },
-      { path: '404', element: <PrivateAdminRoute component ={NotFoundView} /> },
+      { path: '404', element: <NotFoundView /> },
       { path: '*', element: <Navigate to="/admin/404" /> }
     ]
   },
@@ -169,7 +169,7 @@ const routes = [
       //   path: 'employees', 
       //   element: <PrivateAdminRoute component= {Employees} />
       // },
-      { path: '404', element: <PrivateEmployeeRoute component ={NotFoundView} /> },
+      { path: '404', element: <NotFoundView /> },
       { path: '*', element: <Navigate to="/employee/404" /> }
     ]
   },
@@ -181,6 +181,7 @@ const routes = [
       { path: 'register', element: <Stepper /> },
       { path: '/', element: <Navigate to="/login" /> },
       { path: '*', element: <Navigate to="/404" /> },
+      { path: '404', element: <NotFoundView /> },
       { 
         path: "login", 
         // element: <PublicEmployeeRoute component={Login} /> 
