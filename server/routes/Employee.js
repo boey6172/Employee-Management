@@ -41,8 +41,8 @@ router.post("/searchemployee", async(req,res) =>{
 
 router.post("/", async(req,res) =>{
     const employee = req.body
-    const data = await Employees.create(employee);
-    // res.json(employee);
+//  console.log(employee)
+//     res.json(employee);
 
     const {username,password} = req.body
     try {
@@ -50,19 +50,20 @@ router.post("/", async(req,res) =>{
             where: {username:username}
         })
         if (user) res.json({error:"Account username already exist"})
-
+        const data = await Employees.create(employee);
         bcrypt.hash(password, 10).then((hash) =>{
             Users.create({
                 username:username,
                 password:hash,
-                employee:data.id
+                employee:data.id,
+                role:"employee"
             })
         })
         res.json("User Created");
         
         
     } catch (error) {
-        console.log(error)
+        res.json(error)
     }
 
 

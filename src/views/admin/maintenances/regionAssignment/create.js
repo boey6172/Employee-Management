@@ -63,7 +63,7 @@ const Index = () => {
     // axios.post("http://localhost:3001/ranks", data).then((response)=>{
     //     console.log(response.data)
     //   })
-    instance.post("regionAssignments", data).then((response) => {
+    instance.post("region", data).then((response) => {
       console.log(response)
       alert('done')
     }) 

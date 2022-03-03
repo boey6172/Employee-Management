@@ -32,6 +32,16 @@ import Rank from '../src/views/admin/maintenances/rank';
 import Login from '../src/views/auth/Login';
 
 
+import AccountSettings from '../src/views/admin/AccountSettings';
+
+import DashboardView from '../src/views/admin/DashboardView';
+
+
+// import AccountSettings from '../src/views/employee';
+
+
+
+
 
 
 
@@ -55,7 +65,7 @@ const routes = [
 
       {
          path: 'dashboard', 
-         element: <PrivateAdminRoute component= {Religion} />
+         element: <PrivateAdminRoute component= {DashboardView} />
       },
       // {
       //   path: 'myprofile', 
@@ -69,10 +79,10 @@ const routes = [
       //   path: 'users', 
       //   element: <PrivateAdminRoute component= {Users} />
       // },
-      // {
-      //   path: 'createExpense', 
-      //   element: <PrivateAdminRoute component= {CreateExpense} />
-      // },
+      {
+        path: 'account/settings', 
+        element: <PrivateAdminRoute component= {AccountSettings} />
+      },
       {
         path: 'maintenance/createrank', 
         element: <PrivateAdminRoute component= {CreateRank} />

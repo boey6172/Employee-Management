@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         employee:{
             type:DataTypes.STRING,
             allowNull: false,
+        },
+        role:{
+            type:DataTypes.STRING,
+            allowNull: false,
         }
     })
     // Users.associate = (models) => {

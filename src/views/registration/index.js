@@ -1,8 +1,16 @@
 import {React, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Grid
+  Grid,
+  Box
 } from '@material-ui/core/';
+import Alert from '@material-ui/lab/Alert';
+
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+
+import CloseIcon from '@material-ui/icons/Close';
+
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -17,6 +25,10 @@ import auth from '../../helper/validation/auth';
 import personalValidation from '../../helper/validation/personal';
 import empValidation from '../../helper/validation/empDetails';
 
+import instance from '../../instance/instance';
+import useAuthentication from '../../hooks/useAuthentication';
+
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 
 
@@ -38,6 +50,13 @@ const Index = () =>{
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [holder, setHolder] = useState({});
+  const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState('');
+  const { setToken, setUser, getToken, getUser, } = useAuthentication();
+
+  
   
   const getSteps = () => {
     return ['Enter your Login Credentials', 'Personal Information', 'Employment Details'];
@@ -52,8 +71,6 @@ const Index = () =>{
     validationSchema: auth,
     onSubmit: (values, {resetForm}) => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-      setHolder({credentials:values})
       },
   });
 
@@ -70,12 +87,12 @@ const Index = () =>{
       municipality:'',
       barangay:'',
       gender:'',
+      address:'',
     },
     validationSchema: personalValidation,
     onSubmit: (values, {resetForm}) => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setHolder({...holder, values})
-
+      values.address = values.region + ' ' + values.province + ' ' + values.municipality + ' ' + values.barangay
     },
   });
 
@@ -88,11 +105,17 @@ const Index = () =>{
       tinNumber:'',
       taxstat:'',
       salaryGrade:'',
+      
     },
     validationSchema: empValidation,
-    onSubmit: (emp, {resetForm}) => {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setHolder({...holder, emp})
+    onSubmit: (values2, {resetForm}) => {
+
+      // setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      // setHolder(...holder, values2)
+      // setHolder((prevData) => prevData ,values2);
+
+      setHolder({...formik.values,...personal.values,...values2})
+      submit();
     },
   });
 
@@ -145,11 +168,32 @@ const getStepContent = (stepIndex) => {
 }
 
 
-const onSubmit = (data) => {
-  // axios.post("http://localhost:3001/ranks", data).then((response)=>{
-  //     console.log(response.data)
-  //   })
-  alert("success")
+const submit = () => {
+  instance.post("employee", holder).then((response)=>{
+    if(!response.data.error){
+      instance.post("auth/login", holder).then((responses) => {
+        if (!responses.data.error){
+          setToken(responses.data.token)
+          setUser(responses.data.user)
+          if(responses.data.user.role === "employee")
+            navigate("/employee/dashboard", { replace: true });
+          // else
+          //   navigate("/employee/dashboard", { replace: true });
+          
+        }
+        else{
+          setError(response.data.error);
+          setOpen(true);
+        }
+
+      })
+    }
+    else{
+      setError(response.data.error);
+      setOpen(true);
+    }
+  })
+ 
 }
 
 
@@ -171,7 +215,7 @@ const onSubmit = (data) => {
         item
         lg={8}
         md={8}
-        xs={8}
+        xs={12}
         
       >
         <div className={classes.root}>
@@ -182,6 +226,27 @@ const onSubmit = (data) => {
               </Step>
             ))}
           </Stepper>
+                  <Box>
+                  <Collapse in={open}>
+                  <Alert
+                  severity="error"
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpen(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                  >
+                    {error}
+                  </Alert>
+                  </ Collapse>
+                  </Box>
           <div>
             {activeStep === steps.length ? (
               <div>

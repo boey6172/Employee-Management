@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING,
             allowNull: false,
         },
-        birthdate:{
+        birthday:{
             type:DataTypes.STRING,
             allowNull: false,
         },
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING,
             allowNull: false,
         },
-        contact_no:{
+        contactNumber:{
             type:DataTypes.STRING,
             allowNull: false,
         },
@@ -39,31 +39,31 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING,
             allowNull: false,
         },
-        employment_date:{
+        empDate:{
             type:DataTypes.STRING,
             allowNull: false,
         },
-        phil_no:{
+        philNumber:{
             type:DataTypes.STRING,
             allowNull: false,
         },
-        gsis_no:{
+        gsisNumber:{
             type:DataTypes.STRING,
             allowNull: false,
         },
-        nhmc_acc_no:{
+        nhmcNumber:{
             type:DataTypes.STRING,
             allowNull: false,
         },
-        tin_no:{
+        tinNumber:{
             type:DataTypes.STRING,
             allowNull: false,
         },
-        tax_status:{
+        taxstat:{
             type:DataTypes.STRING,
             allowNull: false,
         },
-        salary_grade:{
+        salaryGrade:{
             type:DataTypes.STRING,
             allowNull: false,
         },

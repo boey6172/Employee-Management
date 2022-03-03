@@ -72,13 +72,13 @@ const NotFoundView = () => {
               Go back Home 
             </a> */}
             <Link
-                      component={RouterLink}
-                      to="/"
-                      variant="h6"
-                      style={{ color: "#1e88e5" }}
-                    >
-                      Go Back Home
-                    </Link>
+              component={RouterLink}
+              to="/"
+              variant="h6"
+              style={{ color: "#1e88e5" }}
+            >
+              Go Back Home
+            </Link>
           </Box>
         </Container>
       </Box>

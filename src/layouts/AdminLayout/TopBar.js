@@ -86,7 +86,11 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   const logoutUser = () => {
     unsetAuth();
     navigate("/login", { replace: true });
-};
+  };
+  const changePassword = () => {
+
+    navigate("/admin/account/settings", { replace: true });
+  };
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -109,6 +113,9 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
 
   const handleLogout = () => {
     logoutUser();
+  };
+  const handleAccount = () => {
+    changePassword();
   };
 
   const prevOpen = useRef(open);
@@ -209,14 +216,14 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
                   id="menu-list-grow"
                   onKeyDown={handleListKeyDown}
                 >
-                  <MenuItem
+                  {/* <MenuItem
                     onClick={(e) => {
-                      navigate("/admin/account", { replace: true });
+                      navigate("admin/account/settings", { replace: true });
                     }}
                   >
-                    Profile
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                    Change Password
+                  </MenuItem> */}
+                  <MenuItem onClick={handleAccount}>My account</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </MenuList>
               </ClickAwayListener>
