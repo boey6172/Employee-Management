@@ -47,7 +47,7 @@ import DashboardView from '../src/views/admin/DashboardView';
 
 import PrivateAdminRoute from "./middleware/PrivateAdminRoute";
 import PrivateEmployeeRoute from "./middleware/PrivateEmployeeRoute";
-
+import Profile from "../src/views/employee/Profile"
 
 
 
@@ -67,10 +67,10 @@ const routes = [
          path: 'dashboard', 
          element: <PrivateAdminRoute component= {DashboardView} />
       },
-      // {
-      //   path: 'myprofile', 
-      //   element: <PrivateAdminRoute component= {Account} />
-      // },
+      {
+        path: 'myprofile', 
+        element: <PrivateAdminRoute component= {Profile} />
+      },
       // {
       //   path: 'expenses', 
       //   element: <PrivateAdminRoute component= {Expenses} />
