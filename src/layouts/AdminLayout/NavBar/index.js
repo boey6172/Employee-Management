@@ -87,7 +87,7 @@ const dashboard = [
 
 const attendanceNav = [
   {
-    href: "/admin/employees",
+    href: "/admin/employee",
     icon: "",
     title: " • Employees",
   },
