@@ -56,11 +56,12 @@ router.post("/login",async(req,res) => {
     const data = {
         token:'',
         user:{
-            role:'admin',
+            role:'',
             employee:''
         }
         
     }
+        data.user.role = user.role
         data.token = accessToken
         data.user.employee = user.employee
         res.json(data);
