@@ -49,6 +49,8 @@ import PrivateAdminRoute from "./middleware/PrivateAdminRoute";
 import PrivateEmployeeRoute from "./middleware/PrivateEmployeeRoute";
 import Profile from "../src/views/employee/Profile"
 import Employee from "../src/views/admin/Employee"
+import User from "../src/views/admin/maintenances/user"
+
 
 
 
@@ -92,6 +94,10 @@ const routes = [
       {
         path: 'maintenance/rank', 
         element: <PrivateAdminRoute component= {Rank} />
+      },
+      {
+        path: 'maintenance/users', 
+        element: <PrivateAdminRoute component= {User} />
       },
       {
         path: 'maintenance/createdocumenttype', 

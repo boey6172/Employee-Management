@@ -79,7 +79,7 @@ const user = {
 
 const dashboard = [
   {
-    href: "/app/dashboard",
+    href: "/admin/dashboard",
     icon: Dashboard,
     title: "Dashboard",
   },
@@ -92,7 +92,7 @@ const attendanceNav = [
     title: " • Employees",
   },
   {
-    href: "/admin/users",
+    href: "/admin/maintenance/users",
     icon: "",
     title: " • Users",
   },
