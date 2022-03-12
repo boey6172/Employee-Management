@@ -49,7 +49,7 @@ const Sales = ({ className, ...rest }) => {
       <Box p={3}>
         <Table>
           <TableBody>
-            <TableRow>
+            {/* <TableRow>
               <TableCell
                 style={{ border: "none", padding: "3px", width: "170px" }}
               >
@@ -58,16 +58,16 @@ const Sales = ({ className, ...rest }) => {
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {employeeInfo?.employee_info?.identification_number}
               </TableCell>
-            </TableRow>
-            <TableRow>
+            </TableRow> */}
+            {/* <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 <font color="#616161">Contract Number: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {employeeInfo?.employee_info?.contract_number}
               </TableCell>
-            </TableRow>
-            <TableRow>
+            </TableRow> */}
+            {/* <TableRow>
               <TableCell
                 style={{ border: "none", padding: "3px", width: "170px" }}
               >
@@ -76,10 +76,10 @@ const Sales = ({ className, ...rest }) => {
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {employeeInfo?.employee_info?.company.name}
               </TableCell>
-            </TableRow>
+            </TableRow> */}
             <TableRow>
-              <TableCell style={{ border: "none", padding: "3px" }}>
-                <font color="#616161">Branch: </font>
+              <TableCell style={{ border: "none", padding: "3px" , width: "170px" }}>
+                <font color="#616161">Assigned Region: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {employeeInfo?.employee_info?.branch.name}
@@ -95,26 +95,26 @@ const Sales = ({ className, ...rest }) => {
             </TableRow>
             <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                <font color="#616161">Position: </font>
+                <font color="#616161">Rank: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {employeeInfo?.employee_info?.position.name}
               </TableCell>
             </TableRow>
-            <TableRow>
+            {/* <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 <font color="#616161">Shift: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {moment(employeeInfo?.employee_info?.shift?.in_starting, ["kk:mm"]).format("hh:mm A")} - {moment(employeeInfo?.employee_info?.shift?.out_ending, ["kk:mm"]).format("hh:mm A")}
               </TableCell>
-            </TableRow>
+            </TableRow> */}
             <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                <font color="#616161">Salary: </font>
+                <font color="#616161">Salary Grade: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.employee_info?.salary}
+                {employeeInfo?.salaryGrade}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -122,7 +122,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Date Started: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {moment(employeeInfo?.employee_info?.start_date).format(
+                {moment(employeeInfo?.empDate).format(
                   "DD/MM/YYYY"
                 )}
               </TableCell>

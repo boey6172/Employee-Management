@@ -338,7 +338,7 @@ export default () => {
                 </Grid>
                 <Grid item lg={6} md={6} xs={12}>
                   <Fade right>
-                    {/* <EducationalAttainment /> */}
+                    <EducationalAttainment />
                   </Fade>
                 </Grid>
               </Grid>
