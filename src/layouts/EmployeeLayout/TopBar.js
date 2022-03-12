@@ -210,12 +210,12 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
                 >
                   <MenuItem
                     onClick={(e) => {
-                      navigate("/admin/account", { replace: true });
+                      navigate("/employee/account/settings", { replace: true });
                     }}
                   >
-                    Profile
+                    My Account
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </MenuList>
               </ClickAwayListener>

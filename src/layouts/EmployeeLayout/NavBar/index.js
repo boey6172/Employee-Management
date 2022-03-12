@@ -80,54 +80,9 @@ const user = {
 
 const dashboard = [
   {
-    href: "/app/dashboard",
+    href: "/employee/dashboard",
     icon: Dashboard,
     title: "Dashboard",
-  },
-];
-
-const attendanceNav = [
-  {
-    href: "/app/employees",
-    icon: "",
-    title: " • Employees",
-  },
-];
-
-const employeeNav = [
-  {
-    href: '/app/expenses',
-    icon: "",
-    title: '• Expenses'
-  },
-  {
-    href: '/app/report/expenses',
-    icon: "",
-    title: '• Expenses Report'
-  },
-];
-
-const adminMaintenance = [
-
-  {
-    href: '/app/maintenance/supplier',
-    icon: "",
-    title: '• Supplier'
-  },
-  {
-    href: '/app/maintenance/payment',
-    icon: "" ,
-    title: '• Payment Type '
-  },
-  {
-    href: '/app/maintenance/category',
-    icon: "",
-    title: '• Category '
-  },
-  {
-    href: '/app/users',
-    icon: "",
-    title: '• User '
   },
 ];
 
@@ -262,90 +217,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
                 icon={item.icon}
               />
             ))}
-            <ListItem button onClick={handleClick201Files}>
-              <ListItemIcon className={classes.dropdownIcon}>
-                <AccountBalance />
-              </ListItemIcon>
-              <Typography className={classes.navTitle} variant="body2">
-                Expenses
-              </Typography>{" "}
-              {open201Files ? (
-                <ExpandMore style={{ color: "#637381", marginLeft: "95px" }} />
-              ) : (
-                <ChevronRight
-                  style={{ color: "#637381", marginLeft: "95px" }}
-                />
-              )}
-            </ListItem>
-            <Collapse in={open201Files} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                {employeeNav.map((item) => (
-                  <NavItem
-                    className={classes.dropdownList}
-                    href={item.href}
-                    key={item.title}
-                    title2={item.title}
-                    icon={item.icon}
-                  />
-                ))}
-              </List>
-            </Collapse>
-            <ListItem button onClick={handleClickAttendance}>
-              <ListItemIcon className={classes.dropdownIcon}>
-                <Group />
-              </ListItemIcon>
-              <Typography className={classes.navTitle} variant="body2">
-                Employees
-              </Typography>{" "}
-              {openAttendance ? (
-                <ExpandMore style={{ color: "#637381", marginLeft: "80px" }} />
-              ) : (
-                <ChevronRight
-                  style={{ color: "#637381", marginLeft: "80px" }}
-                />
-              )}
-            </ListItem>
-            <Collapse in={openAttendance} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                {attendanceNav.map((item) => (
-                  <NavItem
-                    className={classes.dropdownList}
-                    href={item.href}
-                    key={item.title}
-                    title2={item.title}
-                    icon={item.icon}
-                  />
-                ))}
-              </List>
-            </Collapse>
-            <ListItem button onClick={handleClickMaintenance}>
-              <ListItemIcon className={classes.dropdownIcon}>
-                <Settings />
-              </ListItemIcon>
-              <Typography className={classes.navTitle} variant="body2">
-                Maintenance 
-              </Typography>{" "}
-              {openMaintenance ? (
-                <ExpandMore style={{ color: "#637381", marginLeft: "70px" }} />
-              ) : (
-                <ChevronRight
-                  style={{ color: "#637381", marginLeft: "70px" }}
-                />
-              )}
-            </ListItem>
-            <Collapse in={openMaintenance} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                {adminMaintenance.map((item) => (
-                  <NavItem
-                    className={classes.dropdownList}
-                    href={item.href}
-                    key={item.title}
-                    title2={item.title}
-                    icon={item.icon}
-                  />
-                ))}
-              </List>
-            </Collapse>
+            
+        
           </List>
         </Box>
       </CustomScrollbars>

@@ -64,7 +64,7 @@ import User from "../src/views/admin/maintenances/user"
 const routes = [
   {
     path: 'admin',
-    element: <AdminLayout />,
+    element:<AdminLayout />,
     children: [
 
       {
@@ -79,10 +79,6 @@ const routes = [
         path: 'employee', 
         element: <PrivateAdminRoute component= {Employee} />
       },
-      // {v
-      //   path: 'users', 
-      //   element: <PrivateAdminRoute component= {Users} />
-      // },
       {
         path: 'account/settings', 
         element: <PrivateAdminRoute component= {AccountSettings} />
@@ -131,62 +127,19 @@ const routes = [
     path: 'employee',
     element: <EmployeeLayout />,
     children: [
+      // {
+      //    path: 'dashboard', 
+      //    element: <PrivateEmployeeRoute component= {Rank} />
+      // },
       {
-         path: 'dashboard', 
-         element: <PrivateEmployeeRoute component= {Rank} />
+        path: 'dashboard', 
+        element: <PrivateEmployeeRoute component= {Profile} />
       },
-      // {
-      //   path: 'myprofile', 
-      //   element: <PrivateAdminRoute component= {Account} />
-      // },
-      // {
-      //   path: 'expenses', 
-      //   element: <PrivateAdminRoute component= {Expenses} />
-      // },
-      // {
-      //   path: 'users', 
-      //   element: <PrivateAdminRoute component= {Users} />
-      // },
-      // {
-      //   path: 'createExpense', 
-      //   element: <PrivateAdminRoute component= {CreateExpense} />
-      // },
-      // {
-      //   path: 'maintenance/category', 
-      //   element: <PrivateAdminRoute component= {MaintenanceCategory} />
-      // },
-      // {
-      //   path: 'maintenance/createcategory', 
-      //   element: <PrivateAdminRoute component= {CreateCategory} />
-      // },
-      // {
-      //   path: 'maintenance/payment', 
-      //   element: <PrivateAdminRoute component= {MaintenancePayment} />
-      // },
-      // {
-      //   path: 'maintenance/createpayment', 
-      //   element: <PrivateAdminRoute component= {CreatePayment} />
-      // },
-      // {
-      //   path: 'maintenance/supplier', 
-      //   element: <PrivateAdminRoute component= {MaintenanceSupplier} />
-      // },
-      // {
-      //   path: 'maintenance/createsupplier', 
-      //   element: <PrivateAdminRoute component= {CreateSupplier} />
-      // },
-      // {
-      //   path: 'expenses/view', 
-      //   element: <PrivateAdminRoute component= {ViewExpenses} />
-      // },
-      // {
-      //   path: 'report/expenses', 
-      //   element: <PrivateAdminRoute component= {ExpensesReport} />
-      // },
-      // {
-      //   path: 'employees', 
-      //   element: <PrivateAdminRoute component= {Employees} />
-      // },
+      {
+        path: 'account/settings', 
+        element: <PrivateEmployeeRoute component= {AccountSettings} />
+      },
+
       { path: '404', element: <NotFoundView /> },
       { path: '*', element: <Navigate to="/employee/404" /> }
     ]
