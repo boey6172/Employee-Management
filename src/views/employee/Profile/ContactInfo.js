@@ -72,7 +72,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">E-mail: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.contact_info.email}
+                {employeeInfo?.email}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -80,7 +80,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Contact No: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.contact_info.mobile_number}
+                {employeeInfo?.contactNumber}
               </TableCell>
             </TableRow>
           </TableBody>

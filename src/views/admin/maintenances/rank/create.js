@@ -63,9 +63,23 @@ const Index = () => {
     // axios.post("http://localhost:3001/ranks", data).then((response)=>{
     //     console.log(response.data)
     //   })
-    instance.post("./ranks", data).then((response) => {
-      console.log(response)
-      alert('done')
+    instance.post("./ranks", data,
+    {
+      headers:{
+          token:localStorage.getItem("token")
+      }
+    }
+    ).then((response) => {
+      if(!response.data.error)
+      {
+        alert("Saved" . response.data.rank)
+      }else{
+        if(response.data.error.message){
+          alert(response.data.error.message)
+        }else{
+          alert(response.data.error)
+        }
+      }
     }) 
   }
 

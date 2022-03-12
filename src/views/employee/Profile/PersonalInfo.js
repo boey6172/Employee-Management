@@ -56,11 +56,11 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Address: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {`${employeeInfo?.address_info?.permanent_address?.barangay},
-                ${employeeInfo?.address_info?.permanent_address?.city},
+                {`${employeeInfo?.address}`}
+                {/* ${employeeInfo?.address_info?.permanent_address?.city},
                 ${employeeInfo?.address_info?.permanent_address?.province},
                 ${employeeInfo?.address_info?.permanent_address?.postal_code}
-                `}
+                `} */}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -68,7 +68,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Birthday: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {moment(employeeInfo?.personal_info.birth_date).format(
+                {moment(employeeInfo?.birthday).format(
                   "DD/MM/YYYY"
                 )}
               </TableCell>
@@ -78,7 +78,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Gender: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.personal_info.gender.name}
+                {employeeInfo?.gender}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -86,7 +86,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Marital Status: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.personal_info.marital_status.name}
+                {employeeInfo?.taxstat}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -94,7 +94,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Religion: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.personal_info.religion.name}
+                {employeeInfo?.religion}
               </TableCell>
             </TableRow>
           </TableBody>

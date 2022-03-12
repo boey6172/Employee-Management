@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import {
@@ -28,6 +28,8 @@ import { Controller } from "react-hook-form";
 import IconButton from "@material-ui/core/IconButton";
 import PublishIcon from "@material-ui/icons/Publish";
 import { remove } from "nprogress";
+import instance from '../../../../../instance/instance';
+
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -102,7 +104,17 @@ export default ({ employeeData, attachments }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [file, setFile] = useState(states);
+  const [docType, setDocType] = useState(states);
 
+
+  useEffect(() => {
+    // refetch();
+    instance.get("./documenttype").then((response) => {
+      setDocType(response.data)
+      // setRanks(response.data)
+      console.log(docType)
+    }) 
+  }, []);
   const useFormInstance = useForm({
     shouldFocusError: false,
   });
@@ -140,6 +152,7 @@ export default ({ employeeData, attachments }) => {
   //     : types.name != "Contract";
   // });
 
+
   // const [
   //   createAttachment,
   //   { loading: uploadLoading, error: uploadError },
@@ -153,6 +166,7 @@ export default ({ employeeData, attachments }) => {
     states.files = path;
   };
   const onUpdate = async (info) => {
+    alert("yehey");
     // const {
     //   data: {
     //     createDocumentAttachment: { _id },
@@ -210,11 +224,11 @@ export default ({ employeeData, attachments }) => {
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
                       >
-                        {/* {docType?.map(({ _id, name: _name }, index) => (
-                          <MenuItem value={_id} key={index}>
-                            {_name}
+                        {docType?.map(( {id, documentType} , index) => (
+                          <MenuItem value={id} key={index}>
+                            {documentType}
                           </MenuItem>
-                        ))} */}
+                        ))}
                       </Select>
                       {error && (
                         <FormHelperText>{error?.message}</FormHelperText>

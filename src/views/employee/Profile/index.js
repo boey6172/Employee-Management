@@ -36,6 +36,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import BackdropFilter from "react-backdrop-filter";
 import Fade from "react-reveal/Fade";
+import instance from '../../../instance/instance';
 export const Context = createContext();
 
 const useStyles = makeStyles((props) => ({
@@ -191,7 +192,12 @@ export default () => {
   const [value, setValue] = useState(0);
   const classes = useStyles();
   const { getUser } = useAuthentication();
-  const user = getUser();
+  const data ={
+    'id':getUser().employee
+  }
+  const [employee,setEmployee] = useState();
+  const [documentType,setdocumentType] = useState();
+
 
   // const { loading, error, data, refetch } = useQuery(
   //   GET_EMPLOYEE,
@@ -202,9 +208,15 @@ export default () => {
   //     errorPolicy: "all",
   //   }
   // );
+  
 
   useEffect(() => {
     // refetch();
+    instance.post("./employee/getemployee",data).then((response) => {
+      setEmployee(response.data)
+      // setRanks(response.data)
+    }) 
+
   }, []);
 
   const handleChange = (event, newValue) => {
@@ -215,11 +227,11 @@ export default () => {
     <>
       <Context.Provider
         value={{
-          // employeeInfo: data?.employee,
+          employeeInfo: employee,
           // educationalAttainment: data?.employee?.educational_attainment,
-          // govInfo: data?.employee?.government_info,
+          govInfo: employee,
           // skills: data?.employee?.skills,
-          // attachments: data?.employee?.document_attachments,
+          // attachments: documentType,
           // previousEmployment: data?.employee?.previous_employment,
         }}
       >
@@ -254,10 +266,10 @@ export default () => {
                         {" "}
                         <Box className={classes.avatarDetails}>
                           <Typography variant="h4" style={{ color: "#fff" }}>
-                            {/* {`${data?.employee?.personal_info?.first_name}
-                              ${data?.employee?.personal_info?.middle_name}
-                              ${data?.employee?.personal_info?.last_name}
-                              ${data?.employee?.personal_info?.suffix}`} */}
+                            {`${employee?.firstname}
+                              ${employee?.middlename}
+                              ${employee?.lastname}
+                              ${employee?.suffix}`}
                           </Typography>
                           <Typography
                             style={{ color: "#bdbdbd" }}
@@ -301,7 +313,7 @@ export default () => {
                     <EmployeeInfo />
                   </Fade>
                   <Fade left>
-                    <Skills />
+                    {/* <Skills /> */}
                   </Fade>
                 </Grid>
                 <Grid item lg={6} md={6} xs={12}>
@@ -326,13 +338,13 @@ export default () => {
                 </Grid>
                 <Grid item lg={6} md={6} xs={12}>
                   <Fade right>
-                    <EducationalAttainment />
+                    {/* <EducationalAttainment /> */}
                   </Fade>
                 </Grid>
               </Grid>
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <WorkExperience />
+              {/* <WorkExperience /> */}
             </TabPanel>
           </Box>
         </Page>
