@@ -3,6 +3,8 @@ const router = express.Router();
 const {Ranks} = require ("../models");
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const {validateToken} = require("../middleware/AuthMiddleware")
+
  
 router.get("/", async(req,res) =>{
     const listofrank =  await Ranks.findAll()
@@ -33,7 +35,7 @@ router.post("/searchrank", async(req,res) =>{
 });
 
 
-router.post("/", async(req,res) =>{
+router.post("/", validateToken, async(req,res) =>{
     const rank = req.body
     await Ranks.create(rank);
     res.json(rank);
@@ -48,6 +50,7 @@ router.post("/update", async(req,res) =>{
     });
     res.json(rank);
 });
+
 
 
 

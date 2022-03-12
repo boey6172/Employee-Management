@@ -3,7 +3,8 @@ const router = express.Router();
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const {Employees, Users} = require ("../models");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const e = require('express');
 
  
 router.get("/", async(req,res) =>{
@@ -15,8 +16,8 @@ router.get("/", async(req,res) =>{
     }
 });
 
-router.get("/byId/:id", async(req,res) =>{
-    const id = req.params.id
+router.post("/getemployee", async(req,res) =>{
+    const {id} = req.body
     const employee =  await Employees.findByPk(id)
     res.json(employee)
 });
@@ -44,7 +45,7 @@ router.post("/", async(req,res) =>{
 //  console.log(employee)
 //     res.json(employee);
 
-    const {username,password} = req.body
+    const {username,password,email,contactNumber,role} = req.body
     try {
         const user = await Users.findOne({
             where: {username:username}
@@ -56,7 +57,9 @@ router.post("/", async(req,res) =>{
                 username:username,
                 password:hash,
                 employee:data.id,
-                role:"employee"
+                role:role,
+                email:email,
+                contact_no:contactNumber
             })
         })
         res.json("User Created");
