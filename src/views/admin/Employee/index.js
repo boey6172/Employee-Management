@@ -1,5 +1,5 @@
 /* Core Imports */
-import React, { createContext, useReducer, useEffect } from "react";
+import React, { createContext, useReducer, useEffect, useState } from "react";
 
 /* UI Imports */
 import { Box, Container, makeStyles } from "@material-ui/core";
@@ -11,6 +11,8 @@ import Page from "../../../components/Page";
 import Create from "./create";
 import Table from "./table";
 import View from "./view";
+import instance from '../../../instance/instance';
+
 
 // /* Api Imports */
 // import { useQuery } from "@apollo/client";
@@ -35,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
+  const [employee, setEmployee] = useState(null);
 
   // const {
   //   loading: loadingEmployeeInfo,
@@ -47,7 +50,7 @@ export default () => {
   //     return e.status.name == "Hired";
   //   })
   //   .reverse();
-  const employee =[{},{}]; 
+  // const employee =[{},{}]; 
 
   // useEffect(() => {}, [employee]);
 
@@ -56,6 +59,13 @@ export default () => {
   //     console.log(dataEmployeeInfo.employees)
   //   }
   // }, [dataEmployeeInfo])
+
+  useEffect(()=>{
+    instance.get("./employee").then((response) => {
+      setEmployee(response.data)
+      
+    }) 
+  },[])
 
   const initialState = { activeScreen: "list", activeData: null };
   const reducer = (state, { type, payload }) => {

@@ -103,11 +103,14 @@ const LoginView = () => {
       if (!response.data.error){
         setToken(response.data.token)
         setUser(response.data.user)
-        if(response.data.user.role === "admin")
+        if(getUser().role){
+          if(getUser().role === "admin")
           navigate("/admin/dashboard", { replace: true });
-        else
+          else
           navigate("/employee/dashboard", { replace: true });
         
+        }
+
       }
       else{
         setError(response.data.error);
@@ -119,10 +122,12 @@ const LoginView = () => {
 
   useEffect(() => {
     if(getToken()){
-      if (getUser().role === "admin")
-        navigate("/admin/dashboard", { replace: true });
-      else
-        navigate("/employee/dashboard", { replace: true });
+      if(getUser().role){
+        if (getUser().role === "admin")
+          navigate("/admin/dashboard", { replace: true });
+        else
+          navigate("/employee/dashboard", { replace: true });
+      }
     }
   }, [])
 

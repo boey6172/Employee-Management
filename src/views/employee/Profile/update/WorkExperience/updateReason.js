@@ -126,14 +126,14 @@ export default ({ data }) => {
     setOpen(false);
   };
 
-  const [
-    updateEmployee,
-    { loading: loadingUpdateEmployee, error: errorUpdateEmployee },
-  ] = useMutation(UPDATE_EMPLOYEE, {
-    onCompleted(data) {
-      window.location = window.location;
-    },
-  });
+  // const [
+  //   updateEmployee,
+  //   { loading: loadingUpdateEmployee, error: errorUpdateEmployee },
+  // ] = useMutation(UPDATE_EMPLOYEE, {
+  //   onCompleted(data) {
+  //     window.location = window.location;
+  //   },
+  // });
 
   const onUpdate = async (info) => {
     states.previous_employment.immediate_superior = {
@@ -152,7 +152,7 @@ export default ({ data }) => {
 
     delete states.previous_employment.immediate_superior.__typename;
 
-    updateEmployee({ variables: { id: data._id, input: states } });
+    // updateEmployee({ variables: { id: data._id, input: states } });
   };
 
   const body = (

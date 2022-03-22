@@ -79,7 +79,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Pag-Ibig No: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {govInfo?.pag_ibig}
+                {govInfo?.pagIbigNumber}
               </TableCell>
             </TableRow>
             <TableRow>

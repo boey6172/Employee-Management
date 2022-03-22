@@ -12,7 +12,10 @@ const useAuthentication = () => {
   const getUser = () => {
     let user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      user = { ...user, authenticated: true };
+      if(user.role === "c9cb1a54-3c62-4976-977f-5a1b5a8e494c")
+        user = { ...user, authenticated: true, role:"admin"};
+      else
+      user = { ...user, authenticated: true, role:"employee"};
     } else {
       user = { ...user, authenticated: false };
     }
@@ -21,6 +24,10 @@ const useAuthentication = () => {
 
   const setUser = (user) => {
     localStorage.setItem("user", JSON.stringify(user)  );
+    
+  };
+  const getRole = (user) => {
+    
     
   };
 

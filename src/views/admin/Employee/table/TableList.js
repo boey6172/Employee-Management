@@ -140,20 +140,11 @@ export default ({ className, ...rest }) => {
     } else {
       setFilteredEmployees(
         employee?.filter((employee) =>
-          employee.personal_info.first_name
+          employee.firstname
             .concat(
               " ",
-              employee.personal_info.last_name,
-              " ",
-              employee.employee_info?.identification_number,
-              " ",
-              employee.employee_info?.contract_number,
-              " ",
-              employee.employee_info?.company?.name,
-              " ",
-              employee.employee_info?.branch?.name,
-              " ",
-              employee.employee_info?.position?.name
+              employee.lastname,
+
             )
             .toLowerCase()
             .includes(search.toLowerCase())
@@ -254,12 +245,12 @@ export default ({ className, ...rest }) => {
               <TableRow style={{ background: "#e0e0e0" }}>
                 <TableCell>No</TableCell>
                 <TableCell>Employee&apos;s Name</TableCell>
-                <TableCell>Contract Number</TableCell>
-                <TableCell>ID Number</TableCell>
+                {/* <TableCell>Contract Number</TableCell>
+                <TableCell>ID Number</TableCell> */}
 
-                <TableCell>Position</TableCell>
-                <TableCell>Company</TableCell>
-                <TableCell>Branch</TableCell>
+                <TableCell>Rank</TableCell>
+                {/* <TableCell>Company</TableCell> */}
+                <TableCell>Assigned Reion</TableCell>
                 <TableCell>Department</TableCell>
                 <TableCell>Start Date</TableCell>
               </TableRow>
@@ -279,22 +270,22 @@ export default ({ className, ...rest }) => {
                     <TableCell>
                       <Box alignItems="center" display="flex">
                         <Typography color="textPrimary" variant="body1">
-                          {`${employee?.personal_info?.first_name} ${employee?.personal_info?.middle_name} ${employee?.personal_info?.last_name}`}
+                          {`${employee?.firstname} ${employee?.middlename} ${employee?.lastname}`}
                         </Typography>
                       </Box>
                     </TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       {employee?.employee_info?.contract_number}
                     </TableCell>
                     <TableCell>
                       {employee?.employee_info?.identification_number}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell>
                       {employee?.employee_info?.position?.name}
                     </TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       {employee?.employee_info?.company?.name}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell>
                       {employee?.employee_info?.branch?.name}
                     </TableCell>
@@ -302,7 +293,7 @@ export default ({ className, ...rest }) => {
                       {employee?.employee_info?.department?.name}
                     </TableCell>
                     <TableCell>
-                      {moment(employee?.employee_info?.start_date).format(
+                      {moment(employee?.empDate).format(
                         "DD/MM/YYYY"
                       )}
                     </TableCell>

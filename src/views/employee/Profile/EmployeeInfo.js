@@ -82,7 +82,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Assigned Region: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.employee_info?.branch.name}
+                {employeeInfo?.RegionAssignment?.regionAssignment}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -98,7 +98,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Rank: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.employee_info?.position.name}
+                {employeeInfo?.Rank?.rank}
               </TableCell>
             </TableRow>
             {/* <TableRow>

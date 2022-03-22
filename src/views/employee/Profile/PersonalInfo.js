@@ -78,7 +78,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Gender: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.gender}
+                {employeeInfo?.Gender?.description}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -94,7 +94,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Religion: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.religion}
+                {employeeInfo?.Religion?.religion}
               </TableCell>
             </TableRow>
           </TableBody>

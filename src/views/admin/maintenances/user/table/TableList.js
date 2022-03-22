@@ -119,13 +119,13 @@ export default ({ users, className, ...rest }) => {
                           {getInitials(customer.name)}
                         </Avatar> */}
                           <Typography color="textPrimary" variant="body1">
-                            {`${user.info.first_name} ${user.info.middle_name} ${user.info.last_name}`}
+                            {/* {`${user.info.first_name} ${user.info.middle_name} ${user.info.last_name}`} */}
                           </Typography>
                         </Box>
                       </TableCell>
-                      <TableCell>{user.credential.username}</TableCell>
-                      <TableCell>{user.info.email}</TableCell>
-                      <TableCell>{user.info.mobile_number}</TableCell>
+                      <TableCell>{user.username}</TableCell>
+                      {/* <TableCell>{user.info.email}</TableCell>
+                      <TableCell>{user.info.mobile_number}</TableCell> */}
                       <TableCell>
                         <div className={classes.buttonSpacing}>
                           <ColorButton
