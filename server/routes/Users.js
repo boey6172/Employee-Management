@@ -7,8 +7,8 @@ const bcrypt = require("bcrypt")
 const {sign} = require("jsonwebtoken")
 
 
-router.get("/:postId", async(req,res) =>{
-    const postId = req.params.postId
+router.get("/", async(req,res) =>{
+    // const postId = req.params.postId
     const users =  await Users.findAll({
         // where: {PostId: postId}
     })
@@ -39,6 +39,37 @@ router.post("/", async(req,res) =>{
 
 });
 
+router.post("/changePassword", async(req,res) =>{
+    const {employee,oldPassword, confirmPassword, password} = req.body
+    try {
+        const user = await Users.findOne({
+            where: {employee:employee}
+        })
+        if(password !== confirmPassword) res.json({error:" Old Password Does not Match"})
+        
+        bcrypt.compare(oldPassword, user.password).then((match)=>{
+            if(!match) res.json({error:" Old Password Does not Match"})
+            
+            bcrypt.hash(password, 10).then((hash) =>{
+                Users.update({
+                    password:hash,
+                },{
+                    where:{
+                        id:user.id
+                    }
+                });
+            })
+            res.json("Password Has Been changed");
+        })
+        
+    } catch (error) {
+        console.log(error)
+    }
+
+
+});
+
+
 router.post("/login",async(req,res) => { 
     const {username,password} = req.body;
 
@@ -46,15 +77,16 @@ router.post("/login",async(req,res) => {
         where: {username:username}
     })
 
-
- 
     if (!user) res.json({error:"Account does not exist"})
 
     bcrypt.compare(password, user.password).then((match)=>{
         if(!match) res.json({error:" Wrong Username and Password"})
 
         const accessToken = sign({username:user.username,id:user.id},
-            "pbpbrns12301234"
+            "pbpbrns12301234",
+            {
+                expiresIn: 1,
+            }
         )
     const data = {
         token:'',

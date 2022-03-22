@@ -17,6 +17,8 @@ const regionRouter = require("./routes/RegionAssignment");
 const employeeRouter = require("./routes/Employee");
 const roleRouter = require("./routes/Role");
 const genderRouter = require("./routes/Gender");
+const taxRouter = require("./routes/TaxStatuses");
+
 
 
 
@@ -32,6 +34,8 @@ app.use("/region", regionRouter);
 app.use("/employee", employeeRouter);
 app.use("/role", roleRouter);
 app.use("/gender", genderRouter);
+app.use("/taxstatuses", taxRouter);
+
 
 
 

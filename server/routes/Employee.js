@@ -2,14 +2,17 @@ const express = require('express');
 const router = express.Router(); 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const {Employees, Users} = require ("../models");
+const {Employees, Users,Gender,Ranks,RegionAssignments,Religions} = require ("../models");
 const bcrypt = require("bcrypt");
 const e = require('express');
+const Religion = require('../models/Religion');
 
  
 router.get("/", async(req,res) =>{
     try{
-        const listofEmployee =  await Employees.findAll()
+        const listofEmployee =  await Employees.findAll({
+            include:[Gender,Ranks,RegionAssignments,Religions]
+        })
         res.json(listofEmployee)
     }catch (error) {
         console.log(error)
@@ -18,8 +21,18 @@ router.get("/", async(req,res) =>{
 
 router.post("/getemployee", async(req,res) =>{
     const {id} = req.body
-    const employee =  await Employees.findByPk(id)
+    try{
+    const employee =  await Employees.findOne({where:{
+                id:id
+            }, include:[Gender,Ranks,RegionAssignments,Religions]
+           
+        }
+    )
     res.json(employee)
+    }
+    catch(e){
+        console.log(e)
+    }
 });
 
 router.post("/searchemployee", async(req,res) =>{

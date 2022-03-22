@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
         role:{
-            type:DataTypes.STRING,
+            type:DataTypes.UUID,
             allowNull: false,
         },
         email:{
@@ -26,10 +26,15 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         }
     })
-    // Users.associate = (models) => {
-    //     Users.hasMany(models.Employee,{
-    //         ondelete: "cascade",
-    //     })
-    // }
+    Users.associate = (models) => {
+        Users.belongsTo(models.Role, {
+            foreignKey: 'role',
+            onDelete:'NO ACTION'
+        })
+        // Users.belongsTo(models.Employees, {
+        //     foreignKey: 'employee',
+        //     onDelete:'NO ACTION'
+        // })
+    }
     return Users
 } 

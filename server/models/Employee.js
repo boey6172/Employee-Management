@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const Posts = sequelize.define("Employees", {
+    const Employees = sequelize.define("Employees", {
         id:{
             type:DataTypes.UUID,
             defaultValue:DataTypes.UUIDV4,
@@ -28,7 +28,19 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
         gender:{
-            type:DataTypes.STRING,
+            type:DataTypes.UUID,
+            allowNull: false,
+        },
+        rank:{
+            type:DataTypes.UUID,
+            allowNull: false,
+        },
+        regionAssignment:{
+            type:DataTypes.UUID,
+            allowNull: false,
+        },
+        religion:{
+            type:DataTypes.UUID,
             allowNull: false,
         },
         contactNumber:{
@@ -44,6 +56,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
         philNumber:{
+            type:DataTypes.STRING,
+            allowNull: false,
+        },
+        pagIbigNumber:{
             type:DataTypes.STRING,
             allowNull: false,
         },
@@ -68,10 +84,31 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
     })
-    // Posts.associate = (models) => {
-    //     Posts.hasMany(models.Comments,{
-    //         ondelete: "cascade",
+    // Employees.associate = (models) => {
+    //     Employees.hasOne(models.Gender,{
+    //         foreignKey: {
+    //             name: 'gender'
+    //         },
     //     })
     // }
-    return Posts
+    Employees.associate = (models)=> {
+        Employees.belongsTo(models.Gender, {
+            foreignKey: 'gender',
+            onDelete:'NO ACTION'
+        })
+        Employees.belongsTo(models.Ranks, {
+            foreignKey: 'rank',
+            onDelete:'NO ACTION'
+        })
+        Employees.belongsTo(models.RegionAssignments, {
+            foreignKey: 'regionAssignment',
+            onDelete:'NO ACTION'
+        })
+        Employees.belongsTo(models.Religions, {
+            foreignKey: 'religion',
+            onDelete:'NO ACTION'
+        })
+    };
+      
+    return Employees
 } 
