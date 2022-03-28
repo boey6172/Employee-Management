@@ -116,6 +116,46 @@ router.post("/update", async(req,res) =>{
 });
 
 
+router.post("/govtInfo", async(req,res) =>{
+    const {employee, philNumber, pagIbigNumber,
+        gsisNumber,nhmcNumber,tinNumber,
+    } = req.body
+    await Employees.update({
+ 
+        philNumber:philNumber,
+        gsisNumber:gsisNumber,
+        nhmcNumber:nhmcNumber,
+        tinNumber:tinNumber,
+        pagIbigNumber:pagIbigNumber,
+
+
+    },{
+        where:{
+            id:employee
+        }
+    });
+    res.json(req.body);
+});
+
+router.post("/getAccountInfo", async(req,res) =>{
+    const {employee} = req.body
+    try{
+    const accountInfo =  await Users.findOne({
+            attributes:['email','username'],
+            where:{
+                    employee:employee
+                },      
+        }
+    )
+    res.json(accountInfo)
+    }
+    catch(e){
+        console.log(e)
+    }
+});
+
+
+
 
 
 
