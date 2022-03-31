@@ -33,6 +33,8 @@ import Login from '../src/views/auth/Login';
 
 
 import AccountSettings from '../src/views/admin/AccountSettings';
+import AccountEmployeeSettings from '../src/views/employee/AccountSettings';
+
 
 import DashboardView from '../src/views/admin/DashboardView';
 
@@ -137,7 +139,7 @@ const routes = [
       },
       {
         path: 'account/settings', 
-        element: <PrivateEmployeeRoute component= {AccountSettings} />
+        element: <PrivateEmployeeRoute component= {AccountEmployeeSettings} />
       },
 
       { path: '404', element: <NotFoundView /> },
