@@ -117,7 +117,7 @@ router.post("/update", async(req,res) =>{
 
 
 router.post("/govtInfo", async(req,res) =>{
-    const {employee, philNumber, pagIbigNumber,
+    const {id, philNumber, pagIbigNumber,
         gsisNumber,nhmcNumber,tinNumber,
     } = req.body
     await Employees.update({
@@ -131,19 +131,19 @@ router.post("/govtInfo", async(req,res) =>{
 
     },{
         where:{
-            id:employee
+            id:id
         }
     });
     res.json(req.body);
 });
 
 router.post("/getAccountInfo", async(req,res) =>{
-    const {employee} = req.body
+    const {id} = req.body
     try{
     const accountInfo =  await Users.findOne({
             attributes:['email','username'],
             where:{
-                    employee:employee
+                    employee:id
                 },      
         }
     )
