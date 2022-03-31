@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
 const Sales = ({ className, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const { employeeInfo } = useContext(Context);
+  const { employeeInfo, accountInfo} = useContext(Context);
 
   return (
     <Card
@@ -64,7 +64,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Username: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.account?.credential?.username}
+                {accountInfo?.username}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -72,7 +72,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">E-mail: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.email}
+                {accountInfo?.email}
               </TableCell>
             </TableRow>
             <TableRow>

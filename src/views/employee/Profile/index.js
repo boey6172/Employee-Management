@@ -196,25 +196,18 @@ export default () => {
     'id':getUser().employee
   }
   const [employee,setEmployee] = useState();
+  const [account,setAccount] = useState();
   const [documentType,setdocumentType] = useState();
 
 
-  // const { loading, error, data, refetch } = useQuery(
-  //   GET_EMPLOYEE,
-  //   {
-  //     variables: { id: user?.employee_info?._id },
-  //   },
-  //   {
-  //     errorPolicy: "all",
-  //   }
-  // );
-  
 
   useEffect(() => {
     // refetch();
     instance.post("./employee/getemployee",data).then((response) => {
       setEmployee(response.data)
-      // setRanks(response.data)
+    }) 
+    instance.post("./employee/getAccountInfo",data).then((response) => {
+      setAccount(response.data)
     }) 
 
   }, []);
@@ -228,6 +221,7 @@ export default () => {
       <Context.Provider
         value={{
           employeeInfo: employee,
+          accountInfo:account,
           // educationalAttainment: data?.employee?.educational_attainment,
           govInfo: employee,
           // skills: data?.employee?.skills,

@@ -47,7 +47,7 @@ const Sales = ({ className, ...rest }) => {
         action={
           <UpdateGovInfo
             style={{ cursor: "pointer" }}
-            data={employeeInfo?._id}
+            data={govInfo}
           />
         }
         title="Goverment Info"

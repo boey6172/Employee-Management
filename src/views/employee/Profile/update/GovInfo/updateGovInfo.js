@@ -10,6 +10,8 @@ import ReportProblemIcon from "@material-ui/icons/ReportProblem";
 // import { useQuery, useMutation } from "@apollo/client";
 import { LaptopWindows } from "@material-ui/icons";
 import { Controller } from "react-hook-form";
+import instance from '../../../../../instance/instance';
+
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -29,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 20,
   },
   paper: {
-    marginTop: "-200px",
+    marginTop: "-50px",
     backgroundColor: theme.palette.background.paper,
     width: "500px",
   },
@@ -75,23 +77,28 @@ export default ({ data }) => {
   const handleOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
 
-  // const [
-  //   updateEmployee,
-  //   { loading: loadingUpdateEmployee, error: errorUpdateEmployee },
-  // ] = useMutation(UPDATE_EMPLOYEE, {
-  //   onCompleted(data) {
-  //     window.location = window.location;
-  //   },
-  // });
-
   const onUpdate = (info) => {
-    const request = { ...info };
-    // updateEmployee({ variables: { id: data, input: request } });
+    const {id} = data;
+    const request = { ...info,id};
+    instance.post("./employee/govtInfo", request,
+    {
+      headers:{
+          token:localStorage.getItem("token")
+      }
+    }
+    ).then((response) => {
+      if(!response.error)
+      {
+        window.location = window.location;
+        // alert("Saved" . response)
+      }else{
+          alert(response.error) 
+      }
+    }) 
   };
 
   const body = (
@@ -105,8 +112,9 @@ export default ({ data }) => {
             <Grid item md={12} xs={12}>
               <Controller
                 control={control}
-                name="government_info.sss"
-                rules={{ required: "SSS number is Required" }}
+                name="gsisNumber"
+                defaultValue={data?.gsisNumber}
+                rules={{ required: "GSIS number is Required" }}
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -114,13 +122,13 @@ export default ({ data }) => {
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("government_info.sss")}
+                      defaultValue={data?.gsisNumber}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}
                       fullWidth
                       inputRef={ref}
-                      label="SSS No."
+                      label="GSIS No."
                       margin="normal"
                       type="text"
                       // variant="outlined"
@@ -133,7 +141,8 @@ export default ({ data }) => {
             <Grid item md={12} xs={12}>
               <Controller
                 control={control}
-                name="government_info.philhealth"
+                name="philNumber"
+                defaultValue={data?.philNumber}
                 rules={{ required: "PhilHealth number is Required" }}
                 render={({
                   field: { onChange, onBlur, value, name, ref },
@@ -142,7 +151,7 @@ export default ({ data }) => {
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("government_info.philhealth")}
+                      defaultValue={data?.philNumber}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}
@@ -161,7 +170,8 @@ export default ({ data }) => {
             <Grid item md={12} xs={12}>
               <Controller
                 control={control}
-                name="government_info.pag_ibig"
+                name="pagIbigNumber"
+                defaultValue={data?.pagIbigNumber}
                 rules={{ required: "Pag-Ibig number is Required" }}
                 render={({
                   field: { onChange, onBlur, value, name, ref },
@@ -170,7 +180,7 @@ export default ({ data }) => {
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("government_info.pag_ibig")}
+                      defaultValue={data?.pagIbigNumber}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}
@@ -189,7 +199,8 @@ export default ({ data }) => {
             <Grid item md={12} xs={12}>
               <Controller
                 control={control}
-                name="government_info.tin"
+                name="tinNumber"
+                defaultValue={data?.tinNumber}
                 rules={{
                   required: "TIN number is Required",
                 }}
@@ -200,13 +211,44 @@ export default ({ data }) => {
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("government_info.tin")}
+                      defaultValue={data?.tinNumber}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}
                       fullWidth
                       inputRef={ref}
                       label="TIN Number"
+                      margin="normal"
+                      type="text"
+                      // variant="outlined"
+                      helperText={error?.message}
+                    />
+                  </div>
+                )}
+              />
+            </Grid>
+            <Grid item md={12} xs={12}>
+              <Controller
+                control={control}
+                name="nhmcNumber"
+                defaultValue={data?.nhmcNumber}
+                rules={{
+                  required: "NHMC number is Required",
+                }}
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <div>
+                    <TextField
+                      defaultValue={data?.nhmcNumber}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      error={error !== undefined}
+                      fullWidth
+                      inputRef={ref}
+                      label="NHMC Number"
                       margin="normal"
                       type="text"
                       // variant="outlined"
