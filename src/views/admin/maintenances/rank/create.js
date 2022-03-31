@@ -72,11 +72,13 @@ const Index = () => {
     ).then((response) => {
       if(!response.data.error)
       {
-        alert("Saved" . response.data.rank)
+        // console.log(response)
+        alert("Saved")
       }else{
         if(response.data.error.message){
           alert(response.data.error.message)
         }else{
+          console.log(response.data.error)
           alert(response.data.error)
         }
       }
