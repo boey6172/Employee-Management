@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING,
             allowNull: false,
         },
+        deleted_at:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
     })
     // Posts.associate = (models) => {
     //     Posts.hasMany(models.Comments,{
