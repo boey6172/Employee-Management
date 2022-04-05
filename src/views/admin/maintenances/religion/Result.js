@@ -22,7 +22,8 @@ import Loading from '../../../../widgets/loading'
 import DeleteIcon from '@material-ui/icons/Delete';
 // import Dialog from './updateDialog';
 import Classes from '../../../../widgets/classes'
-
+import instance from '../../../../instance/instance';
+import Update from './update';
 
 
 
@@ -42,12 +43,36 @@ const Results = ({ className, religions, ...rest }) => {
   const [page, setPage] = useState(0);
 
 
-  const handleRemove = (id) => {   
-    // if(window.confirm('Are you Sure on deleting this item'))
-    //   instance.delete(`./paymentType/${id}.json`).then((response)=>{
-    //   })
-    alert(id)
+  const confirm = (id) =>{
+    window.confirm('Are you sure you wish to delete this item?') ? handleRemove(id) : cancel("cancel")
+  
   }
+  const cancel = () =>{
+  }
+  
+  const handleRemove = (id) => {   
+    // const {id} = data;
+    const request = {id};
+  
+    instance.post("./religion/delete", request,
+    {
+      headers:{
+          token:localStorage.getItem("token")
+      }
+    }
+    ).then((response) => {
+      console.log(response)
+      if(!response.error)
+      {
+        // console.log(response)
+        window.location = window.location;
+        // alert("Saved" . response)
+      }else{
+          alert(response.error) 
+      }
+    }) 
+  }
+  
   
   
 if(religions){
@@ -93,12 +118,15 @@ if(religions){
                     </Box>
                   </TableCell>
                   <TableCell>
-                  {/* <Dialog  payment = {payment}/> */}
+                  <Update
+                    style={{ cursor: "pointer" }}
+                    data={religion}
+                  />
                     &nbsp;
                   <Button 
-                    onClick={() => handleRemove(religion.id)}
-                    variant="contained"
-                    className={ClassesStyle.buttonDelete}
+                    onClick={() => confirm(religion.id)}
+                    // variant="contained"
+                    // className={ClassesStyle.buttonDelete}
                   >
                    <DeleteIcon/>
                   </Button>
