@@ -3,9 +3,18 @@ const router = express.Router();
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const {RegionAssignments} = require ("../models");
+const {validateToken} = require("../middleware/AuthMiddleware");
+const moment = require('moment');
  
 router.get("/", async(req,res) =>{
-    const listofregion =  await RegionAssignments.findAll()
+    const listofregion =  await RegionAssignments.findAll(
+        {where: {
+            deleted_at:{
+                [Op.not]: !null
+            }
+          }
+        }
+    )
     res.json(listofregion)
 });
 
@@ -16,28 +25,15 @@ router.get("/byId/:id", async(req,res) =>{
 });
 
 
-router.post("/", async(req,res) =>{
-    const region = req.body
-    await RegionAssignments.create(region);
-    res.json(region);
-});
-
-router.post("/update", async(req,res) =>{
-    const {id, regionAssignment} = req.body
-    await RegionAssignments.update({regionAssignment:regionAssignment},{
-        where:{
-            id:id
-        }
-    });
-    res.json(Religions);
-});
-
 router.post("/searchregion", async(req,res) =>{
     const {value} = req.body
     try {
         const region =  await RegionAssignments.findAll( {where: {
             regionAssignment: {
               [Op.like]: '%'+value+'%'
+            },
+            deleted_at:{
+                [Op.not]: !null
             }
           }
         })
@@ -47,6 +43,72 @@ router.post("/searchregion", async(req,res) =>{
         console.log(error)
     }
 
+});
+
+
+
+
+router.post("/", async(req,res) =>{
+
+    const data = req.body
+    const {regionAssignment} = data
+    try{
+
+        const count = await RegionAssignments.findOne({
+            where:{ 
+                regionAssignment: regionAssignment
+            }
+        })
+
+        if (count) res.json({error:"Region Assignment Already exist"})
+        
+        await RegionAssignments.create(data);
+        res.json(data);
+
+       
+    }catch(error) {
+        res.json(error);
+    }   
+
+});
+
+router.post("/update",validateToken, async(req,res) =>{
+    const {id, regionAssignment} = req.body
+    try{
+
+        const count = await RegionAssignments.findOne({
+            where:{ 
+                regionAssignment: regionAssignment
+            }
+        })
+
+        if (count) res.json({error:"Region Assignment Already exist"})
+
+        await RegionAssignments.update({regionAssignment:regionAssignment},{
+            where:{
+                id:id
+            }
+        });
+        res.json(regionAssignment);
+
+       
+    }catch(error) {
+        res.json(error);
+    }   
+
+});
+
+
+
+router.post("/delete", validateToken, async(req,res) =>{
+    const {id} = req.body;
+    const date = moment().format('YYYY-DD-mm, h:mm:ss a');
+    await RegionAssignments.update({deleted_at:date},{
+        where:{
+            id:id
+        }
+    });
+    res.json();
 });
 
 

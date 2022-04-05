@@ -33,7 +33,7 @@ router.post("/searchrank", async(req,res) =>{
               [Op.like]: '%'+value+'%'
             },
             deleted_at:{
-                [Op.not]: null
+                [Op.not]: !null
             }
           }
         })
@@ -64,19 +64,35 @@ router.post("/", validateToken, async(req,res) =>{
 
        
     }catch(error) {
-        rs.json(error);
-    }s
+        res.json(error);
+    }   
     
 });
 
 router.post("/update", validateToken, async(req,res) =>{
     const {id, rank} = req.body
-    await Ranks.update({rank:rank},{
-        where:{
-            id:id
-        }
-    });
-    res.json(rank);
+
+    try{
+        const count = await Ranks.findOne({
+            where:{ 
+                rank: rank
+            }
+        })
+
+        if (count) res.json({error:"Rank Already exist"})
+        
+        await Ranks.update({rank:rank},{
+            where:{
+                id:id
+            }
+        });
+        res.json(rank);
+    }
+    catch(error){
+        res.json(error);
+    }
+    
+
 });
 
 router.post("/delete", validateToken, async(req,res) =>{

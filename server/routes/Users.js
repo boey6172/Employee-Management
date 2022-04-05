@@ -84,9 +84,9 @@ router.post("/login",async(req,res) => {
 
         const accessToken = sign({username:user.username,id:user.id},
             "pbpbrns12301234",
-            {
-                expiresIn: 1,
-            }
+            // {
+            //     // expiresIn: 1,
+            // }
         )
     const data = {
         token:'',
