@@ -16,7 +16,8 @@ export default ({ toastProps }) => {
     open: false,
     vertical: "top",
     horizontal: "right",
-    messsage: "Success"
+    messsage: "Success",
+    status:"success"
   });
 
   const { vertical, horizontal, message } = openSnackbar;
@@ -43,7 +44,7 @@ export default ({ toastProps }) => {
         onClose={handleCloseSnackbar}
         key={vertical + horizontal}
       >
-        <Alert onClose={handleCloseSnackbar} severity="success">
+        <Alert onClose={handleCloseSnackbar} severity={openSnackbar.status}>
           {message}
         </Alert>
       </Snackbar>
