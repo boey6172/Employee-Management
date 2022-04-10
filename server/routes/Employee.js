@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router(); 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const {Employees, Users,Gender,Ranks,RegionAssignments,Religions} = require ("../models");
+const {Employees, Users,Gender,Ranks,RegionAssignments,Religions,TaxStatuses} = require ("../models");
 const bcrypt = require("bcrypt");
 const e = require('express');
-const Religion = require('../models/Religion');
+
 
  
 router.get("/", async(req,res) =>{
     try{
         const listofEmployee =  await Employees.findAll({
-            include:[Gender,Ranks,RegionAssignments,Religions]
+            include:[Gender,Ranks,RegionAssignments,Religions,TaxStatuses]
         })
         res.json(listofEmployee)
     }catch (error) {
@@ -24,7 +24,7 @@ router.post("/getemployee", async(req,res) =>{
     try{
     const employee =  await Employees.findOne({where:{
                 id:id
-            }, include:[Gender,Ranks,RegionAssignments,Religions]
+            }, include:[Gender,Ranks,RegionAssignments,Religions,TaxStatuses]
            
         }
     )
@@ -57,8 +57,39 @@ router.post("/", async(req,res) =>{
     const employee = req.body
 //  console.log(employee)
 //     res.json(employee);
-
-    const {username,password,email,contactNumber,role} = req.body
+// res.json("yehey")
+    const {username,password,email,contactNumber} = req.body
+    const role = "d0eff7f7-2740-44ca-850f-836eb28093e6";
+    try {
+        const user = await Users.findOne({
+            where: {username:username}
+        })
+        if (user) res.json({error:"Account username already exist"})
+        const data = await Employees.create(employee);
+        bcrypt.hash(password, 10).then((hash) =>{
+            Users.create({
+                username:username,
+                password:hash,
+                employee:data.id,
+                role:role,
+                email:email,
+                contact_no:contactNumber
+            })
+        })
+        res.json("User Created");
+        
+        
+    } catch (error) {
+        res.json(error)
+    }
+});
+router.post("/admin", async(req,res) =>{
+    const employee = req.body
+//  console.log(employee)
+//     res.json(employee);
+// res.json("yehey")
+    const {username,password,email,contactNumber} = req.body
+    const role = "c9cb1a54-3c62-4976-977f-5a1b5a8e494c";
     try {
         const user = await Users.findOne({
             where: {username:username}
@@ -153,6 +184,45 @@ router.post("/getAccountInfo", async(req,res) =>{
         console.log(e)
     }
 });
+
+router.post("/getEmpCount", async(req,res) =>{
+    // const {id} = req.body
+    try{
+    const empCount =  await Users.findAll({
+            attributes:[
+                [Sequelize.fn('COUNT', Sequelize.col('id')), 'emp_count']
+            ],
+            // where:{
+            //         employee:id
+            //     },      
+        }
+    )
+    res.json(empCount)
+    }
+    catch(e){
+        console.log(e)
+    }
+});
+
+// router.post("/getEmpCount", async(req,res) =>{
+//     // const {id} = req.body
+//     try{
+//     const empCount =  await Users.findAll({
+//             attributes:[
+//                 [Sequelize.fn('MONTH', Sequelize.col('id')), 'emp_count']
+//             ],
+//             // where:{
+//             //         employee:id
+//             //     },      
+//         }
+//     )
+//     res.json(empCount)
+//     }
+//     catch(e){
+//         console.log(e)
+//     }
+// });
+
 
 
 
