@@ -17,6 +17,18 @@ router.get("/", async(req,res) =>{
     )
     res.json(listofregion)
 });
+router.get("/getregion", async(req,res) =>{
+    const listofregion =  await RegionAssignments.findAll(
+        {where: {
+            deleted_at:{
+                [Op.not]: !null
+            }
+          }
+        }
+    )
+    res.json(listofregion)
+});
+
 
 router.get("/byId/:id", async(req,res) =>{
     const id = req.params.id

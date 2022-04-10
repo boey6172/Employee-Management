@@ -19,6 +19,18 @@ router.get("/", async(req,res) =>{
     res.json(listofreligion)
 });
 
+router.get("/getreligion", async(req,res) =>{
+    const listofreligion =  await Religions.findAll(
+        {where: {
+            deleted_at:{
+                [Op.not]: !null
+            }
+          }
+        }
+    )
+    res.json(listofreligion)
+});
+
 router.get("/byId/:id", async(req,res) =>{
     const id = req.params.id
     const religion =  await Religions.findByPk(id)

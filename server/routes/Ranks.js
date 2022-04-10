@@ -19,6 +19,19 @@ router.get("/", async(req,res) =>{
     res.json(listofrank)
 });
 
+router.get("/getrank", async(req,res) =>{
+    const listofrank =  await Ranks.findAll(
+        {where: {
+            deleted_at:{
+                [Op.not]: !null
+            }
+          }
+        }
+    )
+    res.json(listofrank)
+});
+
+
 router.get("/byId/:id", async(req,res) =>{
     const id = req.params.id
     const rank =  await Ranks.findByPk(id)

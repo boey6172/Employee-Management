@@ -11,6 +11,11 @@ router.get("/", async(req,res) =>{
     res.json(listofTax)
 });
 
+router.get("/getTaxStat", async(req,res) =>{
+    const listofTax =  await TaxStatuses.findAll()
+    res.json(listofTax)
+});
+
 router.get("/byId/:id", async(req,res) =>{
     const id = req.params.id
     const taxStat =  await TaxStatuses.findByPk(id)

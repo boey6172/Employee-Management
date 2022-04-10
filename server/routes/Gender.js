@@ -11,6 +11,11 @@ router.get("/", validateToken, async(req,res) =>{
     res.json(listofGender)
 });
 
+router.get("/getgenders", async(req,res) =>{
+    const listofGender =  await Gender.findAll()
+    res.json(listofGender)
+});
+
 router.post("/byId/", validateToken, async(req,res) =>{
     const id = req.params.id
     const gender =  await Gender.findByPk(id)
