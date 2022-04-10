@@ -26,6 +26,11 @@ const personalValidation = Yup.object({
       .string('Enter your Birthday ')
       // .min(8, 'username should be of minimum 8 characters length')
       .required('Birthday  is required'),
+    email:Yup
+      .string()
+      .email('Must be a valid email')
+      .max(255)
+      .required('Email is required'),
     contactNumber: Yup
       .string('Enter your Contact Number ')
       // .min(8, 'username should be of minimum 8 characters length')
@@ -50,7 +55,10 @@ const personalValidation = Yup.object({
       .string('Enter your Barangay')
       // .min(8, 'username should be of minimum 8 characters length')
       .required('Barangay is required'),
-
+    religion: Yup
+      .string('Select a Religion')
+      // .min(2, 'Rank should be of minimum 2 characters length')
+      .required('Select a Religion'),
   });
   
   export default personalValidation;

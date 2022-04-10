@@ -29,6 +29,12 @@ const empDetailsSchema = Yup.object({
       .typeError('Must be digits')
       .min(9, 'TIN number should be of minimum 9 digits length')
       .required('TIN Number  is required'),
+    pagIbigNumber: Yup
+      .number().positive()
+      .integer('Must be digits')
+      .typeError('Must be digits')
+      .min(9, 'PagIbig number should be of minimum 9 digits length')
+      .required('Pagibig Number  is required'),
     taxstat: Yup
       .string('Enter your Tax Status')
       // .min(8, 'username should be of minimum 8 characters length')
@@ -37,6 +43,14 @@ const empDetailsSchema = Yup.object({
       .string('Enter your Salary Grade')
       // .min(8, 'username should be of minimum 8 characters length')
       .required('Salary Grade is required'),
+    rank: Yup
+      .string('Select a Rank')
+      // .min(2, 'Rank should be of minimum 2 characters length')
+      .required('Select a Rank'),
+    regionAssignment: Yup
+      .string('Select a RegionAssignment')
+      // .min(2, 'Rank should be of minimum 2 characters length')
+      .required('Select a RegionAssignment'),
     
     
   });
