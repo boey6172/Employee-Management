@@ -76,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
         taxstat:{
-            type:DataTypes.STRING,
+            type:DataTypes.UUID,
             allowNull: false,
         },
         salaryGrade:{
@@ -106,6 +106,10 @@ module.exports = (sequelize, DataTypes) => {
         })
         Employees.belongsTo(models.Religions, {
             foreignKey: 'religion',
+            onDelete:'NO ACTION'
+        })
+        Employees.belongsTo(models.TaxStatuses, {
+            foreignKey: 'taxstat',
             onDelete:'NO ACTION'
         })
     };
