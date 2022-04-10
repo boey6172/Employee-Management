@@ -90,14 +90,14 @@ export default ({ action }) => {
                   defaultValue={getValues("old_password")}
                   onChange={onChange}
                   onBlur={onBlur}
-                  // error={error !== undefined}
+                  error={error !== undefined}
                   fullWidth
                   inputRef={ref}
                   label="Old Password"
                   margin="normal"
                   type="password"
                   variant="outlined"
-                  // helperText={error?.message}
+                  helperText={error?.message}
                 />
               </div>
             )}
@@ -118,14 +118,14 @@ export default ({ action }) => {
                   defaultValue={getValues("new_password")}
                   onChange={onChange}
                   onBlur={onBlur}
-                  // error={error !== undefined}
+                  error={error !== undefined}
                   fullWidth
                   inputRef={ref}
                   label="New Password"
                   margin="normal"
                   type="password"
                   variant="outlined"
-                  // helperText={error?.message}
+                  helperText={error?.message}
                 />
               </div>
             )}
@@ -153,14 +153,14 @@ export default ({ action }) => {
                   defaultValue={getValues("confirm_password")}
                   onChange={onChange}
                   onBlur={onBlur}
-                  // error={checkConfirmPassword(error).hasError}
+                  error={error !== undefined}
                   fullWidth
                   inputRef={ref}
                   label="Confirm Password"
                   margin="normal"
                   type="password"
                   variant="outlined"
-                  // helperText={checkConfirmPassword(error).message}
+                  helperText={error?.message}
                 />
               </div>
             )}

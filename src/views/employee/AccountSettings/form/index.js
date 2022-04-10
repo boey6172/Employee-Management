@@ -20,6 +20,9 @@ import Notif from "../../../../widgets/ToastNotif"
 
 /* Query Imports */
 // import { CHANGE_PASSWORD } from "./Query";
+import instance from "../../../../instance/instance";
+import useAuthentication from "../../../../hooks/useAuthentication"
+
 
 /* Context Instance */
 export const FormContext = createContext();
@@ -57,8 +60,11 @@ export default ({ action }) => {
     open: false,
     vertical: "top",
     horizontal: "right",
-    message: "Change Password Success"
+    message: "Change Password Success",
+    status:'success'
   });
+  const { getUser } = useAuthentication();
+
 
   const useFormInstance = useForm({
     shouldFocusError: false,
@@ -85,11 +91,55 @@ export default ({ action }) => {
 
   /* Component Functions */
 
-  // const onSubmit = (data) => {
-  //   let request = { ...data };
-  //   delete request.confirm_password
-  //   changePassword({ variables: { input: request } });
-  // };
+  const onSubmit = (data) => {
+    let request = { ...data,'employee':getUser().employee};
+    console.log(request)
+    instance.post("./auth/changePassword", request,
+    // {
+    //   headers:{
+    //       token:localStorage.getItem("token")
+    //   }
+    // }
+    ).then((response) => {
+      console.log(response)
+      if(!response.data.error) {
+        setShowNotif({
+          ...showNotif,
+          message:response.data,
+           open: true
+          })
+        setTimeout(() => {
+          window.location = window.location;
+        }, 3000);
+      }else{
+        if(response.data.error.message){
+
+          // alert(response.data.error.message)
+          setShowNotif({
+            ...showNotif, 
+            message:response.data.
+            error.message, 
+            open: true,
+            status:'warning'
+          })
+          setTimeout(() => {
+            setShowNotif({...showNotif,open: false})
+          }, 3000);
+        }else{
+          // console.log(response.data.error)
+          setShowNotif({
+            ...showNotif,
+            message:response.data.error,
+            open: true,
+            status:'warning'
+          })
+          setTimeout(() => {
+            setShowNotif({...showNotif,open: false})
+          }, 3000);
+        }
+      }
+    }) 
+  };
 
   return (
     <FormContext.Provider
@@ -109,7 +159,7 @@ export default ({ action }) => {
                 style={{ background: "#2196f3", color: "#fff" }}
                 // color="primary"
                 type="submit"
-                // onClick={handleSubmit(onSubmit)}
+                onClick={handleSubmit(onSubmit)}
                 variant="contained"
               >
                 Submit
