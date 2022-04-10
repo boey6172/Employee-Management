@@ -40,17 +40,17 @@ router.post("/", async(req,res) =>{
 });
 
 router.post("/changePassword", async(req,res) =>{
-    const {employee,oldPassword, confirmPassword, password} = req.body
+    const {employee,old_password, confirm_password, new_password} = req.body
     try {
         const user = await Users.findOne({
             where: {employee:employee}
         })
-        if(password !== confirmPassword) res.json({error:" Old Password Does not Match"})
+        if(new_password !== confirm_password) res.json({error:" Confirm Password Does not Match"})
         
-        bcrypt.compare(oldPassword, user.password).then((match)=>{
+        bcrypt.compare(old_password, user.password).then((match)=>{
             if(!match) res.json({error:" Old Password Does not Match"})
-            
-            bcrypt.hash(password, 10).then((hash) =>{
+            // res.json(match)
+            bcrypt.hash(new_password, 10).then((hash) =>{
                 Users.update({
                     password:hash,
                 },{
@@ -61,6 +61,7 @@ router.post("/changePassword", async(req,res) =>{
             })
             res.json("Password Has Been changed");
         })
+        
         
     } catch (error) {
         console.log(error)
