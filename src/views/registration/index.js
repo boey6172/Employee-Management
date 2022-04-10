@@ -17,9 +17,10 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import Personal from './personal'
-import Auth from './auth'
-import Emp from './emp_details'
+import Personal from './personal';
+import Auth from './auth';
+import Emp from './emp_details';
+import FullDetails from './full_details';
 import {useFormik} from "formik";
 import auth from '../../helper/validation/auth';
 import personalValidation from '../../helper/validation/personal';
@@ -59,7 +60,7 @@ const Index = () =>{
   
   
   const getSteps = () => {
-    return ['Enter your Login Credentials', 'Personal Information', 'Employment Details'];
+    return ['Enter your Login Credentials', 'Personal Information', 'Employment Details','Save Confirm'];
   }
 
   const formik = useFormik({
@@ -70,6 +71,7 @@ const Index = () =>{
     },
     validationSchema: auth,
     onSubmit: (values, {resetForm}) => {
+      console.log(values)
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       },
   });
@@ -88,9 +90,11 @@ const Index = () =>{
       barangay:'',
       gender:'',
       address:'',
+      religion:'',
     },
     validationSchema: personalValidation,
     onSubmit: (values, {resetForm}) => {
+      console.log(values)
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       values.address = values.region + ' ' + values.province + ' ' + values.municipality + ' ' + values.barangay
     },
@@ -102,20 +106,22 @@ const Index = () =>{
       philNumber:'',
       gsisNumber:'',
       nhmcNumber:'',
+      pagIbigNumber:'',
       tinNumber:'',
       taxstat:'',
       salaryGrade:'',
+      rank:'',
+      regionAssignment:'',
       
     },
     validationSchema: empValidation,
     onSubmit: (values2, {resetForm}) => {
-
-      // setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      // console.log(values2)
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
       // setHolder(...holder, values2)
       // setHolder((prevData) => prevData ,values2);
-
       setHolder({...formik.values,...personal.values,...values2})
-      submit();
+      // submit();
     },
   });
 
@@ -123,8 +129,9 @@ const Index = () =>{
 
   const handleNext = () => {
     // alert(activeStep)
-    console.log(holder)
+    // console.log(holder)
     const step = getStepIndex();
+    // console.log(activeStep)
     switch (step) {
       case 0:
          formik.handleSubmit()
@@ -162,6 +169,8 @@ const getStepContent = (stepIndex) => {
       return <Personal formik={personal}/>;
     case 2:
       return <Emp formik={empDetails}/>;
+    case 3:
+      return <FullDetails data={holder}/>;
     default:
       return 'Unknown stepIndex';
   }
@@ -169,24 +178,28 @@ const getStepContent = (stepIndex) => {
 
 
 const submit = () => {
-  instance.post("employee", holder).then((response)=>{
+  setHolder({...formik.values,...personal.values,...empDetails.values2})
+  let request = {...holder};
+  
+  instance.post("./employee", request).then((response)=>{
     if(!response.data.error){
-      instance.post("auth/login", holder).then((responses) => {
-        if (!responses.data.error){
-          setToken(responses.data.token)
-          setUser(responses.data.user)
-          if(responses.data.user.role === "employee")
-            navigate("/employee/dashboard", { replace: true });
+      // instance.post("auth/login", holder).then((responses) => {
+        // if (!responses.data.error){
+        //   setToken(responses.data.token)
+        //   setUser(responses.data.user)
+          // if(responses.data.user.role === "employee")
+          console.log(response)
+            navigate("/login", { replace: true });
           // else
           //   navigate("/employee/dashboard", { replace: true });
           
-        }
-        else{
-          setError(response.data.error);
-          setOpen(true);
-        }
+        // }
+        // else{
+        //   setError(response.data.error);
+        //   setOpen(true);
+        // }
 
-      })
+      // })
     }
     else{
       setError(response.data.error);
@@ -266,7 +279,7 @@ const submit = () => {
                   >
                     Back
                   </Button>
-                  <Button variant="contained" color="primary" onClick={handleNext}>
+                  <Button variant="contained" color="primary" onClick={activeStep === steps.length - 1 ? submit : handleNext}>
                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                   </Button>
                 </div>

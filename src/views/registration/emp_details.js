@@ -18,6 +18,7 @@ import {
   InputLabel,
   FormHelperText,
 } from '@material-ui/core';
+import instance from '../../instance/instance';
 
 
 
@@ -50,6 +51,25 @@ const useStyles = makeStyles((theme) => ({
 
 const Index = (formik) => {
   const classes = useStyles();
+  const [taxstat, setTaxStat] = useState([]);
+  const [rank, setRank] = useState([]);
+  const [regionAssignment, setRegionAssignment] = useState([]);
+
+
+
+
+  useEffect(() => {
+    // refetch();
+    instance.get("./taxstatuses/gettaxStat").then((response) => {
+      setTaxStat(response.data)
+    }) 
+    instance.get("./ranks/getRank").then((response) => {
+      setRank(response.data)
+    }) 
+    instance.get("./region/getregion").then((response) => {
+      setRegionAssignment(response.data)
+    }) 
+  }, []);
 
   return (
     <Page
@@ -88,7 +108,7 @@ const Index = (formik) => {
               
             >
  
- <Card>
+            <Card>
                 <CardHeader
                   title="Employee Details"
                 />
@@ -124,6 +144,76 @@ const Index = (formik) => {
                       md={4}
                       xs={12}
                     >
+                      <FormControl 
+                        // variant="outlined" 
+                        className={classes.formControl} 
+                        fullWidth
+                      >
+                        <InputLabel id="demo-simple-select-label">Rank</InputLabel>
+                        <Select
+                          id="outlined-basic"
+                          name="rank"
+                          label="Rank"
+                          labelId="demo-simple-select-label"
+                          // variant="outlined"
+                          value={formik.formik.values.rank}
+                          onChange={formik.formik.handleChange}
+                          error={formik.formik.touched.rank && Boolean(formik.formik.errors.rank)}
+                          // helperText={formik.formik.touched.taxStatus && formik.formik.errors.taxStatus}  
+                        >
+                          {rank?.map(( {id, rank} , index) => (
+                            <MenuItem value={id} key={index}>
+                              {rank}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        <FormHelperText
+                          error={formik.formik.touched.rank && Boolean(formik.formik.errors.rank)}
+                        >
+                          {formik.formik.touched.rank && formik.formik.errors.rank}
+                        </FormHelperText>
+                      </FormControl>
+                    </Grid>
+                    <Grid
+                      item
+                      md={4}
+                      xs={12}
+                    >
+                      <FormControl 
+                        // variant="outlined" 
+                        className={classes.formControl} 
+                        fullWidth
+                      >
+                        <InputLabel id="demo-simple-select-label">Region Assignment</InputLabel>
+                        <Select
+                          id="outlined-basic"
+                          name="regionAssignment"
+                          label=" Region Assignment"
+                          labelId="demo-simple-select-label"
+                          // variant="outlined"
+                          value={formik.formik.values.regionAssignment}
+                          onChange={formik.formik.handleChange}
+                          error={formik.formik.touched.regionAssignment && Boolean(formik.formik.errors.regionAssignment)}
+                          // helperText={formik.formik.touched.taxStatus && formik.formik.errors.taxStatus}  
+                        >
+                          {regionAssignment?.map(( {id, regionAssignment} , index) => (
+                            <MenuItem value={id} key={index}>
+                              {regionAssignment}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        <FormHelperText
+                          error={formik.formik.touched.regionAssignment && Boolean(formik.formik.errors.regionAssignment)}
+                        >
+                          {formik.formik.touched.regionAssignment && formik.formik.errors.regionAssignment}
+                        </FormHelperText>
+                      </FormControl>
+                    </Grid>
+                    <Grid
+                      item
+                      md={3}
+                      xs={12}
+                    >
                       <TextField
                         fullWidth
                         id="outlined-basic"
@@ -138,7 +228,7 @@ const Index = (formik) => {
                     </Grid>
                     <Grid
                       item
-                      md={4}
+                      md={3}
                       xs={12}
                     >
                       <TextField
@@ -189,7 +279,24 @@ const Index = (formik) => {
                     </Grid>
                     <Grid
                       item
-                      md={3}
+                      md={4}
+                      xs={12}
+                    >
+                      <TextField
+                        fullWidth
+                        id="outlined-basic"
+                        name="pagIbigNumber"
+                        label="PagIbig Number"
+                        // variant="outlined"
+                        value={formik.formik.values.pagIbigNumber}
+                        onChange={formik.formik.handleChange}
+                        error={formik.formik.touched.pagIbigNumber && Boolean(formik.formik.errors.pagIbigNumber)}
+                        helperText={formik.formik.touched.pagIbigNumber && formik.formik.errors.pagIbigNumber}
+                      />   
+                    </Grid>
+                    <Grid
+                      item
+                      md={4}
                       xs={12}
                     >
                       <FormControl 
@@ -209,11 +316,11 @@ const Index = (formik) => {
                           error={formik.formik.touched.taxstat && Boolean(formik.formik.errors.taxstat)}
                           // helperText={formik.formik.touched.taxStatus && formik.formik.errors.taxStatus}  
                         >
-                          <MenuItem value="">
-                            <em>None</em>
-                          </MenuItem>
-                          <MenuItem value={"Single"}>Single</MenuItem>
-                          <MenuItem value={"Married"}>Married</MenuItem>
+                          {taxstat?.map(( {id, description} , index) => (
+                            <MenuItem value={id} key={index}>
+                              {description}
+                            </MenuItem>
+                          ))}
                         </Select>
                         <FormHelperText
                           error={formik.formik.touched.taxstat && Boolean(formik.formik.errors.taxstat)}
@@ -224,7 +331,7 @@ const Index = (formik) => {
                     </Grid>
                     <Grid
                       item
-                      md={3}
+                      md={4}
                       xs={12}
                     >
                       <TextField

@@ -19,6 +19,7 @@ import {
   FormHelperText,
 } from '@material-ui/core';
 import PhilippineMap from '../../maps/data.json'
+import instance from '../../instance/instance';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -68,6 +69,10 @@ const Index = (formik) => {
   const [selectedMunicipality, setSelectedMunicipality] = useState([]);
   const [barangay, setBarangay] = useState([]);
   const [state, setState] = useState(states);
+  const [gender, setGender] = useState([]);
+  const [religion, setReligion] = useState([]);
+
+
 
 
   const onChangeRegion = (e) => {
@@ -112,6 +117,16 @@ const Index = (formik) => {
 
     setBarangay(filterMunicipality.barangay_list);
   };
+
+  useEffect(() => {
+    // refetch();
+    instance.get("./gender/getgenders").then((response) => {
+      setGender(response.data)
+    }) 
+    instance.get("./religion/getreligion").then((response) => {
+      setReligion(response.data)
+    }) 
+  }, []);
 
   return (
     <Page
@@ -229,7 +244,7 @@ const Index = (formik) => {
                   </Grid> 
                   <Grid
                     item
-                    md={6}
+                    md={4}
                     xs={12}
                   >  
                     <FormControl  
@@ -248,11 +263,11 @@ const Index = (formik) => {
                         error={formik.formik.touched.gender && Boolean(formik.formik.errors.gender)}
                         // helperText={formik.formik.touched.gender && formik.formik.errors.gender}  
                       >
-                      <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={"Male"}>Male</MenuItem>
-                        <MenuItem value={"Female"}>Female</MenuItem>
+                        {gender?.map(( {id, description} , index) => (
+                          <MenuItem value={id} key={index}>
+                            {description}
+                          </MenuItem>
+                        ))}
                       </Select>
                       <FormHelperText
                         error={formik.formik.touched.gender && Boolean(formik.formik.errors.gender)}
@@ -263,7 +278,41 @@ const Index = (formik) => {
                   </Grid>
                   <Grid
                     item
-                    md={6}
+                    md={4}
+                    xs={12}
+                  >  
+                    <FormControl  
+                      // variant="outlined" 
+                      className={classes.formControl} 
+                      fullWidth
+                    >
+                      <InputLabel id="demo-simple-select-label">Religion</InputLabel>
+                      <Select
+                        id="outlined-basic"
+                        name="religion"
+                        label="Religion"
+                        labelId="demo-simple-select-label"
+                        value={formik.formik.values.religion}
+                        onChange={formik.formik.handleChange}
+                        error={formik.formik.touched.religion && Boolean(formik.formik.errors.religion)}
+                        // helperText={formik.formik.touched.gender && formik.formik.errors.gender}  
+                      >
+                        {religion?.map(( {id, religion} , index) => (
+                          <MenuItem value={id} key={index}>
+                            {religion}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      <FormHelperText
+                        error={formik.formik.touched.religion && Boolean(formik.formik.errors.religion)}
+                      >
+                        {formik.formik.touched.religion && formik.formik.errors.religion}
+                      </FormHelperText>
+                    </FormControl>
+                  </Grid>
+                  <Grid
+                    item
+                    md={4}
                     xs={12}
                   >
                     <TextField
@@ -281,6 +330,11 @@ const Index = (formik) => {
                       helperText={formik.formik.touched.birthday && formik.formik.errors.birthday}
                     />
                   </Grid>
+                  <Grid
+                    item
+                    md={6}
+                    xs={12}
+                  >
                     <TextField
                       fullWidth
                       id="outlined-basic"
@@ -292,6 +346,25 @@ const Index = (formik) => {
                       error={formik.formik.touched.contactNumber && Boolean(formik.formik.errors.contactNumber)}
                       helperText={formik.formik.touched.contactNumber && formik.formik.errors.contactNumber}
                     />
+                  </Grid>
+                  <Grid
+                    item
+                    md={6}
+                    xs={12}
+                  >
+                    <TextField
+                      fullWidth
+                      id="outlined-basic"
+                      name="email"
+                      type="email"
+                      label="Email"
+                      // variant="outlined"
+                      value={formik.formik.values.email}
+                      onChange={formik.formik.handleChange}
+                      error={formik.formik.touched.email && Boolean(formik.formik.errors.email)}
+                      helperText={formik.formik.touched.email && formik.formik.errors.email}
+                    />
+                  </Grid>
                 </Grid>
             <Grid
               container

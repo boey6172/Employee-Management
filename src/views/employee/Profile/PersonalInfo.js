@@ -86,7 +86,7 @@ const Sales = ({ className, ...rest }) => {
                 <font color="#616161">Marital Status: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.taxstat}
+                {employeeInfo?.TaxStatus.description}
               </TableCell>
             </TableRow>
             <TableRow>
