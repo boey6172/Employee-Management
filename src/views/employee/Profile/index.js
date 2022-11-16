@@ -188,6 +188,13 @@ const StyledTab = withStyles((theme) => ({
   },
 }))((props) => <Tab disableRipple {...props} />);
 
+const states ={
+  id:"", 
+  employee:"",  
+  file:"",  
+  DocumentType:""
+};
+
 export default () => {
   const [value, setValue] = useState(0);
   const classes = useStyles();
@@ -197,7 +204,10 @@ export default () => {
   }
   const [employee,setEmployee] = useState();
   const [account,setAccount] = useState();
-  const [documentType,setdocumentType] = useState();
+  const [education,setEducation] = useState();
+  // const [documentType,setdocumentType] = useState();
+  // const [att,setAttachments] = useState();
+
 
 
 
@@ -205,27 +215,39 @@ export default () => {
     // refetch();
     instance.post("./employee/getemployee",data).then((response) => {
       setEmployee(response.data)
+      console.log(employee)
     }) 
     instance.post("./employee/getAccountInfo",data).then((response) => {
       setAccount(response.data)
+    })   
+    instance.post("./school",data).then((response) => {
+      setEducation(response.data)
     }) 
+    // instance.post("./employee/attachments",data).then((response) => {
+    //   setAttachments(response.data)
+    //   console.log(response.data)
+    //   console.log(att)
+
+    // })   
+  
 
   }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  console.log(employee)
   return (
+
     <>
       <Context.Provider
         value={{
-          employeeInfo: employee,
+          employeeInfo: employee?.employee,
           accountInfo:account,
-          // educationalAttainment: data?.employee?.educational_attainment,
-          govInfo: employee,
+          educationalAttainment: education,
+          govInfo: employee?.employee,
           // skills: data?.employee?.skills,
-          // attachments: documentType,
+          attachments: employee?.attachments,
           // previousEmployment: data?.employee?.previous_employment,
         }}
       >
@@ -260,10 +282,10 @@ export default () => {
                         {" "}
                         <Box className={classes.avatarDetails}>
                           <Typography variant="h4" style={{ color: "#fff" }}>
-                            {`${employee?.firstname}
-                              ${employee?.middlename}
-                              ${employee?.lastname}
-                              ${employee?.suffix}`}
+                            {`${employee?.employee.firstname}
+                              ${employee?.employee.middlename}
+                              ${employee?.employee.lastname}
+                              ${employee?.employee.suffix}`}
                           </Typography>
                           <Typography
                             style={{ color: "#bdbdbd" }}

@@ -18,6 +18,8 @@ const employeeRouter = require("./routes/Employee");
 const roleRouter = require("./routes/Role");
 const genderRouter = require("./routes/Gender");
 const taxRouter = require("./routes/TaxStatuses");
+const schoolRouter = require("./routes/School");
+const attRouter = require("./routes/Attachments");
 
 
 
@@ -35,10 +37,12 @@ app.use("/employee", employeeRouter);
 app.use("/role", roleRouter);
 app.use("/gender", genderRouter);
 app.use("/taxstatuses", taxRouter);
+app.use("/school", schoolRouter);
+app.use("/attachments", attRouter);
 
 
 
-
+app.use('/Images', express.static('./Images'))
 
 
 

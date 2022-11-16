@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@material-ui/core";
 import UpdateAttachment from "./update/Attachments/Attachment";
+import Loading from "../../../../widgets/loading"
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -41,6 +42,8 @@ const Sales = ({ className, ...rest }) => {
   const classes = useStyles();
   const { attachments, employeeInfo } = useContext(Context);
 
+if(attachments){
+  console.log(attachments)
   return (
     <Card
       className={clsx(classes.root)}
@@ -57,6 +60,7 @@ const Sales = ({ className, ...rest }) => {
           <UpdateAttachment
             style={{ cursor: "pointer" }}
             employeeData={employeeInfo}
+            attachments={attachments}
           />
         }
         title="Attachments"
@@ -78,8 +82,7 @@ const Sales = ({ className, ...rest }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {attachments &&
-              attachments.map((attachment, index) => (
+            {attachments?.map((attachment, index) => (
                 <TableRow hover key={index}>
                   <TableCell
                     style={{
@@ -87,11 +90,11 @@ const Sales = ({ className, ...rest }) => {
                       textAlign: "center",
                     }}
                   >
-                    {attachment?.type.name}
+                    {attachment.DocumentType.documentType}
                   </TableCell>
                   <TableCell style={{ textAlign: "center" }}>
                     <a
-                      href={`${process.env.REACT_APP_FILE_SERVER}${attachment?.path}`}
+                      href={`${process.env.REACT_APP_FILE_SERVER}${attachment.file}`}
                       download
                     >
                       <VerticalAlignBottom className={classes.downloadBtn} />
@@ -104,6 +107,12 @@ const Sales = ({ className, ...rest }) => {
       </Box>
     </Card>
   );
+}else{
+  return(
+    <Loading />
+  )
+}
+
 };
 
 Sales.propTypes = {

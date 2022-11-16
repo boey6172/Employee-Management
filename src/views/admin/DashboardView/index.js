@@ -65,10 +65,10 @@ export default () => {
             <Grid container spacing={3}>
               <Grid item lg={3} sm={6} xl={3} xs={12}>
                 <Fade top>
-                  {/* <TotalEmployees 
+                  <TotalEmployees 
                     // applicantStatuses = {dataApplicantStatuses?.applicantstatuses}
                     // employeeStatuses = {dataEmployeeStatuses?.employeeStatus}
-                  /> */}
+                  />
                 </Fade>
               </Grid>
               <Grid item lg={3} sm={6} xl={3} xs={12}>

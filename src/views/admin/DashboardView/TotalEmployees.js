@@ -88,7 +88,8 @@ const Budget = ({ applicantStatuses, employeeStatuses, className, ...rest }) => 
               color="textPrimary"
               variant="h3"
             >
-              {totalEmployees}
+              1
+              {/* {totalEmployees} */}
             </Typography>
           </Grid>
           <Grid item>

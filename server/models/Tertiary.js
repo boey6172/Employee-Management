@@ -1,13 +1,21 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const Posts = sequelize.define("Gender", {
+    const Tertiary = sequelize.define("Tertiary", {
         id:{
             type:DataTypes.UUID,
             defaultValue:DataTypes.UUIDV4,
             // allowNull: false,
             primaryKey:true,
         },
+        employee:{
+            type:DataTypes.STRING,
+            allowNull: false,
+        },
         school_name:{
+            type:DataTypes.STRING,
+            allowNull: false,
+        },
+        course:{
             type:DataTypes.STRING,
             allowNull: false,
         },
@@ -29,5 +37,5 @@ module.exports = (sequelize, DataTypes) => {
     //         ondelete: "cascade",
     //     })
     // }
-    return Posts
+    return Tertiary
 } 

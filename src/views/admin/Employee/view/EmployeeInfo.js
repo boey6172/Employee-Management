@@ -47,15 +47,15 @@ const EmployeeInfo = ({ className, ...rest }) => {
     >
       <CardHeader 
         title="Employee Info" 
-        action={
-          <UpdateEmployeeInfo style={{ cursor: "pointer" }} data={employeeInfo} />
-        }
+        // action={
+        //   <UpdateEmployeeInfo style={{ cursor: "pointer" }} data={employeeInfo} />
+        // }
       />
       <Divider />
       <Box p={3}>
         <Table>
           <TableBody>
-            <TableRow>
+            {/* <TableRow>
               <TableCell
                 style={{ border: "none", padding: "3px", width: "170px" }}
               >
@@ -64,16 +64,16 @@ const EmployeeInfo = ({ className, ...rest }) => {
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {employeeInfo?.employee_info?.identification_number}
               </TableCell>
-            </TableRow>
-            <TableRow>
+            </TableRow> */}
+            {/* <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 <font color="#616161">Contract Number: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {employeeInfo?.employee_info?.contract_number}
               </TableCell>
-            </TableRow>
-            <TableRow>
+            </TableRow> */}
+            {/* <TableRow>
               <TableCell
                 style={{ border: "none", padding: "3px", width: "170px" }}
               >
@@ -82,53 +82,53 @@ const EmployeeInfo = ({ className, ...rest }) => {
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {employeeInfo?.employee_info?.company?.name}
               </TableCell>
-            </TableRow>
+            </TableRow> */}
             <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 <font color="#616161">Branch: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.employee_info?.branch?.name}
+                {employeeInfo?.RegionAssignment.regionAssignment}
               </TableCell>
             </TableRow>
-            <TableRow>
+            {/* <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 <font color="#616161">Department: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {employeeInfo?.employee_info?.department?.name}
               </TableCell>
-            </TableRow>
+            </TableRow> */}
             <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                <font color="#616161">Position: </font>
+                <font color="#616161">Rank: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.employee_info?.position?.name}
+                {employeeInfo?.Rank?.rank}
               </TableCell>
             </TableRow>
-            <TableRow>
+            {/* <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 <font color="#616161">Shift Name: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {employeeInfo?.employee_info?.shift?.name}
               </TableCell>
-            </TableRow>
-            <TableRow>
+            </TableRow> */}
+            {/* <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 <font color="#616161">Shift: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 {moment(employeeInfo?.employee_info?.shift?.in_starting, ["kk:mm"]).format("hh:mm A")} - {moment(employeeInfo?.employee_info?.shift?.out_ending, ["kk:mm"]).format("hh:mm A")}
               </TableCell>
-            </TableRow>
+            </TableRow> */}
             <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                <font color="#616161">Salary: </font>
+                <font color="#616161">Salary Grade: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.employee_info?.salary}
+                {employeeInfo?.salaryGrade}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -136,7 +136,7 @@ const EmployeeInfo = ({ className, ...rest }) => {
                 <font color="#616161">Date Started: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {moment(employeeInfo?.employee_info?.start_date).format(
+                {moment(employeeInfo?.start_date).format(
                   "DD/MM/YYYY"
                 )}
               </TableCell>

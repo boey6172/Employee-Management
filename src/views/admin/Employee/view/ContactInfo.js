@@ -22,8 +22,7 @@ const useStyles = makeStyles(() => ({
 
 const Sales = ({ className, ...rest }) => {
   const classes = useStyles();
-  const { employeeInfo } = useContext(Context);
-
+  const { accountInfo, employeeInfo} = useContext(Context);
   return (
     <Card
       className={clsx(classes.root)}
@@ -53,25 +52,25 @@ const Sales = ({ className, ...rest }) => {
               <TableCell style={{ border: "none", padding: "3px" }}>
                 <font color="#616161">Username: </font>
               </TableCell>
-              {/* <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.account?.credential?.username}
-              </TableCell> */}
+              <TableCell style={{ border: "none", padding: "3px" }}>
+                {accountInfo?.username}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 <font color="#616161">E-mail: </font>
               </TableCell>
-              {/* <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.contact_info.email}
-              </TableCell> */}
+              <TableCell style={{ border: "none", padding: "3px" }}>
+                {accountInfo?.email}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={{ border: "none", padding: "3px" }}>
                 <font color="#616161">Contact No: </font>
               </TableCell>
-              {/* <TableCell style={{ border: "none", padding: "3px" }}>
-                {employeeInfo?.contact_info.mobile_number}
-              </TableCell> */}
+              <TableCell style={{ border: "none", padding: "3px" }}>
+                {employeeInfo?.contactNumber}
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>

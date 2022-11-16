@@ -9,8 +9,9 @@ export default ({ data, action }) => {
 
   let modifyState = {
     ...data,
-    info: { ...data.info, gender: data.info.gender._id },
+    info: { ...data.info  },
   };
+  console.log(data)
 
   let states = {
     info: {
@@ -35,7 +36,7 @@ export default ({ data, action }) => {
     ...states, 
     ...modifyState, 
     credential : {
-      roles:  modifyState.credential.roles[0],
+      // roles:  modifyState.credential.roles[0],
       password: "",
     }
   };

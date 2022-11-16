@@ -7,80 +7,137 @@ const {validateToken} = require("../middleware/AuthMiddleware");
 const moment = require('moment');
 
  
-router.get("/", async(req,res) =>{
-    const listofrank =  await Ranks.findAll(
-        {where: {
-            deleted_at:{
-                [Op.not]: !null
-            }
-          }
+router.post("/", async(req,res) =>{
+    const {id} = req.body
+    const primary = await Primary.findOne({
+        where:{ 
+            employee: id
         }
-    )
-    res.json(listofrank)
-});
-
-router.get("/getrank", async(req,res) =>{
-    const listofrank =  await Ranks.findAll(
-        {where: {
-            deleted_at:{
-                [Op.not]: !null
-            }
-          }
+    })
+    const secondary = await Secondary.findOne({
+        where:{ 
+            employee: id
         }
-    )
-    res.json(listofrank)
+    })
+    const tertiary = await Tertiary.findOne({
+        where:{ 
+            employee: id
+        }
+    })
+
+    const data ={primary,secondary,tertiary};
+
+    res.json(data);
 });
 
 
-router.get("/byId/:id", async(req,res) =>{
-    const id = req.params.id
-    const rank =  await Ranks.findByPk(id)
-    res.json(rank)
-});
-
-router.post("/searchrank", async(req,res) =>{
-    const {value} = req.body
-    try {
-        const rank =  await Ranks.findAll( {where: {
-            rank: {
-              [Op.like]: '%'+value+'%'
-            },
-            deleted_at:{
-                [Op.not]: !null
-            }
-          }
-        })
-        res.json(rank)
-        
-    } catch (error) {
-        console.log(error)
-    }
-
-});
-
-
-router.post("/", validateToken, async(req,res) =>{
-    const data = req.body
-    const {rank} = data
+router.post("/primary",  async(req,res) =>{
+    let data = req.body
+    const {id,school_name,address,year_completed,year_graduated} = data
+    data ={...data,'employee':id}
     try{
 
-        const count = await Ranks.findOne({
+        const ifUpdate = await Primary.findOne({
             where:{ 
-                rank: rank
+                employee: id
             }
         })
 
-        if (count) res.json({error:"Rank Already exist"})
-        
-        await Ranks.create(data);
-        res.json(data);
+        if (ifUpdate){
+                    
+            await Primary.update({
+                school_name:school_name,
+                address:address,
+                year_completed:year_completed,
+                year_graduated:year_graduated,
 
-       
+            },{
+                where:{
+                    employee:id
+                }
+            });
+            res.json(data);
+
+        }else{
+            await Primary.create(data);
+            res.json(data);
+        }
     }catch(error) {
         res.json(error);
-    }   
-    
+    }     
 });
+router.post("/secondary",  async(req,res) =>{
+    let data = req.body
+    const {id,school_name,address,year_completed,year_graduated} = data
+    data ={...data,'employee':id}
+    try{
+
+        const ifUpdate = await Secondary.findOne({
+            where:{ 
+                employee: id
+            }
+        })
+
+        if (ifUpdate){
+                    
+            await Secondary.update({
+                school_name:school_name,
+                address:address,
+                year_completed:year_completed,
+                year_graduated:year_graduated,
+
+            },{
+                where:{
+                    employee:id
+                }
+            });
+            res.json(data);
+
+        }else{
+            await Secondary.create(data);
+            res.json(data);
+        }
+    }catch(error) {
+        res.json(error);
+    }     
+});
+router.post("/tertiary",  async(req,res) =>{
+    let data = req.body
+    const {id,school_name,address,year_completed,year_graduated} = data
+    data ={...data,'employee':id}
+    try{
+
+        const ifUpdate = await Tertiary.findOne({
+            where:{ 
+                employee: id
+            }
+        })
+
+        if (ifUpdate){
+                    
+            await Tertiary.update({
+                school_name:school_name,
+                address:address,
+                year_completed:year_completed,
+                year_graduated:year_graduated,
+                course:course
+
+            },{
+                where:{
+                    employee:id
+                }
+            });
+            res.json(data);
+
+        }else{
+            await Tertiary.create(data);
+            res.json(data);
+        }
+    }catch(error) {
+        res.json(error);
+    }     
+});
+
 
 router.post("/update", validateToken, async(req,res) =>{
     const {id, rank} = req.body
@@ -107,20 +164,6 @@ router.post("/update", validateToken, async(req,res) =>{
     
 
 });
-
-router.post("/delete", validateToken, async(req,res) =>{
-    const {id} = req.body;
-    const date = moment().format('YYYY-DD-mm, h:mm:ss a');
-    await Ranks.update({deleted_at:date},{
-        where:{
-            id:id
-        }
-    });
-    res.json();
-});
-
-
-
 
 
 module.exports = router;

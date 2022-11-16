@@ -129,37 +129,6 @@ export default ({ employeeData, attachments }) => {
     setOpen(false);
   };
 
-  // const [
-  //   updateEmployee,
-  //   { loading: loadingUpdateEmployee, error: errorUpdateEmployee },
-  // ] = useMutation(UPDATE_EMPLOYEE, {
-  //   onCompleted(data) {
-  //     window.location = window.location;
-  //   },
-  // });
-
-  // const {
-  //   loading: loadingDocumentType,
-  //   error: errorDocumentType,
-  //   data: dataDocumentType,
-  // } = useQuery(GET_DOCUMENT_TYPE, { errorPolicy: "all" });
-
-  // const activeIds = attachments?.map((attachment) => attachment.type._id);
-
-  // const docType = dataDocumentType?.documenttypes.filter((types) => {
-  //   return activeIds != undefined
-  //     ? activeIds?.indexOf(types._id) === -1 && types.name != "Contract"
-  //     : types.name != "Contract";
-  // });
-
-
-  // const [
-  //   createAttachment,
-  //   { loading: uploadLoading, error: uploadError },
-  // ] = useMutation(DOCUMENT_ATTACHMENTS, {
-  //   onCompleted(data) {},
-  //   errorPolicy: "all",
-  // });
 
   const onChangeFile = (e) => {
     let path = e.target.files[0];
@@ -167,27 +136,40 @@ export default ({ employeeData, attachments }) => {
   };
   const onUpdate = async (info) => {
     alert("yehey");
-    // const {
-    //   data: {
-    //     createDocumentAttachment: { _id },
-    //   },
-    // } = await createAttachment({
-    //   variables: {
-    //     input: { uid: employeeData._id, type: info.type, file: states.files },
-    //   },
-    // });
+    let request = {...info,"employee":employeeData.id} 
+console.log(info)
+    const formData = new FormData()
 
-    // const employee_attachments = { ...employeeData };
+    formData.append('file', states.files)
+    formData.append('employee', employeeData.id)
+    formData.append('documentType', info.type)
 
-    // attachmentState.document_attachments = employee_attachments.document_attachments.map(
-    //   (attachment) => attachment._id
-    // );
+    console.log(formData)
+    instance.post("./employee/upload", formData,
+    // {
+    //   headers:{
+    //       token:localStorage.getItem("token")
+    //   }
+    // }
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+    ).then((response) => {
+      if(!response.error)
+      {
+        window.location = window.location;
+        console.log(response)
+        // alert("Saved" . response)
+      }else{
+          alert(response.error) 
+        console.log(response)
 
-    // attachmentState.document_attachments.push(_id);
+      }
+    }) 
 
-    // updateEmployee({
-    //   variables: { id: employeeData._id, input: attachmentState },
-    // });
+    
   };
 
   const body = (
@@ -254,7 +236,7 @@ export default ({ employeeData, attachments }) => {
                     <Box display="flex" justifyContent="center">
                       <input
                         accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
-                        id="contained-button-file"
+                        id="file"
                         onChange={(e) => {
                           onChangeFile(e);
                           onChange(e);
@@ -265,7 +247,7 @@ export default ({ employeeData, attachments }) => {
                         multiple
                       />
                       <br />
-                      <label htmlFor="contained-button-file">
+                      <label htmlFor="file">
                         <IconButton
                           align="center"
                           color="primary"
@@ -292,34 +274,6 @@ export default ({ employeeData, attachments }) => {
                 )}
               />
             </Grid>
-            {/* <Grid item md={12} xs={12}>
-              <Controller
-                control={control}
-                name="government_info.sss"
-                rules={{ required: "SSS number is Required" }}
-                render={({
-                  field: { onChange, onBlur, value, name, ref },
-                  fieldState: { invalid, isTouched, isDirty, error },
-                  formState,
-                }) => (
-                  <div>
-                    <TextField
-                      defaultValue={getValues("government_info.sss")}
-                      onChange={onChange}
-                      onBlur={onBlur}
-                      error={error !== undefined}
-                      fullWidth
-                      inputRef={ref}
-                      label="SSS No."
-                      margin="normal"
-                      type="text"
-                      // variant="outlined"
-                      helperText={error?.message}
-                    />
-                  </div>
-                )}
-              />
-            </Grid> */}
           </Grid>
           <Box display="flex" justifyContent="center" mt={3}>
             <Button

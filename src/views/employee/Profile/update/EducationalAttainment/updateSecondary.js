@@ -24,6 +24,7 @@ import { Controller } from "react-hook-form";
 import IconButton from "@material-ui/core/IconButton";
 import Edit from "@material-ui/icons/Edit";
 import { remove } from "nprogress";
+import instance from "../../../../../instance/instance";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -86,38 +87,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const states = {
-  educational_attainment: {
-    primary: {
-      school_name: "",
-      school_address: "",
-      year_attainment: "",
-      year_graduated: "",
-    },
-    secondary: {
-      school_name: "",
-      school_address: "",
-      year_attainment: "",
-      year_graduated: "",
-    },
-    tertiary: {
-      school_name: "",
-      school_address: "",
-      course: "",
-      year_attainment: "",
-      year_graduated: "",
-    },
-  },
-};
+
 
 let attachments = {
   document_attachments: [],
 };
 
-export default ({ data }) => {
+export default ({ data,secondary }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [file, setFile] = useState(states);
+
 
   const useFormInstance = useForm({
     shouldFocusError: false,
@@ -143,18 +122,24 @@ export default ({ data }) => {
   // });
 
   const onUpdate = async (info) => {
-    states.educational_attainment.primary = {
-      ...data.educational_attainment.primary,
-    };
-    states.educational_attainment.tertiary = {
-      ...data.educational_attainment.tertiary,
-    };
-    states.educational_attainment.secondary = info;
+    const {id} = data;
+    const request = { ...info,id};
+    instance.post("./school/secondary", request,
+    // {
+    //   headers:{
+    //       token:localStorage.getItem("token")
+    //   }
+    // }
+    ).then((response) => {
+      if(!response.error)
+      {
+        window.location = window.location;
+        // alert("Saved" . response)
+      }else{
+          alert(response.error) 
+      }
+    }) 
 
-    delete states.educational_attainment.primary.__typename;
-    delete states.educational_attainment.tertiary.__typename;
-
-    // updateEmployee({ variables: { id: data._id, input: states } });
   };
 
   const body = (
@@ -173,6 +158,7 @@ export default ({ data }) => {
                 control={control}
                 name="school_name"
                 rules={{ required: "School name is required" }}
+                defaultValue={secondary?.school_name}
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -180,7 +166,7 @@ export default ({ data }) => {
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("school_name")}
+                      defaultValue={secondary?.school_name}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}
@@ -201,6 +187,7 @@ export default ({ data }) => {
                 control={control}
                 name="school_address"
                 rules={{ required: "School Address is required" }}
+                defaultValue={secondary?.address}
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -208,7 +195,7 @@ export default ({ data }) => {
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("school_address")}
+                      defaultValue={secondary?.address}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}
@@ -227,8 +214,9 @@ export default ({ data }) => {
             <Grid item md={6} xs={12}>
               <Controller
                 control={control}
-                name="year_attainment"
+                name="year_completed"
                 rules={{ required: "Years completed is required" }}
+                defaultValue={secondary?.year_completed}
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -236,7 +224,7 @@ export default ({ data }) => {
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("year_attainment")}
+                      defaultValue={secondary?.year_completed}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}
@@ -257,6 +245,7 @@ export default ({ data }) => {
                 control={control}
                 name="year_graduated"
                 rules={{ required: "Years completed is required" }}
+                defaultValue={secondary?.year_graduated}
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -264,7 +253,7 @@ export default ({ data }) => {
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("year_graduated")}
+                      defaultValue={secondary?.year_graduated}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}

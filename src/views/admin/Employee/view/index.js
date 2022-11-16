@@ -1,5 +1,5 @@
 /* Core Imports */
-import React, { createContext, useState } from "react";
+import React, { createContext, useState,useEffect } from "react";
 import PropTypes from "prop-types";
 
 /* UI Imports */
@@ -30,6 +30,7 @@ import EmployeeInfo from "./EmployeeInfo";
 import PersonalInfo from "./PersonalInfo";
 import ContactInfo from "./ContactInfo";
 import Seperate from "./update/Seperate/Seperate";
+import instance from "../../../../instance/instance";
 
 /* Context Instance */
 export const Context = createContext();
@@ -180,23 +181,54 @@ const StyledTab = withStyles((theme) => ({
   },
 }))((props) => <Tab disableRipple {...props} />);
 
+
+
 export default ({ data }) => {
   const [value, setValue] = useState(0);
   const classes = useStyles();
+  const [account, setAccount] = useState();
+  const [education, setEducation] = useState();
+  const [att, setAttachments] = useState(null);
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  useEffect(() => {
+    // refetch();
+    // instance.post("./employee/getemployee",data).then((response) => {
+    //   setEmployee(response.data)
+    //   console.log(employee)
+    // }) 
+    instance.post("./employee/getAccountInfo",data).then((response) => {
+      setAccount(response.data)
+      // console.log(account)
+    })   
+    instance.post("./school",data).then((response) => {
+      setEducation(response.data)
+    }) 
+    instance.post("./attachments/attachments",data).then((response) => {
+      setAttachments(response.data)
+      // console.log(response.data)
+      // console.log(att)
+  
+    })   
+  
+  
+  }, []);
+
+console.log(att)
   return (
     <>
       <Context.Provider
         value={{
           employeeInfo: data,
-          educationalAttainment: data?.educational_attainment,
-          govInfo: data?.government_info,
+          educationalAttainment: education,
+          accountInfo:account,
+          govInfo: data,
           skills: data?.skills,
-          attachments: data?.document_attachments,
+          attachments: att,
           previousEmployment: data?.previous_employment,
         }}
       >
@@ -204,7 +236,7 @@ export default ({ data }) => {
         <Box className={classes.boxStyle} mt={4} mb={6}>
           <Toolbar />
           <Box>
-            <Seperate datas={data} className={classes.seperateBtn} />
+            {/* <Seperate datas={data} className={classes.seperateBtn} /> */}
           </Box>
           <Fade top>
             <Card className={classes.header}>
@@ -234,10 +266,10 @@ export default ({ data }) => {
                         {" "}
                         <Box className={classes.avatarDetails}>
                           <Typography variant="h4" style={{ color: "#fff" }}>
-                            {`${data?.personal_info?.first_name}
-                              ${data?.personal_info?.middle_name}
-                              ${data?.personal_info?.last_name}
-                              ${data?.personal_info?.suffix}`}
+                            {`${data?.firstname}
+                              ${data?.middlename}
+                              ${data?.lastname}
+                              ${data?.suffix}`}
                           </Typography>
                           <Typography
                             style={{ color: "#bdbdbd" }}
@@ -262,7 +294,7 @@ export default ({ data }) => {
                         >
                           <StyledTab label="Profile" {...a11yProps(0)} />
                           <StyledTab label="Personal Info" {...a11yProps(1)} />
-                          <StyledTab label="More" {...a11yProps(2)} />
+                          {/* <StyledTab label="More" {...a11yProps(2)} /> */}
                         </StyledTabs>
                       </AppBar>
                     </Box>
@@ -282,7 +314,7 @@ export default ({ data }) => {
                     <EmployeeInfo />
                   </Fade>
                   <Fade left>
-                    <Skills />
+                    {/* <Skills /> */}
                   </Fade>
                 </Grid>
                 <Grid item lg={6} md={6} xs={12}>
@@ -312,9 +344,9 @@ export default ({ data }) => {
                 </Grid>
               </Grid>
             </TabPanel>
-            <TabPanel value={value} index={2}>
+            {/* <TabPanel value={value} index={2}>
               <WorkExperience />
-            </TabPanel>
+            </TabPanel> */}
           </Box>
         </Page>
       </Context.Provider>

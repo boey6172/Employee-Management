@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import {
@@ -7,13 +7,24 @@ import {
   Box,
   Grid,
   TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  FormHelperText,
+  MenuItem,
   Typography,
 } from "@material-ui/core";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
+import ReportProblemIcon from "@material-ui/icons/ReportProblem";
 // import { UPDATE_EMPLOYEE } from "../Query";
-// import { useMutation } from "@apollo/client";
+// import { useQuery, useMutation } from "@apollo/client";
+import { LaptopWindows } from "@material-ui/icons";
 import { Controller } from "react-hook-form";
+import IconButton from "@material-ui/core/IconButton";
+import Edit from "@material-ui/icons/Edit";
+import { remove } from "nprogress";
+import instance from "../../../../../../instance/instance";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -42,6 +53,19 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     marginLeft: "5px",
   },
+  buttons: {
+    marginTop: "25px",
+  },
+  dangerText: {
+    color: "#757575",
+    textAlign: "center",
+    fontFamily: "Roboto",
+    fontSize: 13,
+  },
+  dangerIcon: {
+    color: "red",
+    fontSize: "50px",
+  },
   editIcon: {
     marginTop: "5px",
     color: "#3e2723",
@@ -50,6 +74,16 @@ const useStyles = makeStyles((theme) => ({
       color: "#9e9e9e",
       cursor: "pointer",
     },
+  },
+  uplaodIcon: {
+    color: "#000",
+    "&:hover": {
+      color: "#3f51b5",
+      cursor: "pointer",
+    },
+  },
+  input: {
+    display: "none",
   },
 }));
 
@@ -77,15 +111,20 @@ const states = {
   },
 };
 
-export default ({ data }) => {
+let attachments = {
+  document_attachments: [],
+};
+
+export default ({ data,primary}) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [file, setFile] = useState(states);
 
   const useFormInstance = useForm({
     shouldFocusError: false,
   });
 
-  const { handleSubmit, getValues, control } = useFormInstance;
+  const { handleSubmit, errors, getValues, control } = useFormInstance;
 
   const handleOpen = () => {
     setOpen(true);
@@ -104,25 +143,26 @@ export default ({ data }) => {
   //   },
   // });
 
-  // const [ updateEmployee ] = useMutation(UPDATE_EMPLOYEE, {
-  //   onCompleted() {
-  //     window.location = window.location;
-  //   },
-  // });
-
   const onUpdate = async (info) => {
-    states.educational_attainment.secondary = {
-      ...data.educational_attainment.secondary,
-    };
-    states.educational_attainment.tertiary = {
-      ...data.educational_attainment.tertiary,
-    };
-    states.educational_attainment.primary = info;
+  
+    const {id} = data;
+    const request = { ...info,id};
+    instance.post("./school/primary", request,
+    // {
+    //   headers:{
+    //       token:localStorage.getItem("token")
+    //   }
+    // }
+    ).then((response) => {
+      if(!response.error)
+      {
+        // window.location = window.location;
+        // alert("Saved" . response)
+      }else{
+          alert(response.error) 
+      }
+    }) 
 
-    delete states.educational_attainment.secondary.__typename;
-    delete states.educational_attainment.tertiary.__typename;
-
-    // updateEmployee({ variables: { id: data._id, input: states } });
   };
 
   const body = (
@@ -141,13 +181,15 @@ export default ({ data }) => {
                 control={control}
                 name="school_name"
                 rules={{ required: "School name is required" }}
+                defaultValue={primary?.school_name}
                 render={({
-                  field: { onChange, onBlur, ref },
-                  fieldState: { error },
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("school_name")}
+                      defaultValue={primary?.school_name}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}
@@ -166,15 +208,17 @@ export default ({ data }) => {
             <Grid item md={12} xs={12}>
               <Controller
                 control={control}
-                name="school_address"
+                name="address"
                 rules={{ required: "School Address is required" }}
+                defaultValue={primary?.address}
                 render={({
-                  field: { onChange, onBlur, ref },
-                  fieldState: { error },
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("school_address")}
+                      defaultValue={primary?.address}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}
@@ -193,15 +237,17 @@ export default ({ data }) => {
             <Grid item md={6} xs={12}>
               <Controller
                 control={control}
-                name="year_attainment"
+                name="year_completed"
                 rules={{ required: "Years completed is required" }}
+                defaultValue={primary?.year_completed}
                 render={({
-                  field: { onChange, onBlur, ref },
-                  fieldState: { error },
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("year_attainment")}
+                      defaultValue={primary?.year_completed}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}
@@ -222,13 +268,15 @@ export default ({ data }) => {
                 control={control}
                 name="year_graduated"
                 rules={{ required: "Years completed is required" }}
+                defaultValue={primary?.year_graduated}
                 render={({
-                  field: { onChange, onBlur, ref },
-                  fieldState: { error },
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
                 }) => (
                   <div>
                     <TextField
-                      defaultValue={getValues("year_graduated")}
+                      defaultValue={primary?.year_graduated}
                       onChange={onChange}
                       onBlur={onBlur}
                       error={error !== undefined}

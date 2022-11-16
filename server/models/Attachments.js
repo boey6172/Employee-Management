@@ -7,11 +7,15 @@ module.exports = (sequelize, DataTypes) => {
             // allowNull: false,
             primaryKey:true,
         },
+        employee:{
+            type:DataTypes.STRING,
+            allowNull: false,
+        },
         documentType:{
             type:DataTypes.UUID,
             allowNull: false,
         },
-        fileType:{
+        file:{
             type:DataTypes.STRING,
             allowNull: false,
         },

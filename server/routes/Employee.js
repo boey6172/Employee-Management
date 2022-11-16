@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router(); 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const {Employees, Users,Gender,Ranks,RegionAssignments,Religions,TaxStatuses} = require ("../models");
+const {Employees, Users,Gender,Ranks,RegionAssignments,Religions,TaxStatuses,Attachments,DocumentTypes} = require ("../models");
 const bcrypt = require("bcrypt");
 const e = require('express');
+const multer = require('multer')
+const path = require('path');
 
 
  
@@ -28,7 +30,14 @@ router.post("/getemployee", async(req,res) =>{
            
         }
     )
-    res.json(employee)
+
+    const attachments = await Attachments.findAll({
+        where:{
+            employee:id
+        },include:[DocumentTypes]
+    });
+    let data = {employee,attachments}
+    res.json(data)
     }
     catch(e){
         console.log(e)
@@ -185,6 +194,50 @@ router.post("/getAccountInfo", async(req,res) =>{
     }
 });
 
+
+
+router.post("/upload", async(req,res) =>{
+    const data = req.body;
+    // const {employee, documentType} = data;
+    try{
+         upload(req,res, async function(err){   
+            if(err){
+            res.json({success:false,message:err});
+            
+            }
+            
+            else{
+                const path = req.file.path
+                let info = {
+                    file: path,
+                    employee: req.body.employee,
+                    documentType: req.body.documentType,
+                }
+
+                    const attachments = await Attachments.create(info);
+                    res.status(200).send(info);
+
+                // res.json({success:true,message:"Data and File was updated !"});
+            } 
+        });
+
+    }catch(e){
+        console.log(e)
+    }
+});
+
+router.post("/attachments", async(req,res) =>{
+    const data = req.body;
+    const {id} = data;
+
+    const attachments = await Attachments.findAll({
+        where:{
+            employee:id
+        },include:[DocumentTypes]
+    });
+    res.json(attachments);
+});
+
 router.post("/getEmpCount", async(req,res) =>{
     // const {id} = req.body
     try{
@@ -224,7 +277,29 @@ router.post("/getEmpCount", async(req,res) =>{
 // });
 
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'Images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
 
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: '10000000' },
+    fileFilter: (req, file, cb) => {
+        const fileTypes = /jpeg|jpg|png|gif|pdf/
+        const mimeType = fileTypes.test(file.mimetype)  
+        const extname = fileTypes.test(path.extname(file.originalname))
+
+        if(mimeType && extname) {
+            return cb(null, true)
+        }
+         cb('Give proper files formate to upload')
+    }
+}).single('file')
 
 
 

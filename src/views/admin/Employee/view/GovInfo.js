@@ -59,10 +59,10 @@ const GovInfo = ({ className, ...rest }) => {
               <TableCell
                 style={{ border: "none", padding: "3px", width: "140px" }}
               >
-                <font color="#616161">SSS No: </font>
+                <font color="#616161">GSIS No: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {govInfo?.sss}
+                {govInfo?.gsisNumber}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -70,7 +70,7 @@ const GovInfo = ({ className, ...rest }) => {
                 <font color="#616161">PhilHealth No: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {govInfo?.philhealth}
+                {govInfo?.philNumber}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -78,7 +78,7 @@ const GovInfo = ({ className, ...rest }) => {
                 <font color="#616161">Pag-Ibig No: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {govInfo?.pag_ibig}
+                {govInfo?.pagIbigNumber}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -86,7 +86,15 @@ const GovInfo = ({ className, ...rest }) => {
                 <font color="#616161">TIN No: </font>
               </TableCell>
               <TableCell style={{ border: "none", padding: "3px" }}>
-                {govInfo?.tin}
+                {govInfo?.tinNumber}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={{ border: "none", padding: "3px" }}>
+                <font color="#616161">NHMC No: </font>
+              </TableCell>
+              <TableCell style={{ border: "none", padding: "3px" }}>
+                {govInfo?.nhmcNumber}
               </TableCell>
             </TableRow>
           </TableBody>

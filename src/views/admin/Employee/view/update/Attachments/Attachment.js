@@ -1,39 +1,35 @@
-/* Core Imports */
-import React, { useContext, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-
-/* UI Imports */
+import React, { useContext, useState,useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { useForm } from "react-hook-form";
 import {
   Modal,
   Button,
   Box,
   Grid,
+  TextField,
   FormControl,
   InputLabel,
   Select,
   FormHelperText,
   MenuItem,
-  makeStyles,
-  Backdrop,
-  Fade,
 } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import PublishIcon from "@material-ui/icons/Publish";
-
-/* Api Imports */
-// import { useQuery, useMutation } from "@apollo/client";
-
-/* Query Imports */
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
+import Edit from "@material-ui/icons/Edit";
+import ReportProblemIcon from "@material-ui/icons/ReportProblem";
 // import {
 //   UPDATE_EMPLOYEE,
 //   GET_DOCUMENT_TYPE,
 //   DOCUMENT_ATTACHMENTS,
 // } from "../Query";
+// import { useQuery, useMutation } from "@apollo/client";
+import { LaptopWindows } from "@material-ui/icons";
+import { Controller } from "react-hook-form";
+import IconButton from "@material-ui/core/IconButton";
+import PublishIcon from "@material-ui/icons/Publish";
+import { remove } from "nprogress";
+import instance from "../../../../../../instance/instance";
 
-/* Context Instance */
-import { ParentContext } from "../../../../../admin/Employee";
-
-/* Create Styles */
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -61,6 +57,19 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     marginLeft: "5px",
   },
+  buttons: {
+    marginTop: "25px",
+  },
+  dangerText: {
+    color: "#757575",
+    textAlign: "center",
+    fontFamily: "Roboto",
+    fontSize: 13,
+  },
+  dangerIcon: {
+    color: "red",
+    fontSize: "50px",
+  },
   uploadIcon: {
     marginTop: "5px",
     color: "#3e2723",
@@ -70,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
       cursor: "pointer",
     },
   },
-  publishIcon: {
+  uplaodIcon: {
     color: "#000",
     "&:hover": {
       color: "#3f51b5",
@@ -92,91 +101,75 @@ let attachmentState = {
 
 export default ({ employeeData, attachments }) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const { dispatch } = useContext(ParentContext);
-  const [newEmployeeInfo, setNewEmployeeInfo] = useState(employeeData)
+  const [open, setOpen] = React.useState(false);
+  const [file, setFile] = useState(states);
+  const [docType, setDocType] = useState(states);
 
-  const onRedirect = () => {
-    dispatch({ type: "view", payload: newEmployeeInfo });
-  };
 
+  useEffect(() => {
+    // refetch();
+    instance.get("./documenttype").then((response) => {
+      setDocType(response.data)
+      // setRanks(response.data)
+      console.log(docType)
+    }) 
+  }, []);
   const useFormInstance = useForm({
     shouldFocusError: false,
   });
 
   const { handleSubmit, errors, getValues, control } = useFormInstance;
 
-  // const [updateEmployee] = useMutation(UPDATE_EMPLOYEE, {
-  //   onCompleted(data) {
-  //     console.log(newEmployeeInfo)
-  //     data.updateEmployee && onRedirect();
-  //     setOpen(false);
-  //   },
-  // });
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
-  // const { data: dataDocumentType } = useQuery(GET_DOCUMENT_TYPE, {
-  //   errorPolicy: "all",
-  // });
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  const activeIds = attachments?.map((attachment) => attachment.type._id);
-
-  // const docType = dataDocumentType?.documenttypes.filter((types) => {
-  //   return activeIds != undefined
-  //     ? activeIds?.indexOf(types._id) === -1 && types.name != "Contract"
-  //     : types.name != "Contract";
-  // });
-
-  // const [createAttachment] = useMutation(DOCUMENT_ATTACHMENTS, {
-  //   onCompleted(data) {
-  //     console.log(data)
-  //     data.createDocumentAttachment && setNewEmployeeInfo((oldValues) => ({
-  //       ...oldValues,
-  //       document_attachments: [
-  //         ...oldValues.document_attachments,
-  //         {
-  //           path: data.createDocumentAttachment.path,
-  //           type: {
-  //             name: data.createDocumentAttachment.type.name,
-  //           }
-  //         }
-  //       ]
-  //     }))
-  //   },
-  //   errorPolicy: "all",
-  // });
 
   const onChangeFile = (e) => {
     let path = e.target.files[0];
     states.files = path;
   };
-  // const onUpdate = async (info) => {
-  //   const {
-  //     data: {
-  //       createDocumentAttachment: { _id },
-  //     },
-  //   } = await createAttachment({
-  //     variables: {
-  //       input: { uid: employeeData._id, type: info.type, file: states.files },
-  //     },
-  //   });
+  const onUpdate = async (info) => {
+    alert("yehey");
+    let request = {...info,"employee":employeeData.id} 
+console.log(info)
+    const formData = new FormData()
 
-  //   console.log(_id)
+    formData.append('file', states.files)
+    formData.append('employee', employeeData.id)
+    formData.append('documentType', info.type)
 
-  //   const employee_attachments = { ...employeeData };
-  //   console.log(employee_attachments)
+    console.log(formData)
+    instance.post("./employee/upload", formData,
+    // {
+    //   headers:{
+    //       token:localStorage.getItem("token")
+    //   }
+    // }
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+    ).then((response) => {
+      if(!response.error)
+      {
+        window.location = window.location;
+        console.log(response)
+        // alert("Saved" . response)
+      }else{
+          alert(response.error) 
+        console.log(response)
 
-  //   attachmentState.document_attachments = employee_attachments.document_attachments.map(
-  //     (attachment) => attachment._id
-  //   );
+      }
+    }) 
 
-  //   attachmentState.document_attachments.push(_id);
-
-  //   console.log(attachmentState)
-
-  //   // updateEmployee({
-  //   //   variables: { id: employeeData._id, input: attachmentState },
-  //   // });
-  // };
+    
+  };
 
   const body = (
     <>
@@ -212,11 +205,11 @@ export default ({ employeeData, attachments }) => {
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
                       >
-                        {/* {docType?.map(({ _id, name: _name }, index) => (
-                          <MenuItem value={_id} key={index}>
-                            {_name}
+                        {docType?.map(( {id, documentType} , index) => (
+                          <MenuItem value={id} key={index}>
+                            {documentType}
                           </MenuItem>
-                        ))} */}
+                        ))}
                       </Select>
                       {error && (
                         <FormHelperText>{error?.message}</FormHelperText>
@@ -242,18 +235,18 @@ export default ({ employeeData, attachments }) => {
                     <Box display="flex" justifyContent="center">
                       <input
                         accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
-                        id="contained-button-file"
+                        id="file"
                         onChange={(e) => {
                           onChangeFile(e);
                           onChange(e);
                         }}
-                        // defaultValue={getValues("file")}
+                        defaultValue={getValues("file")}
                         type="file"
                         className={classes.input}
                         multiple
                       />
                       <br />
-                      <label htmlFor="contained-button-file">
+                      <label htmlFor="file">
                         <IconButton
                           align="center"
                           color="primary"
@@ -262,7 +255,7 @@ export default ({ employeeData, attachments }) => {
                           className={classes.uplaodBtn}
                         >
                           <PublishIcon
-                            className={classes.publishIcon}
+                            className={classes.uplaodIcon}
                             fontSize="large"
                           />
                         </IconButton>
@@ -280,38 +273,10 @@ export default ({ employeeData, attachments }) => {
                 )}
               />
             </Grid>
-            {/* <Grid item md={12} xs={12}>
-              <Controller
-                control={control}
-                name="government_info.sss"
-                rules={{ required: "SSS number is Required" }}
-                render={({
-                  field: { onChange, onBlur, value, name, ref },
-                  fieldState: { invalid, isTouched, isDirty, error },
-                  formState,
-                }) => (
-                  <div>
-                    <TextField
-                      defaultValue={getValues("government_info.sss")}
-                      onChange={onChange}
-                      onBlur={onBlur}
-                      error={error !== undefined}
-                      fullWidth
-                      inputRef={ref}
-                      label="SSS No."
-                      margin="normal"
-                      type="text"
-                      // variant="outlined"
-                      helperText={error?.message}
-                    />
-                  </div>
-                )}
-              />
-            </Grid> */}
           </Grid>
           <Box display="flex" justifyContent="center" mt={3}>
             <Button
-              onClick={() => setOpen(false)}
+              onClick={handleClose}
               variant="contained"
               size="small"
               className={classes.margin}
@@ -321,7 +286,7 @@ export default ({ employeeData, attachments }) => {
             <Button
               variant="contained"
               size="small"
-              // onClick={handleSubmit(onUpdate)}
+              onClick={handleSubmit(onUpdate)}
               className={classes.update}
             >
               Upload
@@ -335,7 +300,7 @@ export default ({ employeeData, attachments }) => {
   return (
     <>
       <div>
-        <Button onClick={() => setOpen(true)} className={classes.uploadIcon}>
+        <Button onClick={handleOpen} className={classes.uploadIcon}>
           Upload
         </Button>
         <Modal
@@ -343,7 +308,7 @@ export default ({ employeeData, attachments }) => {
           aria-describedby="transition-modal-description"
           className={classes.modal}
           open={open}
-          onClose={() => setOpen(false)}
+          onClose={handleClose}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{

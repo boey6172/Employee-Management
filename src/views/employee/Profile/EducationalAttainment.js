@@ -36,6 +36,7 @@ const useStyles = makeStyles({
 const LatestProducts = ({ className, ...rest }) => {
   const { educationalAttainment, employeeInfo } = useContext(Context);
   const classes = useStyles();
+  const {primary,secondary,tertiary} = educationalAttainment;
 
   return (
     <>
@@ -52,7 +53,10 @@ const LatestProducts = ({ className, ...rest }) => {
         <CardHeader
           title="Primary"
           action={
-            <UpdatePrimary style={{ cursor: "pointer" }} data={employeeInfo} />
+            <UpdatePrimary style={{ cursor: "pointer" }} 
+            data={employeeInfo}
+            primary={primary}
+          />
           }
         />
         <Grid item xs={12}>
@@ -66,7 +70,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">School Name: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.primary.school_name}
+                    {educationalAttainment?.primary?.school_name}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -74,7 +78,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">Address: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.primary.school_address}
+                    {educationalAttainment?.primary?.address}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -82,7 +86,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">Years Completed: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.primary.year_attainment}
+                    {educationalAttainment?.primary?.year_completed}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -90,7 +94,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">Year Graduated: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.primary.year_graduated}
+                    {educationalAttainment?.primary?.year_graduated}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -102,6 +106,7 @@ const LatestProducts = ({ className, ...rest }) => {
             <UpdateSecondary
               style={{ cursor: "pointer" }}
               data={employeeInfo}
+              secondary={secondary}
             />
           }/>
         <Grid item xs={12}>
@@ -115,7 +120,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">School Name: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.secondary.school_name}
+                    {educationalAttainment?.secondary?.school_name}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -123,7 +128,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">Address: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.secondary.school_address}
+                    {educationalAttainment?.secondary?.address}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -131,7 +136,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">Years Completed: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.secondary.year_attainment}
+                    {educationalAttainment?.secondary?.year_completed}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -139,7 +144,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">Year Graduated: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.secondary.year_graduated}
+                    {educationalAttainment?.secondary?.year_graduated}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -148,7 +153,10 @@ const LatestProducts = ({ className, ...rest }) => {
         </Grid>
         <Divider />
         <CardHeader title="Tertiary"  action={
-            <UpdateTertiary style={{ cursor: "pointer" }} data={employeeInfo} />
+            <UpdateTertiary style={{ cursor: "pointer" }} 
+              data={employeeInfo}
+              tertiary={tertiary}
+            />
           }/>
         <Grid item xs={12}>
           <Box p={3}>
@@ -161,7 +169,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">School Name: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.tertiary.school_name}
+                    {educationalAttainment?.tertiary?.school_name}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -169,7 +177,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">Address: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.tertiary.school_address}
+                    {educationalAttainment?.tertiary?.address}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -177,7 +185,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">Course: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.tertiary.Course}
+                    {educationalAttainment?.tertiary?.course}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -185,7 +193,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">Years Completed: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.tertiary.year_attainment}
+                    {educationalAttainment?.tertiary?.year_completed}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -193,7 +201,7 @@ const LatestProducts = ({ className, ...rest }) => {
                     <font color="#616161">Year Graduated: </font>
                   </TableCell>
                   <TableCell style={{ border: "none", padding: "3px" }}>
-                    {educationalAttainment?.tertiary.year_graduated}
+                    {educationalAttainment?.tertiary?.year_graduated}
                   </TableCell>
                 </TableRow>
               </TableBody>

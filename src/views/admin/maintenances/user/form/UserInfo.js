@@ -42,8 +42,8 @@ export default ({}) => {
   const { errors, control } = useFormInstance;
   // console.log(state?.info)
 
-  const [firstName, setFirstName] = useState(state?.info?.first_name)
-
+  const [firstName, setFirstName] = useState(state?.first_name)
+console.log(state)
   /* Component Functions */
   return (
     <Box ml={2} mr={2} mt={1}>

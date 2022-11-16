@@ -133,7 +133,7 @@ export default ({ className, ...rest }) => {
   //     errorPolicy: "all",
   //   }
   // );
-
+  console.log(employee)
   useEffect(() => {
     if (search == "") {
       setFilteredEmployees(employee);
@@ -250,8 +250,8 @@ export default ({ className, ...rest }) => {
 
                 <TableCell>Rank</TableCell>
                 {/* <TableCell>Company</TableCell> */}
-                <TableCell>Assigned Reion</TableCell>
-                <TableCell>Department</TableCell>
+                <TableCell>Assigned Region</TableCell>
+                {/* <TableCell>Department</TableCell> */}
                 <TableCell>Start Date</TableCell>
               </TableRow>
             </TableHead>
@@ -281,17 +281,17 @@ export default ({ className, ...rest }) => {
                       {employee?.employee_info?.identification_number}
                     </TableCell> */}
                     <TableCell>
-                      {employee?.employee_info?.position?.name}
+                      {employee?.Rank?.rank}
                     </TableCell>
                     {/* <TableCell>
                       {employee?.employee_info?.company?.name}
                     </TableCell> */}
                     <TableCell>
-                      {employee?.employee_info?.branch?.name}
+                      {employee?.RegionAssignment.regionAssignment}
                     </TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       {employee?.employee_info?.department?.name}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell>
                       {moment(employee?.empDate).format(
                         "DD/MM/YYYY"
