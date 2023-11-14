@@ -11,7 +11,6 @@ const db = require("./models");
 
 const userRouter = require("./routes/Users");
 const rankRouter = require("./routes/Ranks");
-const transactionRouter = require("./routes/Transaction");
 const documentTypeRouter = require("./routes/DocumentType");
 const religionRouter = require("./routes/Religion");
 const regionRouter = require("./routes/RegionAssignment");
@@ -21,11 +20,6 @@ const genderRouter = require("./routes/Gender");
 const taxRouter = require("./routes/TaxStatuses");
 const schoolRouter = require("./routes/School");
 const attRouter = require("./routes/Attachments");
-const donorRouter = require("./routes/Donors");
-const statusRouter = require("./routes/Status");
-const levelRouter = require("./routes/Level");
-const Users = require("./models/Users");
-
 
 
 
@@ -36,20 +30,14 @@ const Users = require("./models/Users");
 
 app.use("/auth", userRouter);
 app.use("/ranks", rankRouter);
-app.use("/status", statusRouter);
-app.use("/level", levelRouter);
-app.use("/transaction", transactionRouter);
-app.use("/users", userRouter);
-
-// app.use("/documenttype", documentTypeRouter);
-// app.use("/religion", religionRouter);
-// app.use("/region", regionRouter);
+app.use("/documenttype", documentTypeRouter);
+app.use("/religion", religionRouter);
+app.use("/region", regionRouter);
 app.use("/employee", employeeRouter);
-app.use("/donors", donorRouter);
 app.use("/role", roleRouter);
-// app.use("/gender", genderRouter);
-// app.use("/taxstatuses", taxRouter);
-// app.use("/school", schoolRouter);
+app.use("/gender", genderRouter);
+app.use("/taxstatuses", taxRouter);
+app.use("/school", schoolRouter);
 app.use("/attachments", attRouter);
 
 

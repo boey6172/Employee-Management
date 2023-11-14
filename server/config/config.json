@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "amiel123",
-    "database": "hxp",
+    "password": "Amiel123",
+    "database": "mysqlFullStackDb",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
