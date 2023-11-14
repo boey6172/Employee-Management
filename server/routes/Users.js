@@ -38,6 +38,28 @@ router.post("/", async(req,res) =>{
 
 
 });
+router.post("/createuser", async(req,res) =>{
+    const {password,email,contactNumber,firstName,middleName,lastName} = req.body
+    const role = "9e71956c-8cb4-4baa-bc7b-a614d8403c32";
+try{
+    bcrypt.hash(password, 10).then((hash) =>{
+        Users.create({
+            username:email,
+            password:hash,
+            firstname: firstName,
+            middlename: middleName,
+            lastname: lastName,
+            role:role,
+            email:email,
+            contact_no:contactNumber
+        })
+    })
+    res.json("User Created");
+}catch(error){
+    res.json(error)
+}
+
+});
 
 router.post("/changePassword", async(req,res) =>{
     const {employee,old_password, confirm_password, new_password} = req.body
@@ -72,18 +94,21 @@ router.post("/changePassword", async(req,res) =>{
 
 
 router.post("/login",async(req,res) => { 
-    const {username,password} = req.body;
+    const {email,password} = req.body;
 
     const user = await Users.findOne({
-        where: {username:username}
+        where: {username:email}
     })
 
-    if (!user) res.json({error:"Account does not exist"})
+    if (!user) {
+        res.json({error:"Account does not exist"})
+        return
+    }
 
     bcrypt.compare(password, user.password).then((match)=>{
         if(!match) res.json({error:" Wrong Username and Password"})
 
-        const accessToken = sign({username:user.username,id:user.id},
+        const accessToken = sign({username:email.username,id:user.id},
             "pbpbrns12301234",
             // {
             //     // expiresIn: 1,
@@ -93,13 +118,14 @@ router.post("/login",async(req,res) => {
         token:'',
         user:{
             role:'',
-            employee:''
+            donor:''
         }
         
     }
         data.user.role = user.role
         data.token = accessToken
-        data.user.employee = user.employee
+        data.user.donor = user.donor
+        data.user.id = user.id
         res.json(data);
     })
 });
