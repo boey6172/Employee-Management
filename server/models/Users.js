@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING,
             allowNull: false,
         },
-        employee:{
+        donor:{
             type:DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         role:{
             type:DataTypes.UUID,
@@ -27,6 +27,23 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING,
             allowNull: false,
         },
+        firstname:{
+            type:DataTypes.STRING,
+            allowNull: false,
+        },
+        middlename:{
+            type:DataTypes.STRING,
+            allowNull: false,
+        },
+        lastname:{
+            type:DataTypes.STRING,
+            allowNull: false,
+        },
+        suffix:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
+        
         contact_no:{
             type:DataTypes.STRING,
             allowNull: false,
