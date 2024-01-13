@@ -95,15 +95,16 @@ router.post("/changePassword", async(req,res) =>{
 
 router.post("/login",async(req,res) => { 
     const {email,password} = req.body;
-
     const user = await Users.findOne({
         where: {username:email}
     })
-
+    
     if (!user) {
         res.json({error:"Account does not exist"})
         return
     }
+
+
 
     bcrypt.compare(password, user.password).then((match)=>{
         if(!match) res.json({error:" Wrong Username and Password"})
@@ -126,7 +127,7 @@ router.post("/login",async(req,res) => {
         data.token = accessToken
         data.user.donor = user.donor
         data.user.id = user.id
-        res.json(data);
+        res.send(data);
     })
 });
 

@@ -28,13 +28,13 @@ router.post("/getdonor", async(req,res) =>{
     const donor =  await Donors.findOne({where:{
                 id:id
             }, 
-            include:[Status,Level]
+            include:[Status,Level,]
            
         }
     )
+
     let data = {
         donor
-        // ,attachments
         }
 
     if (!donor){
@@ -43,14 +43,48 @@ router.post("/getdonor", async(req,res) =>{
         }
         res.json(data)
 
-    }
-    
+    }   
     res.json(data)
     }
     catch(e){
         console.log(e)
     }
 });
+
+router.post("/getProfile", async(req,res) =>{
+    const {id} = req.body
+    try{
+    const donor =  await Donors.findOne({where:{
+                id:id
+            }, 
+            include:[Status,Level,]
+           
+        }
+    )
+    const user =  await Users.findOne({where:{
+            donor:id
+        },    
+    }
+)
+    let data = {
+        donor
+        ,user
+        }
+
+    if (!donor){
+        data={
+            message:"Donor Not Found"
+        }
+        res.json(data)
+
+    }   
+    res.json(data)
+    }
+    catch(e){
+        console.log(e)
+    }
+});
+
 router.post("/confirmdonor", async(req,res) =>{
     const {id} = req.body
     try{
@@ -116,7 +150,7 @@ router.post("/getdonorsbyreferral", async(req,res) =>{
 
 router.post("/register", async(req,res) =>{
 
-    const {password,email,contactNumber,firstName,middleName,lastName,depositId,bankAccountNumber,philhealthId,referalID} = req.body
+    const {password,email,contactNumber,firstName,middleName,lastName,depositId,bankAccountNumber,philhealthId,referalID,suffix} = req.body
     const role = "64574f6f-fcf8-4d55-a6d8-6bffaf4d308a";
     const level = "0668b972-1aba-4ce1-b893-868fda9da679";
     const status ="a587fb85-2851-4fc9-aaec-0c1088b600b6";
@@ -126,9 +160,10 @@ router.post("/register", async(req,res) =>{
         })
         if (user) res.json({error:"Account username already exist"})
         const data = await Donors.create({
-            firstname: firstName,
+            firstname: firstName,                                                                                                                                              
             middlename: middleName,
             lastname: lastName,
+            suffix:suffix,
             refferalId:referalID,
             contactNumber:contactNumber,
             depositSlip:depositId,
@@ -157,6 +192,8 @@ router.post("/register", async(req,res) =>{
         res.json(error)
     }
 });
+
+
 router.post("/admin", async(req,res) =>{
     const employee = req.body
 //  console.log(employee)
@@ -261,9 +298,11 @@ router.post("/getAccountInfo", async(req,res) =>{
 
 
 
-router.post("/upload", async(req,res) =>{
-    const data = req.body;
+router.post("/uploadDepositSlip", async(req,res) =>{
+    const data = req.donor;
+    const donor = data;
     // const {employee, documentType} = data;
+    console.log(data)
     try{
          upload(req,res, async function(err){   
             if(err){
@@ -272,15 +311,15 @@ router.post("/upload", async(req,res) =>{
             else{
                 const path = req.file.path
 
-                await Donor.update({
-                    bankfile:path,
+                await Donors.update({
+                    depositfile:path,
             
                 },{
                     where:{
-                        id:data.id
+                        id:req.body.donor
                     }
                 });
-                    res.status(200).send(info);
+                    res.status(200).send(req.body.donor);
 
                 // res.json({success:true,message:"Data and File was updated !"});
             } 
@@ -290,6 +329,39 @@ router.post("/upload", async(req,res) =>{
         console.log(e)
     }
 });
+
+router.post("/uploadValidId", async(req,res) =>{
+    const data = req.body;
+    const {donor} = data;
+    // const {employee, documentType} = data;
+    try{
+         upload(req,res, async function(err){   
+            if(err){
+            res.json({success:false,message:err});        
+            }         
+            else{
+                const path = req.file.path
+
+                await Donors.update({
+                    validIdFile:path,
+            
+                },{
+                    where:{
+                        id:req.body.donor
+                    }
+                });
+                    res.status(200).send("Success");
+
+                // res.json({success:true,message:"Data and File was updated !"});
+            } 
+        });
+
+    }catch(e){
+        console.log(e)
+    }
+});
+
+
 
 router.post("/attachments", async(req,res) =>{
     const data = req.body;
