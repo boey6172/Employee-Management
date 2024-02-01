@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         suffix:{
             type:DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         refferalId:{
             type:DataTypes.STRING,
@@ -76,6 +76,14 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
         },
         philId:{
+            type:DataTypes.STRING,
+            allowNull: false,
+        },
+        M_O_D:{
+            type:DataTypes.STRING,
+            allowNull: false,
+        },
+        amount:{
             type:DataTypes.STRING,
             allowNull: false,
         },

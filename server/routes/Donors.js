@@ -7,7 +7,8 @@ const bcrypt = require("bcrypt");
 const e = require('express');
 const multer = require('multer')
 const path = require('path');
-
+const nodemailer = require('nodemailer');
+const bodyParser = require('body-parser');
 
 
  
@@ -150,8 +151,8 @@ router.post("/getdonorsbyreferral", async(req,res) =>{
 
 router.post("/register", async(req,res) =>{
 
-    const {password,email,contactNumber,firstName,middleName,lastName,depositId,bankAccountNumber,philhealthId,referalID,suffix} = req.body
-    const role = "64574f6f-fcf8-4d55-a6d8-6bffaf4d308a";
+    const {password,email,contactNumber,firstName,middleName,lastName,depositId,bankAccountNumber,philhealthId,referalID,MOD,suffix,amount} = req.body
+    const role = "d0eff7f7-2740-44ca-850f-836eb28093e6";
     const level = "0668b972-1aba-4ce1-b893-868fda9da679";
     const status ="a587fb85-2851-4fc9-aaec-0c1088b600b6";
     try {
@@ -159,35 +160,43 @@ router.post("/register", async(req,res) =>{
             where: {username:email}
         })
         if (user) res.json({error:"Account username already exist"})
-        const data = await Donors.create({
-            firstname: firstName,                                                                                                                                              
-            middlename: middleName,
-            lastname: lastName,
-            suffix:suffix,
-            refferalId:referalID,
-            contactNumber:contactNumber,
-            depositSlip:depositId,
-            bankAccount:bankAccountNumber,
-            philId: philhealthId,
-            level:level,
-            status:status
-        });
-        bcrypt.hash(password, 10).then((hash) =>{
-            Users.create({
-                username:email,
-                password:hash,
-                donor:data.id,
-                firstname: firstName,
+        if (!user){
+            const data = await Donors.create({
+                firstname: firstName,                                                                                                                                              
                 middlename: middleName,
                 lastname: lastName,
-                role:role,
-                email:email,
-                contact_no:contactNumber
+                suffix:suffix ? suffix :'',
+                refferalId:referalID,
+                contactNumber:contactNumber,
+                depositSlip:depositId,
+                bankAccount:bankAccountNumber,
+                philId: philhealthId,
+                level:level,
+                status:status,
+                M_O_D:MOD,
+                amount:amount
+            });
+            bcrypt.hash(password, 10).then((hash) =>{
+                Users.create({
+                    username:email,
+                    password:hash,
+                    donor:data.id,
+                    firstname: firstName,
+                    middlename: middleName,
+                    lastname: lastName,
+                    role:role,
+                    email:email,
+                    contact_no:contactNumber
+                })
             })
-        })
-        res.json(data);
-        
-        
+            res.json(data);
+            const options = { 
+                to:email,
+                subject:'Holy Cross Account Successfully Created',
+                text:`Verification of your Donation is within 3-5 days`+ `</br>` +`Once verified, an auto-generated message via email will come from Holy Cross Xp`,
+            }
+            sendMail(options)
+        }
     } catch (error) {
         res.json(error)
     }
@@ -438,7 +447,37 @@ const upload = multer({
     }
 }).single('file')
 
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'hospholycross@gmail.com',  // Replace with your Gmail email address
+      pass: 'rpmgcfqadnkaihth',   // Replace with your Gmail password
+    },
+  });
+  
+// router.get('/send-email', async (req, res) => {
+async function sendMail(options)  {
+    const { to, subject, text } = options;
 
+    const mailOptions = {
+        from: 'hospholycross@gmail.com',  // Replace with your Gmail email address
+        to:to,
+        subject:subject,
+        text:text,
+    };
+    
+    try {
+        await transporter.sendMail(mailOptions);
+        // res.send('Email sent successfully!');
+    } catch (error) {
+        console.error('Error sending email:', error);
+        // res.send('Error sending email');
+    }
+}
+
+// });
 
 
 
