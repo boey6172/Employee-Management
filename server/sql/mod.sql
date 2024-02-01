@@ -1,1 +1,2 @@
+USE `hxp`
 ALTER TABLE `Donors` ADD `M_O_D` VARCHAR(256) NOT NULL AFTER `bankAccount`, ADD `amount` VARCHAR(10) NOT NULL AFTER `M_O_D`;
