@@ -1,0 +1,5 @@
+USE `hxp`
+ALTER TABLE `Donors`  ADD `isVerified` BOOLEAN NOT NULL  AFTER `updatedAt`,  ADD `verifiedDate` VARCHAR(50) NOT NULL  AFTER `isVerified`,  ADD `isValidated` BOOLEAN NOT NULL  AFTER `verifiedDate`,  ADD `validatedDate` VARCHAR(50) NOT NULL  AFTER `isValidated`;
+ALTER TABLE `Donors` ADD `verifedBy` CHAR(36) NOT NULL AFTER `validatedDate`, ADD `validatedBy` CHAR(36) NOT NULL AFTER `verifedBy`;
+ALTER TABLE `Donors` CHANGE `isVerified` `isVerified` TINYINT(1) NULL, CHANGE `verifiedDate` `verifiedDate` VARCHAR(50)  NULL, CHANGE `isValidated` `isValidated` TINYINT(1) NULL, CHANGE `validatedDate` `validatedDate` VARCHAR(50)  NULL, CHANGE `verifedBy` `verifedBy` CHAR(36)  NULL, CHANGE `validatedBy` `validatedBy` CHAR(36)  NULL;
+ALTER TABLE `Donors` ADD `gender` VARCHAR(10) NULL AFTER `refferalId`, ADD `address` VARCHAR(4096) NULL AFTER `gender`;
