@@ -23,6 +23,33 @@ router.get("/", async(req,res) =>{
     }
 });
 
+router.get("/forVerification", async(req,res) =>{
+    const status ="a587fb85-2851-4fc9-aaec-0c1088b600b6";
+    try{
+        const listofDonors =  await Donors.findAll({where:{
+            status:status
+        }, 
+            include:[Status,Level]
+        })
+        res.json(listofDonors)
+    }catch (error) {
+        console.log(error)
+    }
+});
+router.get("/forValidation", async(req,res) =>{
+    const status ="be56bb08-711f-4195-b0b4-4def08a09723";
+    try{
+        const listofDonors =  await Donors.findAll({where:{
+            status:status
+        }, 
+            include:[Status,Level]
+        })
+        res.json(listofDonors)
+    }catch (error) {
+        console.log(error)
+    }
+});
+
 router.post("/getdonor", async(req,res) =>{
     const {id} = req.body
     try{
@@ -151,10 +178,15 @@ router.post("/getdonorsbyreferral", async(req,res) =>{
 
 router.post("/register", async(req,res) =>{
 
-    const {password,email,contactNumber,firstName,middleName,lastName,depositId,bankAccountNumber,philhealthId,referalID,MOD,suffix,amount} = req.body
+    const {password,email,contactNumber,firstName,middleName,
+        lastName,depositId,bankAccountNumber,philhealthId,gender,
+        referalID,MOD,suffix,amount,address,street} = req.body
     const role = "d0eff7f7-2740-44ca-850f-836eb28093e6";
     const level = "0668b972-1aba-4ce1-b893-868fda9da679";
     const status ="a587fb85-2851-4fc9-aaec-0c1088b600b6";
+    const completeAddress = `${address.present_address.region}` + ` ` + `${address.present_address.province}` + ` ` +
+    `${address.present_address.municipality}` + ` ` + `${address.present_address.city}` + ` ` + `${street}`;
+    console.log(completeAddress);
     try {
         const user = await Users.findOne({
             where: {username:email}
@@ -174,7 +206,9 @@ router.post("/register", async(req,res) =>{
                 level:level,
                 status:status,
                 M_O_D:MOD,
-                amount:amount
+                amount:amount,
+                gender:gender,
+                address:completeAddress
             });
             bcrypt.hash(password, 10).then((hash) =>{
                 Users.create({
@@ -193,7 +227,7 @@ router.post("/register", async(req,res) =>{
             const options = { 
                 to:email,
                 subject:'Holy Cross Account Successfully Created',
-                text:`Verification of your Donation is within 3-5 days`+ `</br>` +`Once verified, an auto-generated message via email will come from Holy Cross Xp`,
+                text:`Please Wait for your Donation to be Verified Once verified, an auto-generated message via email will come from Holy Cross Xp. Thank you for your Patience.`,
             }
             sendMail(options)
         }
@@ -267,25 +301,65 @@ router.post("/update", async(req,res) =>{
 });
 
 
-router.post("/govtInfo", async(req,res) =>{
-    const {id, philNumber, pagIbigNumber,
-        gsisNumber,nhmcNumber,tinNumber,
-    } = req.body
-    await Employees.update({
- 
-        philNumber:philNumber,
-        gsisNumber:gsisNumber,
-        nhmcNumber:nhmcNumber,
-        tinNumber:tinNumber,
-        pagIbigNumber:pagIbigNumber,
-
-
+router.post("/verify", async(req,res) =>{
+    const {id,verifyBy} = req.body;
+    const today = new Date();
+    const newStatus = "be56bb08-711f-4195-b0b4-4def08a09723";
+    const formattedDate = today.toISOString().split('T')[0];
+    try{
+    await Donors.update({
+        status:newStatus,
+        verifedBy:verifyBy,
+        isVerified:true,
+        verifiedDate:formattedDate
     },{
         where:{
             id:id
         }
     });
+
     res.json(req.body);
+
+
+    } catch (error) {
+        res.json(error)
+    }
+});
+
+router.post("/validate", async(req,res) =>{
+    const {id,validateBy} = req.body;
+    const today = new Date();
+
+    const newStatus = "e93b78ed-ed32-4a69-880b-e8545b8ae067";
+    const formattedDate = today.toISOString().split('T')[0];
+    try {
+    await Donors.update({
+        status:newStatus,
+        validatedBy:validateBy,
+        isValidated:true,
+        validatedDate:formattedDate
+    },{
+        where:{
+            id:id
+        }
+    });
+    
+    
+    res.json(req.body);
+    const user = await Users.findOne({
+        where: {donor:id}
+    })
+
+    const options = { 
+        to:user.email,
+        subject:'Holy Cross Account Verified and Validated',
+        text:`${user.firstname}` + ` ` + `${user.middlename}` + ` ` + `${user.lastname}` + ` ` + `Your Donation is Verified.` + ` ` + `Thank you for your Donation.` +
+        ` ` + `Your account is now a Verified Donor` 
+    }
+    sendMail(options)
+    } catch (error) {
+        res.json(error)
+    }
 });
 
 router.post("/getAccountInfo", async(req,res) =>{

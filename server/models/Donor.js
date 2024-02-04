@@ -27,10 +27,10 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING,
             allowNull: false,
         },
-        // gender:{
-        //     type:DataTypes.UUID,
-        //     allowNull: false,
-        // },
+        gender:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
         level:{
             type:DataTypes.UUID,
             allowNull: false,
@@ -47,10 +47,10 @@ module.exports = (sequelize, DataTypes) => {
         //     type:DataTypes.UUID,
         //     allowNull: false,
         // },
-        // address:{
-        //     type:DataTypes.STRING,
-        //     allowNull: false,
-        // },
+        address:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
         contactNumber:{
             type:DataTypes.STRING,
             allowNull: false,
@@ -87,30 +87,31 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING,
             allowNull: false,
         },
-        // pagIbigNumber:{
-        //     type:DataTypes.STRING,
-        //     allowNull: false,
-        // },
-        // gsisNumber:{
-        //     type:DataTypes.STRING,
-        //     allowNull: false,
-        // },
-        // nhmcNumber:{
-        //     type:DataTypes.STRING,
-        //     allowNull: false,
-        // },
-        // tinNumber:{
-        //     type:DataTypes.STRING,
-        //     allowNull: false,
-        // },
-        // taxstat:{
-        //     type:DataTypes.UUID,
-        //     allowNull: false,
-        // },
-        // salaryGrade:{
-        //     type:DataTypes.STRING,
-        //     allowNull: false,
-        // },
+        isVerified:{
+            type:DataTypes.BOOLEAN,
+            allowNull: true,
+        },
+        verifiedDate:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
+        isValidated:{
+            type:DataTypes.BOOLEAN,
+            allowNull: true,
+        },
+        validatedDate:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
+        verifedBy:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
+        validatedBy:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
+        
     })
     // Employees.associate = (models) => {
     //     Employees.hasOne(models.Gender,{
