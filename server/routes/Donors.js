@@ -444,6 +444,46 @@ router.post("/uploadValidId", async(req,res) =>{
     }
 });
 
+router.post("/upgradeBankAccount", async(req,res) =>{
+    const data = req.body;
+    const {donor} = data;
+    // const {employee, documentType} = data;
+    try{
+         upload(req,res, async function(err){   
+            if(err){
+            res.json({success:false,message:err});        
+            }         
+            else{
+                const path = req.file.path
+
+                await Donors.update({
+                    bankfile:path,
+                    bankAccount:req.body.bankAccount
+                },{
+                    where:{
+                        id:req.body.donor
+                    }
+                });
+                    res.status(200).send("Success");
+
+                // res.json({success:true,message:"Data and File was updated !"});
+            } 
+            const user = await Users.findOne({
+                where: {donor:req.body.donor}
+            })
+            const options = { 
+                to:user.email,
+                subject:'Holy Cross Xp Account Upgrade',
+                text:`Please Wait for your Bank Account to be Verified. Once verified, an auto-generated message via email will come from Holy Cross Xp. Thank you for your Patience.`,
+            }
+            sendMail(options)
+        });
+
+    }catch(e){
+        console.log(e)
+    }
+});
+
 
 
 router.post("/attachments", async(req,res) =>{
