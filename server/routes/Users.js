@@ -36,8 +36,37 @@ router.post("/", async(req,res) =>{
         console.log(error)
     }
 
-
 });
+
+router.post("/getuser", async(req,res) =>{
+    const {id} = req.body
+    try{
+    const user =  await Users.findOne({where:{
+                id:id
+            }, 
+            attributes:['email','firstName','lastName','middlename','suffix']
+        }
+    )
+
+    let data = {
+        user
+        }
+
+    if (!user){
+        data={
+            message:"User Not Found"
+        }
+        res.json(data)
+
+    }   
+    res.json(data)
+    }
+    catch(e){
+        console.log(e)
+    }
+});
+
+
 router.post("/createuser", async(req,res) =>{
     const {password,email,contactNumber,firstName,middleName,lastName} = req.body
     const role = "9e71956c-8cb4-4baa-bc7b-a614d8403c32";
