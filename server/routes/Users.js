@@ -5,6 +5,7 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const bcrypt = require("bcrypt")
 const {sign} = require("jsonwebtoken")
+const nodemailer = require('nodemailer');
 
 
 router.get("/", async(req,res) =>{
@@ -91,22 +92,30 @@ try{
 });
 
 router.post("/changePassword", async(req,res) =>{
-    const {employee,old_password, confirm_password, new_password} = req.body
+    const {id,currentPassword, confirmPassword, newPassword} = req.body
     try {
-        const user = await Users.findOne({
-            where: {employee:employee}
-        })
-        if(new_password !== confirm_password) res.json({error:" Confirm Password Does not Match"})
+        const user = await Users.findByPk(id)
+        if (!user) {
+            res.json({error:"Account does not exist"})
+            return
+        }
+        if(newPassword !== confirmPassword) {
+            res.json({error:" Confirm Password Does not Match"}) 
+            return
+        }
         
-        bcrypt.compare(old_password, user.password).then((match)=>{
-            if(!match) res.json({error:" Old Password Does not Match"})
+        bcrypt.compare(currentPassword, user.password).then((match)=>{
+            if(!match) {
+                res.json({error:" Old Password Does not Match"})
+                return
+            }
             // res.json(match)
-            bcrypt.hash(new_password, 10).then((hash) =>{
+            bcrypt.hash(newPassword, 10).then((hash) =>{
                 Users.update({
                     password:hash,
                 },{
                     where:{
-                        id:user.id
+                        id:id
                     }
                 });
             })
@@ -173,6 +182,74 @@ router.post("/checkUsername",async(req,res) => {
 
 });
 
+
+const  generateTemporaryPassword = async() => {
+    return Math.random().toString(36).slice(-8);
+}
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'hospholycross@gmail.com',  // Replace with your Gmail email address
+      pass: 'rpmgcfqadnkaihth',   // Replace with your Gmail password
+    },
+  });
+  
+// router.get('/send-email', async (req, res) => {
+async function sendMail(options)  {
+    const { to, subject, text } = options;
+
+    const mailOptions = {
+        from: 'hospholycross@gmail.com',  // Replace with your Gmail email address
+        to:to,
+        subject:subject,
+        text:text,
+    };
+    
+    try {
+        await transporter.sendMail(mailOptions);
+        // res.send('Email sent successfully!');
+    } catch (error) {
+        console.error('Error sending email:', error);
+        // res.send('Error sending email');
+    }
+}
+
+router.post("/forgotpassword",async(req,res) => { 
+    const {email} = req.body;
+    try{
+        const existingUser = await Users.findOne({
+            where: {username:email}
+        })
+        if (!existingUser){
+            res.json({error:"Account Does Not Exist"})
+        } 
+
+        const temporaryPassword = await generateTemporaryPassword();
+        console.log(temporaryPassword)
+        bcrypt.hash(temporaryPassword, 10).then((hash) =>{
+            existingUser.update({ password: hash});
+        })
+        
+        const options = { 
+            to:email,
+            subject:'You have given a Temporary Password',
+            text:`Here is your temporary password "` + temporaryPassword + `" Please Change your Password After Login `,
+        }
+
+        sendMail(options)
+
+        res.json(`Your Temporary Password was sent on your Email Account `)
+
+    }catch(error){
+        console.error("Problem on Restting password",error.message);
+        res.json({error:`Problem on Restting password,` + error.message})        
+    }
+
+
+});
 
 
 
