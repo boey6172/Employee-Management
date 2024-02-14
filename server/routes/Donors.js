@@ -8,7 +8,6 @@ const e = require('express');
 const multer = require('multer')
 const path = require('path');
 const nodemailer = require('nodemailer');
-const bodyParser = require('body-parser');
 
 
  
