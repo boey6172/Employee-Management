@@ -49,6 +49,44 @@ router.get("/forValidation", async(req,res) =>{
     }
 });
 
+router.get("/forVerificationDonorSolicitor", async(req,res) =>{
+    const status ="e93b78ed-ed32-4a69-880b-e8545b8ae067";
+
+    try{
+        const listofDonors =  await Donors.findAll({where:{
+            bankfile:{
+                [Sequelize.Op.ne]: !null
+            },
+            status:status,
+            isVerifiedDonorSolicitor:null
+        }, 
+            include:[Status,Level]
+        })
+        res.json(listofDonors)
+    }catch (error) {
+        console.log(error)
+    }
+});
+
+router.get("/forValidationDonorSolicitor", async(req,res) =>{
+    const status ="e93b78ed-ed32-4a69-880b-e8545b8ae067";
+
+    try{
+        const listofDonors =  await Donors.findAll({where:{
+            bankfile:{
+                [Sequelize.Op.ne]: !null
+            },
+            status:status,
+            isVerifiedDonorSolicitor:true
+        }, 
+            include:[Status,Level]
+        })
+        res.json(listofDonors)
+    }catch (error) {
+        console.log(error)
+    }
+});
+
 router.post("/getdonor", async(req,res) =>{
     const {id} = req.body
     try{
@@ -318,6 +356,54 @@ router.post("/verify", async(req,res) =>{
     });
 
     res.json(req.body);
+
+
+    } catch (error) {
+        res.json(error)
+    }
+});
+
+router.post("/validatedonorsolicitor", async(req,res) =>{
+    const {id,validateBy} = req.body;
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+    const newStatus = "d35932f3-5cf8-4ce1-8bed-ca0faa7db726";
+    try{
+    await Donors.update({
+        verifedDonorSolicitorBy:validateBy,
+        isVerifiedDonorSolicitor:true,
+        verifiedDonorSolicitorDate:formattedDate,
+        status:newStatus,
+    },{
+        where:{
+            id:id
+        }
+    });
+
+    res.json("Donor Solicitor Account is Validated");
+
+
+    } catch (error) {
+        res.json(error)
+    }
+});
+
+router.post("/verifydonorsolicitor", async(req,res) =>{
+    const {id,verifyBy} = req.body;
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+    try{
+    await Donors.update({
+        validatedDonorSolicitorBy:verifyBy,
+        isValidatedDonorSolicitor:true,
+        validatedDonorSolicitorDate:formattedDate
+    },{
+        where:{
+            id:id
+        }
+    });
+
+    res.json("Donor Solicitor Account is Verified");
 
 
     } catch (error) {

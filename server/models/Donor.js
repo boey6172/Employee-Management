@@ -111,6 +111,30 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING,
             allowNull: true,
         },
+        isVerifiedDonorSolicitor:{
+            type:DataTypes.BOOLEAN,
+            allowNull: true,
+        },
+        verifiedDonorSolicitorDate:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
+        isValidatedDonorSolicitor:{
+            type:DataTypes.BOOLEAN,
+            allowNull: true,
+        },
+        validatedDonorSolicitorDate:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
+        verifedDonorSolicitorBy:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
+        validatedDonorSolicitorBy:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
         
     })
     // Employees.associate = (models) => {
