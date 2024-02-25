@@ -1,1 +1,2 @@
+USE `hxp`
 ALTER TABLE `Donors`  ADD `isVerifiedDonorSolicitor` TINYINT(1) NULL  AFTER `validatedBy`,  ADD `verifiedDonorSolicitorDate` VARCHAR(50) NULL  AFTER `isVerifiedDonorSolicitor`,  ADD `isValidatedDonorSolicitor` TINYINT(1) NULL  AFTER `verifiedDonorSolicitorDate`,  ADD `validatedDonorSolicitorDate` VARCHAR(50) NULL  AFTER `isValidatedDonorSolicitor`,  ADD `verifedDonorSolicitorBy` CHAR(36) NULL  AFTER `validatedDonorSolicitorDate`,  ADD `validatedDonorSolicitorBy` CHAR(36) NULL  AFTER `verifedDonorSolicitorBy`;
