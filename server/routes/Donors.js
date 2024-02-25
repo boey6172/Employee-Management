@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router(); 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const {Donors, Users,Gender,Ranks,RegionAssignments,Religions,TaxStatuses,Attachments,DocumentTypes,Level,Status} = require ("../models");
+const {Donors, Users,Gender,Ranks,RegionAssignments,Religions,TaxStatuses,Attachments,DocumentTypes,Level,Status,Rejection} = require ("../models");
 const bcrypt = require("bcrypt");
 const e = require('express');
 const multer = require('multer')
@@ -26,7 +26,10 @@ router.get("/forVerification", async(req,res) =>{
     const status ="a587fb85-2851-4fc9-aaec-0c1088b600b6";
     try{
         const listofDonors =  await Donors.findAll({where:{
-            status:status
+            status:status,
+            isRejected:{
+                [Sequelize.Op.is]: null
+            },
         }, 
             include:[Status,Level]
         })
@@ -39,7 +42,10 @@ router.get("/forValidation", async(req,res) =>{
     const status ="be56bb08-711f-4195-b0b4-4def08a09723";
     try{
         const listofDonors =  await Donors.findAll({where:{
-            status:status
+            status:status,
+            isRejected:{
+                [Sequelize.Op.is]: null
+            },
         }, 
             include:[Status,Level]
         })
@@ -58,7 +64,10 @@ router.get("/forVerificationDonorSolicitor", async(req,res) =>{
                 [Sequelize.Op.ne]: !null
             },
             status:status,
-            isVerifiedDonorSolicitor:null
+            isVerifiedDonorSolicitor:null,
+            isRejected:{
+                [Sequelize.Op.is]: null
+            },
         }, 
             include:[Status,Level]
         })
@@ -68,6 +77,27 @@ router.get("/forVerificationDonorSolicitor", async(req,res) =>{
     }
 });
 
+router.get("/forVerificationDonorSolicitor", async(req,res) =>{
+    const status ="e93b78ed-ed32-4a69-880b-e8545b8ae067";
+
+    try{
+        const listofDonors =  await Donors.findAll({where:{
+            bankfile:{
+                [Sequelize.Op.ne]: !null
+            },
+            status:status,
+            isVerifiedDonorSolicitor:null,
+            isRejected:{
+                [Sequelize.Op.is]: null
+            },
+        }, 
+            include:[Status,Level]
+        })
+        res.json(listofDonors)
+    }catch (error) {
+        console.log(error)
+    }
+});
 router.get("/forValidationDonorSolicitor", async(req,res) =>{
     const status ="e93b78ed-ed32-4a69-880b-e8545b8ae067";
 
@@ -230,7 +260,13 @@ router.post("/register", async(req,res) =>{
         })
         if (user) res.json({error:"Account username already exist"})
         if (!user){
+
+            const count = await Users.count();
+            let  counter = count + 1;
+
+            const donor_id = formattedDate + "-" + counter;
             const data = await Donors.create({
+                donor_id:donor_id,
                 firstname: firstName,                                                                                                                                              
                 middlename: middleName,
                 lastname: lastName,
@@ -381,7 +417,17 @@ router.post("/validatedonorsolicitor", async(req,res) =>{
     });
 
     res.json("Donor Solicitor Account is Validated");
+    const user = await Users.findOne({
+        where: {donor:id}
+    })
+    const options = { 
+        to:user.email,
+        subject:'Holy Cross Donor Solicitor Account Verified and Validated',
+        text:`${user.firstname}` + ` ` + `${user.middlename}` + ` ` + `${user.lastname}` + ` ` + `Your Bank Account is Verified and Validated.` + ` ` + `Thank you! You can Now Invite other Donors.` +
+        ` ` + `Your account is now a Donor Solicitor` 
+    }
 
+    sendMail(options)
 
     } catch (error) {
         res.json(error)

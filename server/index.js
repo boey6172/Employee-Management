@@ -24,7 +24,13 @@ const attRouter = require("./routes/Attachments");
 const donorRouter = require("./routes/Donors");
 const statusRouter = require("./routes/Status");
 const levelRouter = require("./routes/Level");
+const reasonRouter = require("./routes/Reason");
+const networkNodesRouter = require("./routes/NetworkNodes");
+const rejectionRouter = require("./routes/Rejection");
+
+
 const Users = require("./models/Users");
+
 
 
 
@@ -51,6 +57,11 @@ app.use("/role", roleRouter);
 // app.use("/taxstatuses", taxRouter);
 // app.use("/school", schoolRouter);
 app.use("/attachments", attRouter);
+app.use("/reasons",reasonRouter);
+app.use("/network",networkNodesRouter);
+app.use("/rejection",rejectionRouter);
+
+
 
 
 

@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
             // allowNull: false,
             primaryKey:true,
         },
+        donor_id:{
+            type:DataTypes.STRING,
+            allowNull: true,
+        },
         firstname:{
             type:DataTypes.STRING,
             allowNull: false,
@@ -133,6 +137,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         validatedDonorSolicitorBy:{
             type:DataTypes.STRING,
+            allowNull: true,
+        },
+        isRejected:{
+            type:DataTypes.BOOLEAN,
             allowNull: true,
         },
         
