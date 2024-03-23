@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         depositSlip:{
             type:DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         depositfile:{
             type:DataTypes.STRING,

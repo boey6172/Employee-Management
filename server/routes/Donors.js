@@ -279,7 +279,7 @@ router.post("/register", async(req,res) =>{
 
     const {password,email,contactNumber,firstName,middleName,
         lastName,depositId,bankAccountNumber,philhealthId,gender,
-        referalID,MOD,suffix,amount,address,street,birthday} = req.body
+        referalID,MOD,suffix,amount,address,street,birthday,dateOfDonation} = req.body
     const role = "d0eff7f7-2740-44ca-850f-836eb28093e6";
     const today = new Date();
 
@@ -323,10 +323,10 @@ router.post("/register", async(req,res) =>{
                 suffix:suffix ? suffix :'',
                 refferalId:referalID,
                 contactNumber:contactNumber,
-                depositSlip:depositId,
+                // depositSlip:depositId,
                 birthday:birthday,
                 // bankAccount:bankAccountNumber,
-                // philId: philhealthId,
+                dateOfDonation: dateOfDonation,
                 level:level,
                 status:status,
                 M_O_D:MOD,
