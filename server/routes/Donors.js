@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router(); 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const {Donors, Users,Gender,Ranks,RegionAssignments,Religions,TaxStatuses,Attachments,DocumentTypes,Level,Status,Rejection} = require ("../models");
+const {Donors, Users,Attachments,DocumentTypes,Status,Rejection} = require ("../models");
 const bcrypt = require("bcrypt");
 const e = require('express');
 const multer = require('multer')
@@ -14,7 +14,7 @@ const nodemailer = require('nodemailer');
 router.get("/", async(req,res) =>{
     try{
         const listofDonors =  await Donors.findAll({
-            include:[Status,Level]
+            include:[Status]
         })
         res.json(listofDonors)
     }catch (error) {
@@ -31,7 +31,7 @@ router.get("/forVerification", async(req,res) =>{
                 [Sequelize.Op.is]: null
             },
         }, 
-            include:[Status,Level]
+            include:[Status]
         })
         res.json(listofDonors)
     }catch (error) {
@@ -47,7 +47,7 @@ router.get("/forValidation", async(req,res) =>{
                 [Sequelize.Op.is]: null
             },
         }, 
-            include:[Status,Level]
+            include:[Status]
         })
         res.json(listofDonors)
     }catch (error) {
@@ -69,7 +69,7 @@ router.get("/forVerificationDonorSolicitor", async(req,res) =>{
                 [Sequelize.Op.is]: null
             },
         }, 
-            include:[Status,Level]
+            include:[Status]
         })
         res.json(listofDonors)
     }catch (error) {
@@ -91,7 +91,7 @@ router.get("/forVerificationDonorSolicitor", async(req,res) =>{
                 [Sequelize.Op.is]: null
             },
         }, 
-            include:[Status,Level]
+            include:[Status]
         })
         res.json(listofDonors)
     }catch (error) {
@@ -109,7 +109,7 @@ router.get("/forValidationDonorSolicitor", async(req,res) =>{
             status:status,
             isVerifiedDonorSolicitor:true
         }, 
-            include:[Status,Level]
+            include:[Status]
         })
         res.json(listofDonors)
     }catch (error) {
@@ -123,11 +123,43 @@ router.post("/getdonor", async(req,res) =>{
     const donor =  await Donors.findOne({where:{
                 id:id
             }, 
-            include:[Status,Level,]
+            include:[Status,]
            
         }
     )
 
+    let data = {
+        donor
+        }
+
+    if (!donor){
+        data={
+            message:"Donor Not Found"
+        }
+        res.json(data)
+
+    }   
+    res.json(data)
+    }
+    catch(e){
+        console.log(e)
+    }
+});
+router.get("/getdonorbydonorid/:id", async(req,res) =>{
+    const id = req.params.id
+    console.log(req.body,id)
+    try{
+    const donor =  await Donors.findOne({where:{
+                donor_id:id
+            }, 
+            attributes: ['firstname', 'donor_id', 'lastname', 'middlename'],
+            include:[Status,]
+           
+        }
+    )
+    // const upline = await Donors.findOne({
+    //     where: {donor_id:referalID}
+    // })
     let data = {
         donor
         }
@@ -152,7 +184,7 @@ router.post("/getProfile", async(req,res) =>{
     const donor =  await Donors.findOne({where:{
                 id:id
             }, 
-            include:[Status,Level,]
+            include:[Status,]
            
         }
     )
@@ -186,7 +218,7 @@ router.post("/confirmdonor", async(req,res) =>{
         const donor =  await Donors.findOne({where:{
                     id:id
                 }, 
-                include:[Status,Level]
+                include:[Status]
             
             }
         )
@@ -247,24 +279,42 @@ router.post("/register", async(req,res) =>{
 
     const {password,email,contactNumber,firstName,middleName,
         lastName,depositId,bankAccountNumber,philhealthId,gender,
-        referalID,MOD,suffix,amount,address,street} = req.body
+        referalID,MOD,suffix,amount,address,street,birthday} = req.body
     const role = "d0eff7f7-2740-44ca-850f-836eb28093e6";
-    const level = "0668b972-1aba-4ce1-b893-868fda9da679";
+    const today = new Date();
+
+    let level=0;
+    // const level = "0668b972-1aba-4ce1-b893-868fda9da679";
     const status ="a587fb85-2851-4fc9-aaec-0c1088b600b6";
+    const formattedDate = today.toISOString().split('T')[0];
     const completeAddress = `${address.present_address.region}` + ` ` + `${address.present_address.province}` + ` ` +
-    `${address.present_address.municipality}` + ` ` + `${address.present_address.city}` + ` ` + `${street}`;
+    `${address.present_address.municipality}` + ` ` + `${address.present_address.barangay}` + ` ` + `${street}`;
     console.log(completeAddress);
+    console.log(email)
     try {
         const user = await Users.findOne({
             where: {username:email}
         })
+        const upline = await Donors.findOne({
+            where: {donor_id:referalID}
+        })
+
         if (user) res.json({error:"Account username already exist"})
         if (!user){
 
-            const count = await Users.count();
-            let  counter = count + 1;
+            const count = await Donors.count();
+            console.log(count)
+            if (count != 0 ) {
+                
+                level = upline.level + 1; 
+            }
+            let counter = count + 1;
+            let counterString = counter.toString().padStart(5, '0'); // Ensure counter is always five digits
+            
+            const donor_id = formattedDate + "-" + counterString;
+            console.log(donor_id,"donor_id")
+            console.log(upline.id,"upline_id")
 
-            const donor_id = formattedDate + "-" + counter;
             const data = await Donors.create({
                 donor_id:donor_id,
                 firstname: firstName,                                                                                                                                              
@@ -274,14 +324,16 @@ router.post("/register", async(req,res) =>{
                 refferalId:referalID,
                 contactNumber:contactNumber,
                 depositSlip:depositId,
-                bankAccount:bankAccountNumber,
-                philId: philhealthId,
+                birthday:birthday,
+                // bankAccount:bankAccountNumber,
+                // philId: philhealthId,
                 level:level,
                 status:status,
                 M_O_D:MOD,
                 amount:amount,
                 gender:gender,
-                address:completeAddress
+                address:completeAddress,
+                uplineId:upline.id
             });
             bcrypt.hash(password, 10).then((hash) =>{
                 Users.create({
@@ -406,9 +458,9 @@ router.post("/validatedonorsolicitor", async(req,res) =>{
     const newStatus = "d35932f3-5cf8-4ce1-8bed-ca0faa7db726";
     try{
     await Donors.update({
-        verifedDonorSolicitorBy:validateBy,
-        isVerifiedDonorSolicitor:true,
-        verifiedDonorSolicitorDate:formattedDate,
+        validatedDonorSolicitorBy:verifyBy,
+        isValidatedDonorSolicitor:true,
+        validatedDonorSolicitorDate:formattedDate,
         status:newStatus,
     },{
         where:{
@@ -440,9 +492,9 @@ router.post("/verifydonorsolicitor", async(req,res) =>{
     const formattedDate = today.toISOString().split('T')[0];
     try{
     await Donors.update({
-        validatedDonorSolicitorBy:verifyBy,
-        isValidatedDonorSolicitor:true,
-        validatedDonorSolicitorDate:formattedDate
+        verifedDonorSolicitorBy:verifyBy,
+        isVerifiedDonorSolicitor:true,
+        verifiedDonorSolicitorDate:formattedDate
     },{
         where:{
             id:id
@@ -724,6 +776,32 @@ async function sendMail(options)  {
 
 // });
 
+router.get('/network-nodes/:id/under', async (req, res) => {
+    try {
+      const nodeId = req.params.id;
+      const parentNode = await Donors.findByPk(nodeId);
+      if (!parentNode) {
+        throw new Error('Node not found');
+      }
+  
+      const nodesUnderParent = await getNodesUnderParent(parentNode);
+      res.json(nodesUnderParent);
+    } catch (error) {
+      res.status(404).json({ error: error.message });
+    }
+  });
 
+  // Recursive function to get all nodes under a parent node
+async function getNodesUnderParent(parentNode) {
+    const directDownlines = await parentNode.getDownlines({include:[Status]});
+    let nodesUnderParent = [...directDownlines];
+  
+    for (const downline of directDownlines) {
+      const indirectDownlines = await getNodesUnderParent(downline);
+      nodesUnderParent = [...nodesUnderParent, ...indirectDownlines];
+    }
+  
+    return nodesUnderParent;
+  }
 
 module.exports = router;
