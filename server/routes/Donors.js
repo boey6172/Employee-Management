@@ -283,7 +283,7 @@ router.post("/register", async(req,res) =>{
     const role = "d0eff7f7-2740-44ca-850f-836eb28093e6";
     const today = new Date();
 
-    let level=0;
+    let level = 0;
     // const level = "0668b972-1aba-4ce1-b893-868fda9da679";
     const status ="a587fb85-2851-4fc9-aaec-0c1088b600b6";
     const formattedDate = today.toISOString().split('T')[0];
@@ -291,6 +291,7 @@ router.post("/register", async(req,res) =>{
     `${address.present_address.municipality}` + ` ` + `${address.present_address.barangay}` + ` ` + `${street}`;
     console.log(completeAddress);
     console.log(email)
+    
     try {
         const user = await Users.findOne({
             where: {username:email}
@@ -312,8 +313,18 @@ router.post("/register", async(req,res) =>{
             let counterString = counter.toString().padStart(5, '0'); // Ensure counter is always five digits
             
             const donor_id = formattedDate + "-" + counterString;
+            let refId
+
             console.log(donor_id,"donor_id")
-            console.log(upline.id,"upline_id")
+
+            if(upline){
+                 refId = upline.id 
+                
+            }else{
+                 refId = null 
+            }
+
+            console.log(refId,"upline_id")
 
             const data = await Donors.create({
                 donor_id:donor_id,
@@ -333,7 +344,7 @@ router.post("/register", async(req,res) =>{
                 amount:amount,
                 gender:gender,
                 address:completeAddress,
-                uplineId:upline.id
+                uplineId:refId
             });
             bcrypt.hash(password, 10).then((hash) =>{
                 Users.create({
