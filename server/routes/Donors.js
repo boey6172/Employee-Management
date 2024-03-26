@@ -469,7 +469,7 @@ router.post("/validatedonorsolicitor", async(req,res) =>{
     const newStatus = "d35932f3-5cf8-4ce1-8bed-ca0faa7db726";
     try{
     await Donors.update({
-        validatedDonorSolicitorBy:verifyBy,
+        validatedDonorSolicitorBy:validateBy,
         isValidatedDonorSolicitor:true,
         validatedDonorSolicitorDate:formattedDate,
         status:newStatus,
