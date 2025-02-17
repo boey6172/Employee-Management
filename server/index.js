@@ -3,11 +3,11 @@ const app = express();
 const cors = require("cors");
 
 app.use(express.json());
-// app.use(cors());
+app.use(cors());
 
-app.use(cors(
-  {origin: 'https://hospitaloftheholycross.com/login/'}
-))
+// app.use(cors(
+//   {origin: 'https://hospitaloftheholycross.com/login/'}
+// ))
 
 const db = require("./models");
 
@@ -31,6 +31,8 @@ const levelRouter = require("./routes/Level");
 const reasonRouter = require("./routes/Reason");
 const networkNodesRouter = require("./routes/NetworkNodes");
 const rejectionRouter = require("./routes/Rejection");
+const bonusRouter = require("./routes/Bonuses");
+
 
 
 const Users = require("./models/Users");
@@ -64,6 +66,8 @@ app.use("/attachments", attRouter);
 app.use("/reasons",reasonRouter);
 app.use("/network",networkNodesRouter);
 app.use("/rejection",rejectionRouter);
+app.use("/bonus",bonusRouter);
+
 
 
 

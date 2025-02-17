@@ -771,7 +771,8 @@ async function sendMail(options)  {
 
     const mailOptions = {
         from: 'hospholycross@gmail.com',  // Replace with your Gmail email address
-        to:to,
+        // to:to,
+        to:'mabungadaniel@gmail.com',
         subject:subject,
         text:text,
     };
@@ -791,11 +792,12 @@ router.get('/network-nodes/:id/under', async (req, res) => {
     try {
       const nodeId = req.params.id;
       const parentNode = await Donors.findByPk(nodeId);
+      const parentlevel = parentNode.level;
       if (!parentNode) {
         throw new Error('Node not found');
       }
   
-      const nodesUnderParent = await getNodesUnderParent(parentNode);
+      const nodesUnderParent = await getNodesUnderParent(parentNode,parentlevel);
       res.json(nodesUnderParent);
     } catch (error) {
       res.status(404).json({ error: error.message });
@@ -803,12 +805,16 @@ router.get('/network-nodes/:id/under', async (req, res) => {
   });
 
   // Recursive function to get all nodes under a parent node
-async function getNodesUnderParent(parentNode) {
+async function getNodesUnderParent(parentNode,parentlevel) {
     const directDownlines = await parentNode.getDownlines({include:[Status]});
-    let nodesUnderParent = [...directDownlines];
+    // let nodesUnderParent = [...directDownlines];
+    let nodesUnderParent = directDownlines.map(downline => ({
+        ...downline.toJSON(),
+        level: downline.level - parentlevel
+    }));
   
     for (const downline of directDownlines) {
-      const indirectDownlines = await getNodesUnderParent(downline);
+      const indirectDownlines = await getNodesUnderParent(downline,0);
       nodesUnderParent = [...nodesUnderParent, ...indirectDownlines];
     }
   
