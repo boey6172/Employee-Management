@@ -783,8 +783,8 @@ async function sendMail(options)  {
 
     const mailOptions = {
         from: 'hospholycross@gmail.com',  // Replace with your Gmail email address
-        // to:to,
-        to:'mabungadaniel@gmail.com',
+        to:to,
+        // to:'mabungadaniel@gmail.com',
         subject:subject,
         text:text,
     };
