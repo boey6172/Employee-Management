@@ -278,8 +278,20 @@ router.post("/getdonorsbyreferral", async(req,res) =>{
 router.post("/register", async(req,res) =>{
 
     const {password,email,contactNumber,firstName,middleName,
-        lastName,depositId,bankAccountNumber,philhealthId,gender,
+        lastName,depositSlip,bankAccountNumber,philhealthId,gender,
         referalID,MOD,suffix,amount,address,street,birthday,dateOfDonation} = req.body
+
+    if (!email || !password || !email || !firstName || !lastName) {
+        return res.status(400).json({ error: "All required fields must be provided" });
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: "Invalid email format" });
+    }
+    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+    if (!passwordRegex.test(password)) {
+        return res.status(400).json({ error: "Password must be at least 8 characters long and include at least one number and one special character" });
+    }
     const role = "d0eff7f7-2740-44ca-850f-836eb28093e6";
     const today = new Date();
 
@@ -306,7 +318,7 @@ router.post("/register", async(req,res) =>{
             const count = await Donors.count();
             console.log(count)
             if (count != 0 ) {
-                
+                if (!upline && count !=0 ) return res.json({error:"Upline does not exist"})
                 level = upline.level + 1; 
             }
             let counter = count + 1;
@@ -318,8 +330,8 @@ router.post("/register", async(req,res) =>{
             console.log(donor_id,"donor_id")
 
             if(upline){
-                 refId = upline.id 
                 
+                 refId = upline.id    
             }else{
                  refId = null 
             }
@@ -334,7 +346,7 @@ router.post("/register", async(req,res) =>{
                 suffix:suffix ? suffix :'',
                 refferalId:referalID,
                 contactNumber:contactNumber,
-                // depositSlip:depositId,
+                depositSlip:depositSlip,
                 birthday:birthday,
                 // bankAccount:bankAccountNumber,
                 dateOfDonation: dateOfDonation,
@@ -359,7 +371,7 @@ router.post("/register", async(req,res) =>{
                     contact_no:contactNumber
                 })
             })
-            res.json(data);
+            res.status(201).json(data);
             const options = { 
                 to:email,
                 subject:'Holy Cross Account Successfully Created',
@@ -368,7 +380,7 @@ router.post("/register", async(req,res) =>{
             sendMail(options)
         }
     } catch (error) {
-        res.json({error:error})
+        res.status(500).json({ error: error.message });
     }
 });
 
